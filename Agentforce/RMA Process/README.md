@@ -41,3 +41,11 @@ Ensure the flow, invocable action, and RMA template are activated as needed for 
 3. **From Apex/LWC**: Call `RMAGeneratorController.generateRMA(rmaDataJson)` with a JSON string containing `caseId`, `rmaNumber`, and the same field set the flow uses.
 
 RMA numbers follow the pattern `RMA-YYYYMMDD-XXXX`. The generated PDF is stored as a File and linked to the Case.
+
+## 📄 Disclaimer
+This project is NOT an official Salesforce product.
+
+Created by Brendan Sheridan as a demonstration accelerator. Use at your own risk. This code is provided "as-is" without warranty of any kind. Always review and test thoroughly before using in any production environment.
+
+## 📝 License
+This project is provided for educational and demonstration purposes. Feel free to use, modify, and adapt for your own Salesforce implementations.
