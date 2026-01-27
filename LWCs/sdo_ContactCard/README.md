@@ -54,3 +54,12 @@ If the custom fields are missing, the component still runs; those areas are simp
 ## Voice Call Requirement
 
 For **Voice Call** record pages, the card uses the custom lookup **`Contact__c`** on the Voice Call object. Ensure that field exists and is populated when you want the card to show a contact on a Voice Call record.
+
+## 📄 Disclaimer
+This project is NOT an official Salesforce product.
+
+Created by Brendan Sheridan as a demonstration accelerator. Use at your own risk. This code is provided "as-is" without warranty of any kind. Always review and test thoroughly before using in any production environment.
+
+## 📝 License
+This project is provided for educational and demonstration purposes. Feel free to use, modify, and adapt for your own Salesforce implementations.
+
