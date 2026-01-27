@@ -83,3 +83,12 @@ Ensure your org has **Agentforce** and **Einstein Generative AI** enabled, and t
 ## Repository
 
 Part of [Demo-Lab](https://github.com/sfdc-brendan/Demo-Lab): LWCs, Apex, and Agentforce assets for demos. Not intended for production use.
+
+## 📄 Disclaimer
+This project is NOT an official Salesforce product.
+
+Created by Brendan Sheridan as a demonstration accelerator. Use at your own risk. This code is provided "as-is" without warranty of any kind. Always review and test thoroughly before using in any production environment.
+
+## 📝 License
+This project is provided for educational and demonstration purposes. Feel free to use, modify, and adapt for your own Salesforce implementations.
+
