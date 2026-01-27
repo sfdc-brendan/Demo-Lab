@@ -1,0 +1,23 @@
+# macOS
+.DS_Store
+
+# Salesforce / SFDX
+.sfdx/
+.localdevserver/
+*.log
+orgs/
+config/
+
+# Dependencies
+node_modules/
+npm-debug.log*
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# LWC / Jest
+coverage/
+__sfdc__/
+*.lcov

@@ -1,0 +1,85 @@
+<template>
+    <div class={containerClasses}>
+        <!-- Header with background -->
+        <div class="header-section">
+            <div class="background-overlay"></div>
+        </div>
+
+        <!-- Main content area -->
+        <div class="content-section">
+            <!-- Profile section -->
+            <div class={profileSectionClasses}>
+                <div class="profile-image" if:false={hideProfilePicture}>
+                    <img src={profileImageUrl} alt="Profile" onerror={handleImageError} />
+                </div>
+                <div class="profile-info">
+                    <h1 class="name">{displayCustomerName}</h1>
+                    <p class="location">{displayCustomerLocation}</p>
+                </div>
+            </div>
+
+            <!-- Contact details -->
+            <div class="details-section">
+                <div class="detail-row" if:true={showField1}>
+                    <lightning-icon icon-name={field1Icon} size="x-small"></lightning-icon>
+                    <span class="label">{field1Label}</span>
+                    <span class="value">{field1Value}</span>
+                </div>
+                <div class="detail-row">
+                    <lightning-icon icon-name="utility:email" size="x-small"></lightning-icon>
+                    <span class="label">Email</span>
+                    <span class="value">{displayEmail}</span>
+                </div>
+                <div class="detail-row">
+                    <lightning-icon icon-name="utility:phone_portrait" size="x-small"></lightning-icon>
+                    <span class="label">Phone Number</span>
+                    <span class="value">{displayPhoneNumber}</span>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Additional info section -->
+            <div class="info-section">
+                <div class="info-row" if:true={showField2}>
+                    <lightning-icon icon-name={field2Icon} size="x-small"></lightning-icon>
+                    <span class="label">{field2Label}</span>
+                    <span class="value">{field2Value}</span>
+                </div>
+                <div class="info-row" if:true={showField3}>
+                    <lightning-icon icon-name={field3Icon} size="x-small"></lightning-icon>
+                    <span class="label">{field3Label}</span>
+                    <span class="value">{field3Value}</span>
+                </div>
+                <div class="info-row" if:true={showField4}>
+                    <lightning-icon icon-name={field4Icon} size="x-small"></lightning-icon>
+                    <span class="label">{field4Label}</span>
+                    <span class="value">{field4Value}</span>
+                </div>
+                <div class="info-row" if:true={showField5}>
+                    <lightning-icon icon-name={field5Icon} size="x-small"></lightning-icon>
+                    <span class="label">{field5Label}</span>
+                    <span class="value">{field5Value}</span>
+                </div>
+            </div>
+
+            <!-- Chart section -->
+            <div class="chart-section">
+                <div class="chart-header">
+                    <h3>CSAT</h3>
+                </div>
+                <canvas class="chart-canvas"></canvas>
+                <div class="chart-legend">
+                    <div class="legend-item">
+                        <span class="legend-color engagement"></span>
+                        <span class="legend-label">{engagementLabel}</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color happiness"></span>
+                        <span class="legend-label">{happinessLabel}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

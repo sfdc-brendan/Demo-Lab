@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__AppPage</target>
+        <target>lightning__RecordPage</target>
+        <target>lightning__HomePage</target>
+        <target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordPage">
+            <objects>
+                <object>Contact</object>
+                <object>Account</object>
+                <object>Lead</object>
+                <object>Case</object>
+                <object>MessagingSession</object>
+                <object>VoiceCall</object>
+            </objects>
+            <!-- Theme & Header Settings -->
+            <property name="themeMode" type="String" default="Dark" label="Theme Mode" description="Enter 'Dark' or 'Light' (case-sensitive)" />
+            <property name="headerColor" type="String" default="#0066CC" label="Header Color" description="Primary color for the header gradient (hex color code)" />
+            <property name="hideProfilePicture" type="Boolean" default="false" label="Hide Profile Picture" description="Hide the customer profile picture" />
+            
+            <!-- Field Display Configuration -->
+            <property name="field1Label" type="String" default="Field 1" label="Field 1 Label" description="Label for Contact Metric 1 field" />
+            <property name="field2Label" type="String" default="Field 2" label="Field 2 Label" description="Label for Contact Metric 2 field" />
+            <property name="field3Label" type="String" default="Field 3" label="Field 3 Label" description="Label for Contact Metric 3 field" />
+            <property name="field4Label" type="String" default="Field 4" label="Field 4 Label" description="Label for Contact Metric 4 field" />
+            <property name="field5Label" type="String" default="Field 5" label="Field 5 Label" description="Label for Contact Metric 5 field" />
+            <property name="field1Icon" type="String" default="utility:identity" label="Field 1 Icon" description="SLDS icon for Field 1" />
+            <property name="field2Icon" type="String" default="utility:favorite" label="Field 2 Icon" description="SLDS icon for Field 2" />
+            <property name="field3Icon" type="String" default="utility:groups" label="Field 3 Icon" description="SLDS icon for Field 3" />
+            <property name="field4Icon" type="String" default="utility:radio_button" label="Field 4 Icon" description="SLDS icon for Field 4" />
+            <property name="field5Icon" type="String" default="utility:currency" label="Field 5 Icon" description="SLDS icon for Field 5" />
+            
+            <!-- Field Visibility Configuration -->
+            <property name="showField1" type="Boolean" default="true" label="Show Field 1" description="Show or hide Field 1" />
+            <property name="showField2" type="Boolean" default="true" label="Show Field 2" description="Show or hide Field 2" />
+            <property name="showField3" type="Boolean" default="true" label="Show Field 3" description="Show or hide Field 3" />
+            <property name="showField4" type="Boolean" default="true" label="Show Field 4" description="Show or hide Field 4" />
+            <property name="showField5" type="Boolean" default="true" label="Show Field 5" description="Show or hide Field 5" />
+            
+            <!-- Chart Configuration -->
+            <property name="engagementData" type="String" default="60,65,70,75,80,85,90,95,85,80,75,70" label="Engagement Data" description="Comma-separated engagement scores for chart" />
+            <property name="happinessData" type="String" default="70,75,80,85,80,75,70,65,70,75,80,85" label="Satisfaction Data" description="Comma-separated satisfaction scores for chart" />
+            <property name="chartLabels" type="String" default="W14,W19,W24,W29,W34,W39,W44,W49,W2,W7,W12,W17" label="Chart Labels" description="Comma-separated labels for chart X-axis" />
+            <property name="engagementLabel" type="String" default="Engagement Score" label="Engagement Label" description="Label for the engagement line in chart" />
+            <property name="happinessLabel" type="String" default="Satisfaction Index" label="Satisfaction Label" description="Label for the satisfaction line in chart" />
+        </targetConfig>
+        <targetConfig targets="lightning__AppPage,lightning__HomePage">
+            <!-- Theme & Header Settings -->
+            <property name="themeMode" type="String" default="Dark" label="Theme Mode" description="Enter 'Dark' or 'Light' (case-sensitive)" />
+            <property name="headerColor" type="String" default="#0066CC" label="Header Color" description="Primary color for the header gradient (hex color code)" />
+            <property name="hideProfilePicture" type="Boolean" default="false" label="Hide Profile Picture" description="Hide the customer profile picture" />
+            
+            <!-- Field Display Configuration -->
+            <property name="field1Label" type="String" default="Field 1" label="Field 1 Label" description="Label for Contact Metric 1 field" />
+            <property name="field2Label" type="String" default="Field 2" label="Field 2 Label" description="Label for Contact Metric 2 field" />
+            <property name="field3Label" type="String" default="Field 3" label="Field 3 Label" description="Label for Contact Metric 3 field" />
+            <property name="field4Label" type="String" default="Field 4" label="Field 4 Label" description="Label for Contact Metric 4 field" />
+            <property name="field5Label" type="String" default="Field 5" label="Field 5 Label" description="Label for Contact Metric 5 field" />
+            <property name="field1Icon" type="String" default="utility:identity" label="Field 1 Icon" description="SLDS icon for Field 1" />
+            <property name="field2Icon" type="String" default="utility:favorite" label="Field 2 Icon" description="SLDS icon for Field 2" />
+            <property name="field3Icon" type="String" default="utility:groups" label="Field 3 Icon" description="SLDS icon for Field 3" />
+            <property name="field4Icon" type="String" default="utility:radio_button" label="Field 4 Icon" description="SLDS icon for Field 4" />
+            <property name="field5Icon" type="String" default="utility:currency" label="Field 5 Icon" description="SLDS icon for Field 5" />
+            
+            <!-- Field Visibility Configuration -->
+            <property name="showField1" type="Boolean" default="true" label="Show Field 1" description="Show or hide Field 1" />
+            <property name="showField2" type="Boolean" default="true" label="Show Field 2" description="Show or hide Field 2" />
+            <property name="showField3" type="Boolean" default="true" label="Show Field 3" description="Show or hide Field 3" />
+            <property name="showField4" type="Boolean" default="true" label="Show Field 4" description="Show or hide Field 4" />
+            <property name="showField5" type="Boolean" default="true" label="Show Field 5" description="Show or hide Field 5" />
+            
+            <!-- Chart Configuration -->
+            <property name="engagementData" type="String" default="60,65,70,75,80,85,90,95,85,80,75,70" label="Engagement Data" description="Comma-separated engagement scores for chart" />
+            <property name="happinessData" type="String" default="70,75,80,85,80,75,70,65,70,75,80,85" label="Satisfaction Data" description="Comma-separated satisfaction scores for chart" />
+            <property name="chartLabels" type="String" default="W14,W19,W24,W29,W34,W39,W44,W49,W2,W7,W12,W17" label="Chart Labels" description="Comma-separated labels for chart X-axis" />
+            <property name="engagementLabel" type="String" default="Engagement Score" label="Engagement Label" description="Label for the engagement line in chart" />
+            <property name="happinessLabel" type="String" default="Satisfaction Index" label="Satisfaction Label" description="Label for the satisfaction line in chart" />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>
