@@ -65,8 +65,8 @@ See each package’s README for prerequisites, object/field requirements, and co
 
 ## Disclaimer
 
-This project is **not** an official Salesforce product.  
-Created as a demonstration accelerator. Use at your own risk; code is provided “as-is” without warranty. Review and test thoroughly before using in any production environment.
+The files in this repo are **not** an official Salesforce product.  
+These are all related as a demonstration accelerator. Use at your own risk; code is provided “as-is” without warranty. Review and test thoroughly before using in any production environment.
 
 ---
 
