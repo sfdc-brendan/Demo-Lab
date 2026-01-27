@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Contact_Trace_Record_URL__c</fullName>
+    <externalId>false</externalId>
+    <formula>HYPERLINK(&quot;https://servicecloudvoice&quot;&amp; $Organization.Id &amp;&quot;.my.connect.aws/contact-trace-records/details/&quot;&amp; VendorCallKey &amp;&quot;?tz=PST8PDT&quot;, &quot;View CTR in Amazon Connect&quot;)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Contact Trace Record URL</label>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

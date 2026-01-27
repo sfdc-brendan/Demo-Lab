@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SDO_Service_Voice_Call_VoiceCall</fullName>
+    <filterScope>Queue</filterScope>
+    <label>General Voice</label>
+    <queue>SDO_Service_Voice_Call</queue>
+    <sharedTo>
+        <allInternalUsers></allInternalUsers>
+    </sharedTo>
+</ListView>

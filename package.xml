@@ -2,7 +2,35 @@
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
         <members>sdo_ContactCard</members>
+        <members>callCoaching</members>
+        <members>sentimentTracker</members>
+        <members>messagingSessionAnalytics</members>
         <name>LightningComponentBundle</name>
+    </types>
+    <types>
+        <members>ChatCoachingExtractor</members>
+        <members>ChatExtractor</members>
+        <members>TextExtractor</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>SCV_Extract_Agent_Performance_After_Call</members>
+        <members>SCV_Extract_Sentiment_After_Call</members>
+        <members>MSG_Extract_Coaching_After_Chat</members>
+        <members>MSG_Extract_Sentiment_After_Chat</members>
+        <name>Flow</name>
+    </types>
+    <types>
+        <members>Agent_Performance_Evaluation</members>
+        <members>Call_Sentiment</members>
+        <members>MSG_Chat_Coaching</members>
+        <members>MSG_Chat_Sentiment</members>
+        <name>GenAiPromptTemplate</name>
+    </types>
+    <types>
+        <members>VoiceCall</members>
+        <members>MessagingSession</members>
+        <name>CustomObject</name>
     </types>
     <version>65.0</version>
 </Package>

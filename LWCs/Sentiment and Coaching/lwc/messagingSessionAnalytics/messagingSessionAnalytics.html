@@ -1,0 +1,129 @@
+<template>
+    <div class="analytics-container">
+        <div class="analytics-grid">
+            <!-- Performance Card -->
+            <div class="analytics-card-wrapper performance-card-wrapper">
+                <article class="slds-card analytics-card">
+                    <div class="slds-card__header slds-grid">
+                        <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                            <div class="slds-media__figure">
+                                <span class="slds-icon_container slds-icon-custom-custom82">
+                                    <lightning-icon icon-name="custom:custom82" alternative-text="Agent Coaching" size="small"></lightning-icon>
+                                </span>
+                            </div>
+                            <div class="slds-media__body">
+                                <h2 class="slds-card__header-title card-title">
+                                    <span>Agent Performance</span>
+                                </h2>
+                            </div>
+                        </header>
+                    </div>
+                    <div class="slds-card__body slds-card__body_inner">
+                        <template if:true={hasPerformanceData}>
+                            <div class="performance-score slds-text-align_center slds-m-bottom_medium">
+                                <div class={performanceScoreClass}>
+                                    <span class="score-number">{performanceRating}</span>
+                                    <span class="score-total">/10</span>
+                                </div>
+                                <p class="slds-text-body_small slds-text-color_weak">Performance Score</p>
+                            </div>
+                                                            <div class="slds-text-longform">
+                                    <div class={evaluationTextClass}>
+                                        <lightning-formatted-rich-text 
+                                            value={performanceEvaluation}
+                                            class="formatted-evaluation-text">
+                                        </lightning-formatted-rich-text>
+                                    </div>
+                                    <template if:true={showExpandButton}>
+                                        <div class="expand-button-container slds-m-top_small">
+                                            <lightning-button
+                                                variant="neutral"
+                                                label={expandButtonLabel}
+                                                icon-name={expandButtonIcon}
+                                                icon-position="right"
+                                                class="expand-button"
+                                                onclick={toggleEvaluationExpanded}>
+                                            </lightning-button>
+                                        </div>
+                                    </template>
+                                </div>
+                        </template>
+                        <template if:false={hasPerformanceData}>
+                            <div class="slds-text-align_center slds-p-vertical_large no-data-state">
+                                <lightning-icon icon-name="utility:info" size="large" variant="inverse"></lightning-icon>
+                                <p class="slds-text-body_regular slds-m-top_small">No performance data available</p>
+                            </div>
+                        </template>
+                    </div>
+                </article>
+            </div>
+
+            <!-- Sentiment Card -->
+            <div class="analytics-card-wrapper sentiment-card-wrapper">
+                <article class="slds-card analytics-card">
+                    <div class="slds-card__header slds-grid">
+                        <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                            <div class="slds-media__figure">
+                                <span class="slds-icon_container slds-icon-custom-custom1">
+                                    <lightning-icon icon-name="custom:custom1" alternative-text="Chat Sentiment" size="small"></lightning-icon>
+                                </span>
+                            </div>
+                            <div class="slds-media__body">
+                                <h2 class="slds-card__header-title card-title">
+                                    <span>Chat Sentiment</span>
+                                </h2>
+                            </div>
+                        </header>
+                    </div>
+                    <div class="slds-card__body slds-card__body_inner">
+                        <template if:true={hasSentimentData}>
+                            <div class="sentiment-badge slds-text-align_center slds-m-bottom_medium">
+                                <lightning-badge label={sentimentRating} class={sentimentBadgeClass}></lightning-badge>
+                            </div>
+                                                            <div class="slds-text-longform">
+                                    <div class={sentimentTextClass}>
+                                        <lightning-formatted-rich-text 
+                                            value={chatSentiment}
+                                            class="formatted-sentiment-text">
+                                        </lightning-formatted-rich-text>
+                                    </div>
+                                    <template if:true={showSentimentExpandButton}>
+                                        <div class="expand-button-container slds-m-top_small">
+                                            <lightning-button
+                                                variant="neutral"
+                                                label={sentimentExpandButtonLabel}
+                                                icon-name={sentimentExpandButtonIcon}
+                                                icon-position="right"
+                                                class="expand-button"
+                                                onclick={toggleSentimentExpanded}>
+                                            </lightning-button>
+                                        </div>
+                                    </template>
+                                </div>
+                        </template>
+                        <template if:false={hasSentimentData}>
+                            <div class="slds-text-align_center slds-p-vertical_large no-data-state">
+                                <lightning-icon icon-name="utility:info" size="large" variant="inverse"></lightning-icon>
+                                <p class="slds-text-body_regular slds-m-top_small">No sentiment data available</p>
+                            </div>
+                        </template>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading State -->
+    <template if:true={isLoading}>
+        <div class="slds-text-align_center slds-p-vertical_large">
+            <lightning-spinner alternative-text="Loading analytics data..." size="medium"></lightning-spinner>
+        </div>
+    </template>
+
+    <!-- Error State -->
+    <template if:true={error}>
+        <div class="slds-box slds-theme_error slds-m-bottom_small">
+            <p>Error loading messaging session analytics: {error}</p>
+        </div>
+    </template>
+</template>

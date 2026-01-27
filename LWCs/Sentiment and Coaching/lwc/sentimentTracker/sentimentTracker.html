@@ -1,0 +1,149 @@
+<template>
+    <lightning-card>
+        <h2 slot="title">
+            <lightning-icon icon-name="standard:voice_call" size="small" class="slds-m-right_x-small"></lightning-icon>
+            Sentiment Analysis
+        </h2>
+        <div class="sentiment-compact">
+            <!-- Loading State -->
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Loading sentiment data..." size="medium"></lightning-spinner>
+            </template>
+
+            <!-- Error State -->
+            <template if:true={error}>
+                <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error" role="alert">
+                    <span class="slds-assistive-text">error</span>
+                    <h2>{error}</h2>
+                </div>
+            </template>
+
+            <!-- Main Content -->
+            <template if:false={isLoading}>
+                <template if:true={recordId}>
+                    <!-- EDITING VIEW -->
+                    <template if:true={isEditing}>
+                        <!-- Sentiment Rating Section -->
+                        <div class="senti-row">
+                            <div class="sentiment-options">
+                                <div class="sentiment-option" data-rating="Positive" onclick={handleSentimentChange}>
+                                    <div class="sentiment-icon positive">
+                                        <lightning-icon icon-name="utility:like" size="medium" variant="inverse"></lightning-icon>
+                                    </div>
+                                    <span class="sentiment-label">Positive</span>
+                                    <template if:true={isPositiveSelected}>
+                                        <lightning-icon icon-name="utility:check" size="x-small" class="selected-indicator"></lightning-icon>
+                                    </template>
+                                </div>
+                                <div class="sentiment-option" data-rating="Neutral" onclick={handleSentimentChange}>
+                                    <div class="sentiment-icon neutral">
+                                        <lightning-icon icon-name="utility:neutral" size="medium" variant="inverse"></lightning-icon>
+                                    </div>
+                                    <span class="sentiment-label">Neutral</span>
+                                    <template if:true={isNeutralSelected}>
+                                        <lightning-icon icon-name="utility:check" size="x-small" class="selected-indicator"></lightning-icon>
+                                    </template>
+                                </div>
+                                <div class="sentiment-option" data-rating="Negative" onclick={handleSentimentChange}>
+                                    <div class="sentiment-icon negative">
+                                        <lightning-icon icon-name="utility:dislike" size="medium" variant="inverse"></lightning-icon>
+                                    </div>
+                                    <span class="sentiment-label">Negative</span>
+                                    <template if:true={isNegativeSelected}>
+                                        <lightning-icon icon-name="utility:check" size="x-small" class="selected-indicator"></lightning-icon>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Call Sentiment Section -->
+                        <div class="senti-row">
+                            <lightning-textarea
+                                name="callSentiment"
+                                label="Describe why this sentiment was selected"
+                                value={callSentiment}
+                                onchange={handleSentimentTextChange}
+                                placeholder="Please provide details about why this sentiment rating was chosen..."
+                                rows="4"
+                                maxlength="32768"
+                                disabled={isSaving}>
+                            </lightning-textarea>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="slds-grid slds-grid_align-end">
+                            <lightning-button
+                                label="Save"
+                                variant="brand"
+                                onclick={handleSave}
+                                disabled={isSaving}
+                                class="slds-m-right_x-small">
+                            </lightning-button>
+                            <lightning-button
+                                label="Cancel"
+                                variant="neutral"
+                                onclick={handleCancel}
+                                disabled={isSaving}>
+                            </lightning-button>
+                        </div>
+                    </template>
+
+                    <!-- DISPLAY VIEW -->
+                    <template if:false={isEditing}>
+                        <div class="sentiment-display-container" onclick={handleEdit}>
+                            <div class="sentiment-options sentiment-display-icon">
+                                <template if:true={isPositiveSelected}>
+                                    <div class="sentiment-option selected" data-rating="Positive">
+                                        <div class="sentiment-icon positive">
+                                            <lightning-icon icon-name="utility:like" size="medium" variant="inverse"></lightning-icon>
+                                        </div>
+                                        <span class="sentiment-label">Positive</span>
+                                    </div>
+                                </template>
+                                <template if:true={isNeutralSelected}>
+                                    <div class="sentiment-option selected" data-rating="Neutral">
+                                        <div class="sentiment-icon neutral">
+                                            <lightning-icon icon-name="utility:neutral" size="medium" variant="inverse"></lightning-icon>
+                                        </div>
+                                        <span class="sentiment-label">Neutral</span>
+                                    </div>
+                                </template>
+                                <template if:true={isNegativeSelected}>
+                                    <div class="sentiment-option selected" data-rating="Negative">
+                                        <div class="sentiment-icon negative">
+                                            <lightning-icon icon-name="utility:dislike" size="medium" variant="inverse"></lightning-icon>
+                                        </div>
+                                        <span class="sentiment-label">Negative</span>
+                                    </div>
+                                </template>
+                            </div>
+                            <div class="call-sentiment-text-display">
+                                {callSentiment}
+                            </div>
+                        </div>
+                    </template>
+
+                    <!-- Save Status -->
+                    <template if:true={saveStatus}>
+                        <div class="slds-m-top_medium">
+                            <div class="slds-notify slds-notify_toast slds-theme_success" role="status">
+                                <span class="slds-assistive-text">success</span>
+                                <lightning-icon icon-name="utility:success" size="x-small" class="slds-m-right_x-small"></lightning-icon>
+                                <h2>{saveStatus}</h2>
+                            </div>
+                        </div>
+                    </template>
+                </template>
+
+                <!-- No Record ID -->
+                <template if:false={recordId}>
+                    <div class="slds-text-align_center slds-p-vertical_large">
+                        <lightning-icon icon-name="utility:info" size="large" class="slds-m-bottom_small"></lightning-icon>
+                        <p class="slds-text-heading_small">No record selected</p>
+                        <p class="slds-text-body_regular">This component must be used on a Voice Call or Messaging Session record page.</p>
+                    </div>
+                </template>
+            </template>
+        </div>
+    </lightning-card>
+</template>

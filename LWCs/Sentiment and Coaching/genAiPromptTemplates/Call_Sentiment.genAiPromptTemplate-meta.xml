@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiPromptTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <activeVersionIdentifier>lvTkepADkMvqerLNFaX1ep1A0YWonz3ghJTRRUrtNo0=_2</activeVersionIdentifier>
+    <description>Evaluate call sentiment after the call has ended.</description>
+    <developerName>Call_Sentiment</developerName>
+    <masterLabel>Call Sentiment</masterLabel>
+    <templateVersions>
+        <content>You are a Contact Center Supervisor evaluating a call transcript to determine overall customer sentiment in relation to the call. Sentiment is rated as Negative, Neutral, or Positive. Follow my instructions below as you evaluate the call transcript and use these criteria as a guideline for assessing the overall sentiment.
+
+Instructions:
+&quot;&quot;&quot;
+Access the call transcript here: {!$Flow:conv_sum_vc__GetTscpForVoiceCall.Prompt}
+If there is no data in the transcript, don&apos;t make anything up. Tell me that there is no information available in the transcript to analyze.
+Evaluate the transcript and use the following guidelines to assess the customer sentiment in the call. 
+Note that in the transcript, all customer phrases are preceded with &quot;End User:&quot; and that&apos;s how you can identify what parts of the conversation were spoken by the customer. These are the phrases you should focus on evaluating to determine the customer sentiment.
+
+Tone and Polarity:
+Positive Words/Phrases: Look for words indicating satisfaction, appreciation, or positive experiences (e.g., &quot;thank you,&quot; &quot;great,&quot; &quot;satisfied&quot;).
+Negative Words/Phrases: Identify words or phrases that indicate frustration, disappointment, or negative experiences (e.g., &quot;unhappy,&quot; &quot;frustrated,&quot; &quot;poor service&quot;).
+Emotion Words:
+Emotional Indicators: Words that explicitly convey emotions (e.g., &quot;angry,&quot; &quot;happy,&quot; &quot;excited,&quot; &quot;disappointed&quot;).
+Intensity of Language:
+Strong Language: The use of strong adjectives or adverbs (e.g., &quot;extremely dissatisfied,&quot; &quot;absolutely wonderful&quot;).
+Soft Language: Milder expressions of sentiment (e.g., &quot;a bit upset,&quot; &quot;quite happy&quot;).
+Frequency of Sentiment Indicators:
+Repetition: Repeated use of sentiment-laden words can indicate stronger emotions.
+Contextual Sentiment:
+Contextual Analysis: Consider the context in which words are used, as some words might have different meanings depending on the situation (e.g., &quot;This is amazing&quot; can be positive or sarcastic).
+Customer Requests and Complaints:
+Nature of Requests: Requests for help, resolution, or escalation often indicate dissatisfaction.
+Complaints: Explicit complaints or mentions of issues faced during the interaction.
+Resolution and Follow-Up:
+Satisfaction with Resolution: Customer feedback on how well their issue was resolved (e.g., &quot;This was resolved quickly&quot; vs. &quot;I&apos;m still waiting for a solution&quot;).
+Future Intentions: Statements indicating future actions, such as continuing or discontinuing service (e.g., &quot;I will recommend your service&quot; vs. &quot;I will look for alternatives&quot;).
+After you have completed your evaluation, provide me with an overall Sentiment Rating by choosing one of the following: Negative, Neutral or Positive
+
+Negative means that based on the transcript, the customer appears to be dissatisfied with the interaction and the outcome of the conversation.
+Neutral means that based on the transcript, the customer is neither dissatisfied or satisfied with the interaction and the outcome of the conversation.
+Positive means that based on the transcript, the customer appears to happy and satisfied with the interaction and the outcome of the conversation.
+
+When providing your analysis, start with the Sentiment Rating. Then provide me with a brief explanation for why you assigned that sentiment rating. For example:
+
+Sentiment Rating: Positive
+Customer used a lot of positive words and expressed appreciation multiple times for the assistance and resolution that was provided
+&quot;&quot;&quot;
+</content>
+        <inputs>
+            <apiName>Voice_Call</apiName>
+            <definition>SOBJECT://VoiceCall</definition>
+            <masterLabel>Voice Call</masterLabel>
+            <referenceName>Input:Voice_Call</referenceName>
+            <required>true</required>
+        </inputs>
+        <primaryModel>sfdc_ai__DefaultGPT41</primaryModel>
+        <status>Published</status>
+        <templateDataProviders>
+            <definition>flow://conv_sum_vc__GetTscpForVoiceCall</definition>
+            <parameters>
+                <definition>SOBJECT://VoiceCall</definition>
+                <isRequired>true</isRequired>
+                <parameterName>convToSummarize</parameterName>
+                <valueExpression>{!$Input:Voice_Call}</valueExpression>
+            </parameters>
+            <referenceName>Flow:conv_sum_vc__GetTscpForVoiceCall</referenceName>
+        </templateDataProviders>
+        <versionIdentifier>lvTkepADkMvqerLNFaX1ep1A0YWonz3ghJTRRUrtNo0=_1</versionIdentifier>
+    </templateVersions>
+    <templateVersions>
+        <content>You are a Contact Center Supervisor evaluating a call transcript to determine overall customer sentiment in relation to the call. Sentiment is rated as Negative, Neutral, or Positive. Follow my instructions below as you evaluate the call transcript and use these criteria as a guideline for assessing the overall sentiment.
+
+Instructions:
+&quot;&quot;&quot;
+Access the call transcript here: {!$Flow:conv_sum_vc__GetTscpForVoiceCall.Prompt}
+If there is no data in the transcript, don&apos;t make anything up. Tell me that there is no information available in the transcript to analyze.
+Evaluate the transcript and use the following guidelines to assess the customer sentiment in the call. 
+Note that in the transcript, all customer phrases are preceded with &quot;End User:&quot; and that&apos;s how you can identify what parts of the conversation were spoken by the customer. These are the phrases you should focus on evaluating to determine the customer sentiment.
+
+Tone and Polarity:
+Positive Words/Phrases: Look for words indicating satisfaction, appreciation, or positive experiences (e.g., &quot;thank you,&quot; &quot;great,&quot; &quot;satisfied&quot;).
+Negative Words/Phrases: Identify words or phrases that indicate frustration, disappointment, or negative experiences (e.g., &quot;unhappy,&quot; &quot;frustrated,&quot; &quot;poor service&quot;).
+Emotion Words:
+Emotional Indicators: Words that explicitly convey emotions (e.g., &quot;angry,&quot; &quot;happy,&quot; &quot;excited,&quot; &quot;disappointed&quot;).
+Intensity of Language:
+Strong Language: The use of strong adjectives or adverbs (e.g., &quot;extremely dissatisfied,&quot; &quot;absolutely wonderful&quot;).
+Soft Language: Milder expressions of sentiment (e.g., &quot;a bit upset,&quot; &quot;quite happy&quot;).
+Frequency of Sentiment Indicators:
+Repetition: Repeated use of sentiment-laden words can indicate stronger emotions.
+Contextual Sentiment:
+Contextual Analysis: Consider the context in which words are used, as some words might have different meanings depending on the situation (e.g., &quot;This is amazing&quot; can be positive or sarcastic).
+Customer Requests and Complaints:
+Nature of Requests: Requests for help, resolution, or escalation often indicate dissatisfaction.
+Complaints: Explicit complaints or mentions of issues faced during the interaction.
+Resolution and Follow-Up:
+Satisfaction with Resolution: Customer feedback on how well their issue was resolved (e.g., &quot;This was resolved quickly&quot; vs. &quot;I&apos;m still waiting for a solution&quot;).
+Future Intentions: Statements indicating future actions, such as continuing or discontinuing service (e.g., &quot;I will recommend your service&quot; vs. &quot;I will look for alternatives&quot;).
+After you have completed your evaluation, provide me with an overall Sentiment Rating by choosing one of the following: Negative, Neutral or Positive
+
+Negative means that based on the transcript, the customer appears to be dissatisfied with the interaction and the outcome of the conversation.
+Neutral means that based on the transcript, the customer is neither dissatisfied or satisfied with the interaction and the outcome of the conversation.
+Positive means that based on the transcript, the customer appears to happy and satisfied with the interaction and the outcome of the conversation.
+
+When providing your analysis, start with the Sentiment Rating. Then provide me with a brief explanation for why you assigned that sentiment rating. For example:
+
+Sentiment Rating: Positive
+Customer used a lot of positive words and expressed appreciation multiple times for the assistance and resolution that was provided
+&quot;&quot;&quot;
+</content>
+        <inputs>
+            <apiName>Voice_Call</apiName>
+            <definition>SOBJECT://VoiceCall</definition>
+            <masterLabel>Voice Call</masterLabel>
+            <referenceName>Input:Voice_Call</referenceName>
+            <required>true</required>
+        </inputs>
+        <primaryModel>sfdc_ai__DefaultGPT5</primaryModel>
+        <status>Published</status>
+        <templateDataProviders>
+            <definition>flow://conv_sum_vc__GetTscpForVoiceCall</definition>
+            <parameters>
+                <definition>SOBJECT://VoiceCall</definition>
+                <isRequired>true</isRequired>
+                <parameterName>convToSummarize</parameterName>
+                <valueExpression>{!$Input:Voice_Call}</valueExpression>
+            </parameters>
+            <referenceName>Flow:conv_sum_vc__GetTscpForVoiceCall</referenceName>
+        </templateDataProviders>
+        <versionIdentifier>lvTkepADkMvqerLNFaX1ep1A0YWonz3ghJTRRUrtNo0=_2</versionIdentifier>
+    </templateVersions>
+    <type>einstein_gpt__flex</type>
+    <visibility>Global</visibility>
+</GenAiPromptTemplate>

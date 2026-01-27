@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ECIAllVoice_26iKue34</fullName>
+    <columns>Name</columns>
+    <columns>CreatedBy</columns>
+    <columns>CallStartDateTime</columns>
+    <columns>FromPhoneNumber</columns>
+    <columns>CallDurationInSeconds</columns>
+    <columns>RelatedRecord</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>CreatedDate</field>
+        <operation>equals</operation>
+        <value>LAST_N_DAYS:14</value>
+    </filters>
+    <filters>
+        <field>IsRecorded</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <label>ECI Voice Calls</label>
+</ListView>

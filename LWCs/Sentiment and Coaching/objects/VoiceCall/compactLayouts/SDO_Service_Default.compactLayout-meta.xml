@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SDO_Service_Default</fullName>
+    <fields>SDO_Service_Case_Subject__c</fields>
+    <fields>Contact__c</fields>
+    <fields>CallType</fields>
+    <fields>FromPhoneNumber</fields>
+    <fields>CallStartDateTime</fields>
+    <label>SDO Service Default</label>
+</CompactLayout>

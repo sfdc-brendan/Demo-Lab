@@ -1,0 +1,67 @@
+<template>
+    <lightning-card>
+        <div slot="title" class="coaching-title-row">
+            <lightning-icon icon-name="standard:coaching" size="small" class="slds-m-right_x-small"></lightning-icon>
+            <span class="coaching-title-text">Call Coaching</span>
+            <button class="custom-pill-btn call-analysis-btn" style={callAnalysisButtonStyle} onclick={openCallAnalysis}>Call Analysis</button>
+        </div>
+        <div class="coaching-compact">
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Loading..." size="small"></lightning-spinner>
+            </template>
+            <template if:false={isLoading}>
+                <template if:true={error}>
+                    <div class="slds-text-color_error">{error}</div>
+                </template>
+                <template if:false={error}>
+                    <!-- DISPLAY MODE -->
+                    <template if:false={isEditing}>
+                        <div class="display-container" onclick={handleEdit}>
+                            <div class="rating-display">
+                                <span class="rating-value">{performanceRating}</span>
+                                <span class="rating-label">/10</span>
+                            </div>
+                            <div class="evaluation-display">
+                                {performanceEvaluation}
+                            </div>
+                        </div>
+                    </template>
+                    <!-- EDIT MODE -->
+                    <template if:true={isEditing}>
+                        <div class="edit-container">
+                            <lightning-input
+                                type="number"
+                                label="Performance Rating"
+                                value={performanceRating}
+                                onchange={handleRatingChange}
+                                min="0"
+                                max="10"
+                                step="1"
+                                class="rating-input">
+                            </lightning-input>
+                            <lightning-textarea
+                                label="Performance Evaluation"
+                                value={performanceEvaluation}
+                                onchange={handleEvaluationChange}
+                                class="evaluation-textarea">
+                            </lightning-textarea>
+                            <div class="slds-grid slds-grid_align-end slds-m-top_small">
+                                <lightning-button
+                                    label="Cancel"
+                                    onclick={handleCancel}
+                                    class="slds-m-right_x-small">
+                                </lightning-button>
+                                <lightning-button
+                                    label="Save"
+                                    variant="brand"
+                                    onclick={handleSave}
+                                    disabled={isSaving}>
+                                </lightning-button>
+                            </div>
+                        </div>
+                    </template>
+                </template>
+            </template>
+        </div>
+    </lightning-card>
+</template>

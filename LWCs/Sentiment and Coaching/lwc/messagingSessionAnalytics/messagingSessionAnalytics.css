@@ -1,0 +1,533 @@
+/* ============================================
+   CONTAINER-RESPONSIVE ANALYTICS COMPONENT
+   ============================================ */
+
+/* Main Container */
+.analytics-container {
+    width: 100%;
+    height: 100%;
+}
+
+/* Responsive Grid System */
+.analytics-grid {
+    display: grid;
+    gap: 1rem;
+    width: 100%;
+    
+    /* Default: Wide layout (side by side) */
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: "performance sentiment";
+}
+
+/* Card Wrappers */
+.analytics-card-wrapper {
+    min-width: 0; /* Prevents flex overflow */
+}
+
+.performance-card-wrapper {
+    grid-area: performance;
+}
+
+.sentiment-card-wrapper {
+    grid-area: sentiment;
+}
+
+/* Responsive Card Layouts */
+.analytics-card {
+    height: 100%;
+    min-height: 280px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.10);
+    transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
+    transform-origin: center;
+    will-change: transform, box-shadow;
+}
+
+.analytics-card:hover {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.15);
+    transform: translateY(-1px);
+}
+
+/* Subtle animation when content expands */
+.analytics-card:has(.evaluation-text.expanded) {
+    animation: contentExpand 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes contentExpand {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.005);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.analytics-card .slds-card__body {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+/* Card Titles */
+.card-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+/* ============================================
+   PERFORMANCE SCORE STYLING
+   ============================================ */
+.performance-score-display {
+    font-weight: bold;
+}
+
+.score-number {
+    font-size: 3rem;
+    font-weight: 800;
+    line-height: 1;
+    transition: font-size 0.2s ease-in-out;
+}
+
+.score-total {
+    font-size: 1.5rem;
+    font-weight: 400;
+    opacity: 0.7;
+    transition: font-size 0.2s ease-in-out;
+}
+
+/* Performance Score Color Coding */
+.score-excellent {
+    color: #04844b; /* Green for excellent (8-10) */
+}
+
+.score-good {
+    color: #0176d3; /* Blue for good (6-7) */
+}
+
+.score-fair {
+    color: #fe9339; /* Orange for fair (4-5) */
+}
+
+.score-poor {
+    color: #ea001e; /* Red for poor (0-3) */
+}
+
+/* ============================================
+   SENTIMENT BADGE STYLING
+   ============================================ */
+.sentiment-positive {
+    --slds-c-badge-color-background: #04844b;
+    --slds-c-badge-text-color: #ffffff;
+    font-weight: 600;
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+}
+
+.sentiment-negative {
+    --slds-c-badge-color-background: #ea001e;
+    --slds-c-badge-text-color: #ffffff;
+    font-weight: 600;
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+}
+
+.sentiment-neutral {
+    --slds-c-badge-color-background: #706e6b;
+    --slds-c-badge-text-color: #ffffff;
+    font-weight: 600;
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+}
+
+/* ============================================
+   TEXT EXPAND/COLLAPSE FUNCTIONALITY
+   ============================================ */
+.evaluation-text {
+    overflow: hidden;
+    position: relative;
+    /* Smooth height transition with professional easing */
+    transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.evaluation-text.collapsed {
+    max-height: 4.5rem; /* Approximately 3 lines */
+}
+
+.evaluation-text.collapsed::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1.5rem;
+    background: linear-gradient(180deg, transparent 0%, rgba(255, 255, 255, 0.9) 70%, #ffffff 100%);
+    pointer-events: none;
+    /* Smooth fade transition for gradient overlay */
+    opacity: 1;
+    transition: opacity 0.25s ease-out;
+}
+
+.evaluation-text.expanded {
+    max-height: 200rem; /* Large value for smooth expansion */
+}
+
+.evaluation-text.expanded::after {
+    opacity: 0;
+}
+
+/* Rich Text Content Styling */
+.formatted-evaluation-text,
+.formatted-sentiment-text {
+    transition: opacity 0.2s ease-in-out;
+}
+
+/* Ensure rich text content inherits proper styling */
+.evaluation-text lightning-formatted-rich-text {
+    display: block;
+    line-height: 1.5;
+}
+
+.evaluation-text.collapsed lightning-formatted-rich-text,
+.evaluation-text.expanded lightning-formatted-rich-text {
+    opacity: 1;
+}
+
+/* Style rich text content elements */
+.formatted-evaluation-text ::part(content),
+.formatted-sentiment-text ::part(content) {
+    font-size: inherit;
+    line-height: 1.5;
+    color: inherit;
+}
+
+/* Ensure bold text in rich content is properly styled */
+.formatted-evaluation-text ::part(content) strong,
+.formatted-sentiment-text ::part(content) strong,
+.formatted-evaluation-text ::part(content) b,
+.formatted-sentiment-text ::part(content) b {
+    font-weight: 700;
+    color: #080707;
+}
+
+/* Style other HTML elements that might appear in AI coaching output */
+.formatted-evaluation-text ::part(content) p,
+.formatted-sentiment-text ::part(content) p {
+    margin-bottom: 0.75rem;
+    line-height: 1.5;
+}
+
+.formatted-evaluation-text ::part(content) p:last-child,
+.formatted-sentiment-text ::part(content) p:last-child {
+    margin-bottom: 0;
+}
+
+/* Style lists in coaching output */
+.formatted-evaluation-text ::part(content) ul,
+.formatted-evaluation-text ::part(content) ol,
+.formatted-sentiment-text ::part(content) ul,
+.formatted-sentiment-text ::part(content) ol {
+    margin: 0.5rem 0;
+    padding-left: 1.5rem;
+}
+
+.formatted-evaluation-text ::part(content) li,
+.formatted-sentiment-text ::part(content) li {
+    margin-bottom: 0.25rem;
+    line-height: 1.4;
+}
+
+/* Style headings if they appear */
+.formatted-evaluation-text ::part(content) h1,
+.formatted-evaluation-text ::part(content) h2,
+.formatted-evaluation-text ::part(content) h3,
+.formatted-sentiment-text ::part(content) h1,
+.formatted-sentiment-text ::part(content) h2,
+.formatted-sentiment-text ::part(content) h3 {
+    font-weight: 700;
+    margin: 0.75rem 0 0.5rem 0;
+    color: #080707;
+}
+
+.formatted-evaluation-text ::part(content) h1,
+.formatted-sentiment-text ::part(content) h1 {
+    font-size: 1.125rem;
+}
+
+.formatted-evaluation-text ::part(content) h2,
+.formatted-sentiment-text ::part(content) h2 {
+    font-size: 1rem;
+}
+
+.formatted-evaluation-text ::part(content) h3,
+.formatted-sentiment-text ::part(content) h3 {
+    font-size: 0.875rem;
+}
+
+/* Button Container */
+.expand-button-container {
+    text-align: center;
+}
+
+/* Expand Button Styling */
+.expand-button {
+    --slds-c-button-neutral-color-border: #d8dde6;
+    --slds-c-button-neutral-color-background: #ffffff;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.75rem;
+    min-height: auto;
+    border-radius: 0.25rem;
+    transition: all 0.2s ease-in-out;
+    position: relative;
+    overflow: hidden;
+}
+
+.expand-button:hover {
+    --slds-c-button-neutral-color-background: #f3f2f2;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.expand-button:active {
+    transform: translateY(0);
+    transition: all 0.1s ease-in-out;
+}
+
+/* Icon rotation animation inside expand button */
+.expand-button lightning-icon {
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Smooth button state transitions */
+.expand-button-container {
+    animation: fadeInUp 0.3s ease-out;
+}
+
+/* Button press feedback */
+.expand-button:focus {
+    outline: 2px solid #0176d3;
+    outline-offset: 2px;
+}
+
+/* ============================================
+   RESPONSIVE BREAKPOINTS
+   ============================================ */
+
+/* Container width < 600px: Stack vertically (narrow sidebar) */
+@container (max-width: 600px) {
+    .analytics-grid {
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+            "performance"
+            "sentiment";
+        gap: 0.75rem;
+    }
+    
+    .analytics-card {
+        min-height: 240px;
+    }
+    
+    .score-number {
+        font-size: 2.5rem;
+    }
+    
+    .score-total {
+        font-size: 1.25rem;
+    }
+    
+    .card-title {
+        font-size: 0.8125rem;
+    }
+}
+
+/* Container width < 400px: Ultra-compact (very narrow) */
+@container (max-width: 400px) {
+    .analytics-card {
+        min-height: 200px;
+    }
+    
+    .score-number {
+        font-size: 2rem;
+    }
+    
+    .score-total {
+        font-size: 1rem;
+    }
+    
+    .evaluation-text.collapsed {
+        max-height: 3rem; /* Only 2 lines in ultra-narrow */
+    }
+    
+    .expand-button {
+        font-size: 0.6875rem;
+        padding: 0.2rem 0.5rem;
+    }
+    
+    .sentiment-positive,
+    .sentiment-negative,
+    .sentiment-neutral {
+        font-size: 0.75rem;
+        padding: 0.375rem 0.75rem;
+    }
+}
+
+/* Fallback for browsers without container queries */
+@supports not (container-type: inline-size) {
+    /* Use width-based media queries as fallback */
+    @media (max-width: 600px) {
+        .analytics-grid {
+            grid-template-columns: 1fr;
+            grid-template-areas: 
+                "performance"
+                "sentiment";
+        }
+        
+        .score-number {
+            font-size: 2.5rem;
+        }
+        
+        .score-total {
+            font-size: 1.25rem;
+        }
+    }
+    
+    @media (max-width: 400px) {
+        .score-number {
+            font-size: 2rem;
+        }
+        
+        .score-total {
+            font-size: 1rem;
+        }
+        
+        .evaluation-text.collapsed {
+            max-height: 3rem;
+        }
+    }
+}
+
+/* Enable container queries */
+.analytics-container {
+    container-type: inline-size;
+}
+
+/* ============================================
+   ADDITIONAL STYLING & STATES
+   ============================================ */
+
+/* Icon Container Styling */
+.slds-icon_container {
+    background-color: var(--slds-c-icon-color-background, #f3f2f2);
+}
+
+/* Custom Icon Styling */
+.slds-icon-custom-custom82 {
+    background-color: var(--slds-c-icon-color-background-custom, #0176d3);
+}
+
+.slds-icon-custom-custom1 {
+    background-color: var(--slds-c-icon-color-background-custom, #04844b);
+}
+
+/* Text Formatting */
+.slds-text-longform p {
+    line-height: 1.5;
+    margin-bottom: 0;
+}
+
+/* No Data State */
+.no-data-state {
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Loading and Error States */
+.slds-spinner {
+    z-index: 1;
+}
+
+/* Accessibility Enhancements */
+.performance-score-display:focus,
+.sentiment-badge:focus {
+    outline: 2px solid #0176d3;
+    outline-offset: 2px;
+}
+
+/* Animations */
+.performance-score {
+    animation: fadeInScale 0.6s ease-out;
+}
+
+.sentiment-badge {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInScale {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============================================
+   ACCESSIBILITY & PERFORMANCE
+   ============================================ */
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    .evaluation-text,
+    .evaluation-text.collapsed::after,
+    .expand-button,
+    .expand-button lightning-icon,
+    .analytics-card {
+        transition: none !important;
+        animation: none !important;
+    }
+    
+    /* Still provide visual feedback without motion */
+    .analytics-card:hover {
+        transform: none;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    }
+    
+    .expand-button:hover {
+        transform: none;
+        box-shadow: none;
+        background-color: #f3f2f2;
+    }
+}
+
+/* Performance optimization for mobile */
+@media (max-width: 768px) {
+    .analytics-card {
+        will-change: auto; /* Reduce GPU usage on mobile */
+    }
+    
+    /* Faster animations on mobile for better responsiveness */
+    .evaluation-text {
+        transition: max-height 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .evaluation-text.collapsed::after {
+        transition: opacity 0.2s ease-out;
+    }
+}

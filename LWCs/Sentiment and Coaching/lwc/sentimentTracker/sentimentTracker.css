@@ -1,0 +1,251 @@
+.sentiment-compact {
+    padding: 0.5rem 0.5rem 0.25rem 0.5rem;
+    margin: 0;
+}
+.senti-row {
+    margin: 0 0 0.25rem 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.sentiment-options {
+    display: flex;
+    gap: 0.5rem;
+    margin: 0;
+}
+
+.sentiment-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.5rem;
+    border: 2px solid #dddbda;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 80px;
+    position: relative;
+    margin: 0;
+}
+
+.sentiment-option.selected {
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+
+.sentiment-option:hover {
+    border-color: #0176d3;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.sentiment-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.25rem;
+    transition: all 0.2s ease;
+}
+
+.sentiment-icon.positive {
+    background-color: #04844b;
+}
+
+.sentiment-icon.neutral {
+    background-color: #706e6b;
+}
+
+.sentiment-icon.negative {
+    background-color: #ea001e;
+}
+
+.sentiment-label {
+    font-weight: 600;
+    color: #3e3e3c;
+    text-align: center;
+    font-size: 0.95rem;
+}
+
+.selected-indicator {
+    position: absolute;
+    top: 0.25rem;
+    right: 0.25rem;
+    color: #0176d3;
+}
+
+.call-sentiment-text {
+    font-size: 0.98rem;
+    color: #222;
+    background: #f8f9fa;
+    border-radius: 0.25rem;
+    padding: 0.5rem 0.75rem;
+    min-height: 1.5rem;
+    white-space: pre-line;
+    word-break: break-word;
+    margin: 0;
+    box-shadow: none;
+    border: none;
+}
+
+.sentiment-display-container {
+    display: flex;
+    flex-direction: column; /* stacked by default */
+    gap: 0.25rem;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 0.5rem;
+    transition: background-color 0.2s ease;
+}
+
+.sentiment-display-container:hover {
+    background-color: #f3f3f3;
+}
+
+.call-sentiment-text-display {
+    font-size: 0.98rem;
+    color: #3e3e3c;
+    white-space: pre-line;
+    word-break: break-word;
+    margin: 0;
+    padding: 0;
+    line-height: 1.4;
+}
+
+/* Selected state styling */
+.sentiment-option[data-rating="Positive"].selected,
+.sentiment-option[data-rating="Positive"]:has(.selected-indicator) {
+    border-color: #04844b;
+    background-color: #f3fdf7;
+}
+
+.sentiment-option[data-rating="Neutral"].selected,
+.sentiment-option[data-rating="Neutral"]:has(.selected-indicator) {
+    border-color: #706e6b;
+    background-color: #f8f9fa;
+}
+
+.sentiment-option[data-rating="Negative"].selected,
+.sentiment-option[data-rating="Negative"]:has(.selected-indicator) {
+    border-color: #ea001e;
+    background-color: #fef7f7;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .sentiment-options {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+    
+    .sentiment-option {
+        flex-direction: row;
+        justify-content: flex-start;
+        min-width: auto;
+        padding: 0.4rem;
+    }
+    
+    .sentiment-icon {
+        width: 28px;
+        height: 28px;
+        margin-bottom: 0;
+        margin-right: 0.5rem;
+    }
+    
+    .sentiment-label {
+        text-align: left;
+    }
+}
+
+/* Loading and error states */
+.slds-spinner_container {
+    background-color: rgba(255, 255, 255, 0.75);
+}
+
+.slds-notify_toast {
+    position: relative;
+    margin-top: 0.5rem;
+}
+
+/* Success message styling */
+.slds-theme_success {
+    background-color: #04844b;
+    color: white;
+}
+
+/* Error message styling */
+.slds-theme_error {
+    background-color: #ea001e;
+    color: white;
+}
+
+/* Button styling enhancements */
+lightning-button {
+    margin-left: 0.5rem;
+}
+
+/* Textarea styling */
+lightning-textarea {
+    margin-bottom: 1rem;
+}
+
+/* Card styling */
+lightning-card {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+}
+
+/* Section headers */
+h3 {
+    color: #3e3e3c;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+/* Accessibility improvements */
+.sentiment-option:focus {
+    outline: 2px solid #0176d3;
+    outline-offset: 2px;
+}
+
+/* Animation for save status */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.slds-notify_toast {
+    animation: fadeIn 0.3s ease-out;
+} 
+
+/* Media query for wider viewports */
+@media (min-width: 340px) {
+    .sentiment-display-container {
+        flex-direction: row; /* side-by-side */
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    .sentiment-display-container .sentiment-options {
+        flex-shrink: 0;
+    }
+
+    .sentiment-display-container .call-sentiment-text-display {
+        font-size: 0.85rem; /* smaller text */
+        flex-grow: 1;
+        margin-top: 0.1rem;
+    }
+}
+
+.slds-grid {
+    margin: 0;
+}
