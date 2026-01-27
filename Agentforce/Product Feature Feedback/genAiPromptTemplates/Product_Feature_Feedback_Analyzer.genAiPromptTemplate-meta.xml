@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiPromptTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <activeVersionIdentifier>productFeatureFeedback_1</activeVersionIdentifier>
+    <description>Analyzes product feature feedback, performs sentiment analysis, categorizes complaints vs suggestions, and determines escalation needs for any product or service</description>
+    <developerName>Product_Feature_Feedback_Analyzer</developerName>
+    <masterLabel>Product Feature Feedback Analyzer</masterLabel>
+    <templateVersions>
+        <content>You are a product feedback analyzer for an Agentforce Agent. 
+
+Analyze the following user feedback about product features and categorize it appropriately.
+
+User Feedback: {!$Input:userFeedback}
+Contact ID: {!$Input:contactId}
+Source Channel: {!$Input:sourceChannel}
+
+Perform the following analysis and return a structured JSON response:
+
+1. **CATEGORIZATION**: Determine if this is a &quot;Complaint&quot; or &quot;Suggestion&quot;
+   - Complaint: User is reporting issues, problems, bugs, or dissatisfaction with existing features
+   - Suggestion: User is proposing new features, enhancements, or improvements
+
+2. **SENTIMENT ANALYSIS**: Analyze the overall sentiment as &quot;Positive&quot;, &quot;Negative&quot;, or &quot;Neutral&quot;
+   - Positive: Constructive, appreciative, or enthusiastic tone
+   - Negative: Frustrated, angry, or highly dissatisfied tone  
+   - Neutral: Matter-of-fact, balanced, or informational tone
+
+3. **FEATURE TOPIC**: Identify the specific product feature category:
+   - &quot;User Interface&quot; (UI/UX design, navigation, usability)
+   - &quot;Mobile Experience&quot; (mobile app, responsive design, mobile features)
+   - &quot;Performance&quot; (speed, loading times, system responsiveness)
+   - &quot;Core Functionality&quot; (primary product features and capabilities)
+   - &quot;Integration&quot; (third-party connections, APIs, data sync)
+   - &quot;Security&quot; (authentication, data protection, privacy)
+   - &quot;Reporting&quot; (analytics, dashboards, data visualization)
+   - &quot;User Management&quot; (accounts, permissions, user roles)
+   - &quot;Billing&quot; (pricing, payments, subscription management)
+   - &quot;Support&quot; (help documentation, customer service tools)
+   - &quot;Other&quot; (anything else not covered above)
+
+4. **ESCALATION LEVEL**: Determine urgency based on content:
+   - &quot;Critical&quot; - System is broken, users cannot use product, security issues, revenue impact
+   - &quot;High&quot; - Significant user impact, widespread issues, competitive disadvantage
+   - &quot;Medium&quot; - Moderate impact, affects user experience but not critical
+   - &quot;Low&quot; - Minor issues, nice-to-have improvements, individual concerns
+
+5. **PRODUCT TEAM ROUTING**: Suggest which team should handle this:
+   - &quot;Engineering Team&quot; (core functionality, performance, integrations)
+   - &quot;Mobile Team&quot; (mobile app issues and features)
+   - &quot;UX Team&quot; (user interface, design, usability)
+   - &quot;Product Team&quot; (new features, strategy, roadmap)
+   - &quot;DevOps Team&quot; (infrastructure, deployment, security)
+   - &quot;Support Team&quot; (user education, documentation, help)
+
+6. **KEY INSIGHTS**: Extract 2-3 key points from the feedback (each 10-20 words)
+
+7. **RECOMMENDED ACTIONS**: Suggest 1-2 immediate actions (each 15-25 words)
+
+Return the response as valid JSON in this exact format:
+
+{
+  &quot;category&quot;: &quot;Complaint|Suggestion&quot;, 
+  &quot;sentiment&quot;: &quot;Positive|Negative|Neutral&quot;,
+  &quot;featureTopic&quot;: &quot;User Interface|Mobile Experience|Performance|Core Functionality|Integration|Security|Reporting|User Management|Billing|Support|Other&quot;,
+  &quot;escalationLevel&quot;: &quot;Critical|High|Medium|Low&quot;,
+  &quot;productTeamRouting&quot;: &quot;Engineering Team|Mobile Team|UX Team|Product Team|DevOps Team|Support Team&quot;,
+  &quot;keyInsights&quot;: [
+    &quot;insight 1 here&quot;,
+    &quot;insight 2 here&quot;, 
+    &quot;insight 3 here (optional)&quot;
+  ],
+  &quot;recommendedActions&quot;: [
+    &quot;action 1 here&quot;,
+    &quot;action 2 here (optional)&quot;
+  ],
+  &quot;subject&quot;: &quot;Concise subject line for this feedback (5-10 words)&quot;,
+  &quot;description&quot;: &quot;Detailed summary of the feedback with analysis context (3-5 sentences)&quot;,
+  &quot;priority&quot;: &quot;High|Medium|Low&quot;,
+  &quot;status&quot;: &quot;New|Under Review|Escalated&quot;,
+  &quot;reason&quot;: &quot;Feature_Request|Bug_Report|Enhancement|User_Experience|Performance|Security|Other&quot;
+}
+
+IMPORTANT GUIDELINES:
+- Always return valid JSON only, no additional text
+- Be objective and professional in your analysis
+- Critical escalation should only be used for genuine emergencies or system-breaking issues
+- Key insights should be concise and actionable
+- Subject line should clearly convey the feedback topic
+- Description should include your analytical context while summarizing the original feedback
+- Set status to &quot;Escalated&quot; only if escalationLevel is &quot;Critical&quot; or &quot;High&quot;
+- Choose reason based on the type of feedback: Feature_Request for suggestions, Bug_Report for broken functionality, Enhancement for improvements, etc.
+
+Return ONLY the JSON object with no additional text.</content>
+        <inputs>
+            <apiName>userFeedback</apiName>
+            <definition>primitive://String</definition>
+            <masterLabel>userFeedback</masterLabel>
+            <referenceName>Input:userFeedback</referenceName>
+            <required>true</required>
+        </inputs>
+        <inputs>
+            <apiName>contactId</apiName>
+            <definition>primitive://String</definition>
+            <masterLabel>contactId</masterLabel>
+            <referenceName>Input:contactId</referenceName>
+            <required>true</required>
+        </inputs>
+        <inputs>
+            <apiName>sourceChannel</apiName>
+            <definition>primitive://String</definition>
+            <masterLabel>sourceChannel</masterLabel>
+            <referenceName>Input:sourceChannel</referenceName>
+            <required>false</required>
+        </inputs>
+        <primaryModel>sfdc_ai__DefaultGPT41Mini</primaryModel>
+        <status>Published</status>
+        <versionIdentifier>productFeatureFeedback_1</versionIdentifier>
+    </templateVersions>
+    <type>einstein_gpt__flex</type>
+    <visibility>Global</visibility>
+</GenAiPromptTemplate>

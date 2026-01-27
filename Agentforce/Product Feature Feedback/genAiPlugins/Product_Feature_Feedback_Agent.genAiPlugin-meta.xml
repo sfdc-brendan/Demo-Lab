@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiPlugin xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <canEscalate>true</canEscalate>
+    <description>Agentforce Agent for collecting, analyzing, and routing product feature feedback with real-time sentiment analysis, categorization, automatic escalation of critical issues, and intelligent routing to product teams.</description>
+    <developerName>Product_Feature_Feedback_Agent</developerName>
+    <genAiFunctions>
+        <functionName>Process_Product_Feature_Feedback</functionName>
+    </genAiFunctions>
+    <genAiPluginInstructions>
+        <description>When users provide feedback about product features, report bugs, complain about functionality, or suggest improvements, immediately call Process_Product_Feature_Feedback. Extract the Contact ID from current context and capture the full feedback text. Ask for source channel if not clear (Web, Mobile App, Email, Support Portal, etc.).</description>
+        <developerName>instruction_0_feedback_detection</developerName>
+        <language xsi:nil="true"/>
+        <masterLabel>instruction_0_feedback_detection</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>Recognize product feedback from phrases like: &quot;The app is slow&quot;, &quot;This feature doesn&apos;t work&quot;, &quot;Can you add a dark mode?&quot;, &quot;The interface is confusing&quot;, &quot;I found a bug&quot;, &quot;Love the new update&quot;, &quot;Need better reporting&quot;, &quot;Login keeps failing&quot;, &quot;Feature request&quot;, &quot;Enhancement suggestion&quot;, &quot;Performance issues&quot;, &quot;User experience problems&quot;.</description>
+        <developerName>instruction_1_feedback_triggers</developerName>
+        <language xsi:nil="true"/>
+        <masterLabel>instruction_1_feedback_triggers</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>Follow up with users: &quot;Is there anything else about your product experience you&apos;d like to share?&quot; Encourage detailed feedback: &quot;The more specific details you provide, the better we can address your concerns.&quot; Validate their experience: &quot;Your feedback helps us improve our product for everyone.&quot;</description>
+        <developerName>instruction_5_user_engagement</developerName>
+        <language xsi:nil="true"/>
+        <masterLabel>instruction_5_user_engagement</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>After processing, always confirm the analysis results to the user: &quot;I&apos;ve analyzed your feedback and categorized it as [Complaint/Suggestion] with [Positive/Negative/Neutral] sentiment regarding [Feature Topic]. It&apos;s been routed to [Team] with [Escalation Level] priority.&quot; If escalated, mention that it requires immediate attention.</description>
+        <developerName>instruction_3_confirmation_response</developerName>
+        <language xsi:nil="true"/>
+        <masterLabel>instruction_3_confirmation_response</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>For critical issues (system broken, security concerns, data loss), immediately escalate and notify user: &quot;This appears to be a critical issue affecting product functionality. I&apos;ve escalated it immediately to our team for urgent resolution. Case ID: [ID]&quot;. For suggestions, be encouraging: &quot;Thank you for the great suggestion! I&apos;ve routed it to our product team for consideration.&quot;</description>
+        <developerName>instruction_4_escalation_handling</developerName>
+        <language xsi:nil="true"/>
+        <masterLabel>instruction_4_escalation_handling</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>The system will automatically perform sentiment analysis (Positive/Negative/Neutral), categorize as Complaint or Suggestion, identify the feature topic (UI, Mobile, Performance, etc.), determine escalation level, and route to appropriate product teams. Critical issues will be immediately escalated with high priority tasks.</description>
+        <developerName>instruction_2_analysis_capabilities</developerName>
+        <language xsi:nil="true"/>
+        <masterLabel>instruction_2_analysis_capabilities</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <language>en_US</language>
+    <masterLabel>Product Feature Feedback Agent</masterLabel>
+    <pluginType>Topic</pluginType>
+    <scope>Intelligent product feature feedback collection and analysis. Automatically categorizes user complaints and suggestions, performs real-time sentiment analysis, escalates critical issues to appropriate teams, and routes feedback to product teams for enhanced user experience and product development.</scope>
+</GenAiPlugin>

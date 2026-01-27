@@ -1,0 +1,28 @@
+{
+  "required" : [ "contactId", "userFeedback" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "contactId" : {
+      "title" : "contactId",
+      "description" : "The Contact ID of the user providing product feedback. This should be extracted from the current Contact record context when the user is on a Contact record page.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "userFeedback" : {
+      "title" : "userFeedback",
+      "description" : "The user's feedback about product features. This could be complaints about existing features, suggestions for new features, bug reports, usability issues, or enhancement requests. Extract the full feedback text from user input.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : true
+    },
+    "sourceChannel" : {
+      "title" : "sourceChannel",
+      "description" : "The channel through which the feedback was received (e.g., 'Web', 'Mobile App', 'Email', 'Chat', 'Phone', 'Support Portal', 'Social Media'). Extract from context or ask user if unclear.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : true
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

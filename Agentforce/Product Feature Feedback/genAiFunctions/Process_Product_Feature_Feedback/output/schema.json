@@ -1,0 +1,42 @@
+{
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "success" : {
+      "title" : "success",
+      "description" : "Boolean indicating whether the product feedback processing was successful",
+      "lightning:type" : "lightning__booleanType",
+      "lightning:isPII" : false
+    },
+    "caseId" : {
+      "title" : "caseId",
+      "description" : "The Case ID of the created product feedback case",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false
+    },
+    "escalationStatus" : {
+      "title" : "escalationStatus",
+      "description" : "The escalation level assigned to this feedback (Critical, High, Medium, Low)",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false
+    },
+    "routingTeam" : {
+      "title" : "routingTeam",
+      "description" : "The product team the feedback was routed to (Engineering Team, Mobile Team, UX Team, Product Team, DevOps Team, Support Team)",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false
+    },
+    "analysisInsights" : {
+      "title" : "analysisInsights",
+      "description" : "Key insights extracted from the AI analysis of the product feedback",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false
+    },
+    "processingMessage" : {
+      "title" : "processingMessage",
+      "description" : "Detailed message about the product feedback processing results including analysis summary",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}
