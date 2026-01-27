@@ -7,6 +7,7 @@ Agentforce demos and sample metadata for Salesforce AI agents. Use these in demo
 | Folder | Description |
 |--------|-------------|
 | [Product Feature Feedback](./Product%20Feature%20Feedback/) | Agent that collects product feedback, analyzes it with GenAI, and creates Cases routed to the right product team with escalation. |
+| [RMA Process](./RMA%20Process/) | RMA (Return Merchandise Authorization) package: generates RMA PDFs from Case data, attaches them to Cases, and exposes an invocable action for Flows and Agentforce (create case + add documentation). |
 
 ## Requirements
 

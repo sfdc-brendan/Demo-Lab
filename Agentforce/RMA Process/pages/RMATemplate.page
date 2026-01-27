@@ -1,0 +1,283 @@
+<apex:page renderAs="pdf" showHeader="false" sidebar="false" standardStylesheets="false" controller="RMATemplateController">
+    <apex:form >
+        <!-- Header -->
+        <div style="text-align: center; border-bottom: 3px solid #1589ee; padding-bottom: 15px; margin-bottom: 25px;">
+            <h1 style="color: #1589ee; font-size: 28px; margin: 0; font-family: Arial, sans-serif; font-weight: bold;">RETURN MERCHANDISE AUTHORIZATION</h1>
+            <p style="color: #666; margin: 8px 0; font-family: Arial, sans-serif; font-size: 14px;">RMA Number: <strong>{!rmaNumber}</strong> | Generated: {!generatedDate}</p>
+        </div>
+
+        <!-- RMA Information Table -->
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-family: Arial, sans-serif;">
+            <tr style="background-color: #f8f9fa;">
+                <th colspan="4" style="text-align: left; padding: 12px; border: 2px solid #dee2e6; background-color: #1589ee; color: white; font-size: 16px; font-family: Arial, sans-serif; font-weight: bold;">RMA INFORMATION</th>
+            </tr>
+            <tr>
+                <td style="width: 25%; padding: 8px; border: 1px solid #dee2e6; font-weight: bold; background-color: #f8f9fa; font-family: Arial, sans-serif; font-size: 12px;">RMA Number:</td>
+                <td style="width: 25%; padding: 8px; border: 1px solid #dee2e6; font-family: Arial, sans-serif; font-size: 12px;">{!rmaNumber}</td>
+                <td style="width: 25%; padding: 8px; border: 1px solid #dee2e6; font-weight: bold; background-color: #f8f9fa; font-family: Arial, sans-serif; font-size: 12px;">Case Number:</td>
+                <td style="width: 25%; padding: 8px; border: 1px solid #dee2e6; font-family: Arial, sans-serif; font-size: 12px;">{!caseNumber}</td>
+            </tr>
+            <tr>
+                <td style="padding: 8px; border: 1px solid #dee2e6; font-weight: bold; background-color: #f8f9fa; font-family: Arial, sans-serif; font-size: 12px;">Date Created:</td>
+                <td style="padding: 8px; border: 1px solid #dee2e6; font-family: Arial, sans-serif; font-size: 12px;">{!dateCreated}</td>
+                <td style="padding: 8px; border: 1px solid #dee2e6; font-weight: bold; background-color: #f8f9fa; font-family: Arial, sans-serif; font-size: 12px;">Warranty Status:</td>
+                <td style="padding: 8px; border: 1px solid #dee2e6; color: {!IF(warrantyStatus == 'In Warranty', '#28a745', '#dc3545')}; font-weight: bold; font-family: Arial, sans-serif; font-size: 12px;">{!warrantyStatus}</td>
+            </tr>
+        </table>
+
+        <!-- Customer Information Table -->
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-family: Arial, sans-serif;">
+            <tr style="background-color: #f8f9fa;">
+                <th colspan="4" style="text-align: left; padding: 12px; border: 2px solid #dee2e6; background-color: #1589ee; color: white; font-size: 16px; font-family: Arial, sans-serif; font-weight: bold;">CUSTOMER INFORMATION</th>
+            </tr>
+            <tr>
+                <td style="width: 25%; padding: 8px; border: 1px solid #dee2e6; font-weight: bold; background-color: #f8f9fa; font-family: Arial, sans-serif; font-size: 12px;">Customer Name:</td>
+                <td style="width: 25%; padding: 8px; border: 1px solid #dee2e6; font-family: Arial, sans-serif; font-size: 12px;">{!customerName}</td>
+                <td style="width: 25%; padding: 8px; border: 1px solid #dee2e6; font-weight: bold; background-color: #f8f9fa; font-family: Arial, sans-serif; font-size: 12px;">Email:</td>
+                <td style="width: 25%; padding: 8px; border: 1px solid #dee2e6; font-family: Arial, sans-serif; font-size: 12px;">{!customerEmail}</td>
+            </tr>
+            <apex:outputPanel rendered="{!NOT(ISBLANK(customerPhone))}">
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #dee2e6; font-weight: bold; background-color: #f8f9fa; font-family: Arial, sans-serif; font-size: 12px;">Phone:</td>
+                    <td style="padding: 8px; border: 1px solid #dee2e6; font-family: Arial, sans-serif; font-size: 12px;">{!customerPhone}</td>
+                    <td style="padding: 8px; border: 1px solid #dee2e6; font-weight: bold; background-color: #f8f9fa; font-family: Arial, sans-serif; font-size: 12px;">Shipping Address:</td>
+                    <td style="padding: 8px; border: 1px solid #dee2e6; font-family: Arial, sans-serif; font-size: 12px;">{!shippingAddress}</td>
+                </tr>
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!ISBLANK(customerPhone)}">
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #dee2e6; font-weight: bold; background-color: #f8f9fa; font-family: Arial, sans-serif; font-size: 12px;">Phone:</td>
+                    <td style="padding: 8px; border: 1px solid #dee2e6; font-family: Arial, sans-serif; font-size: 12px;">N/A</td>
+                    <td style="padding: 8px; border: 1px solid #dee2e6; font-weight: bold; background-color: #f8f9fa; font-family: Arial, sans-serif; font-size: 12px;">Shipping Address:</td>
+                    <td style="padding: 8px; border: 1px solid #dee2e6; font-family: Arial, sans-serif; font-size: 12px;">{!shippingAddress}</td>
+                </tr>
+            </apex:outputPanel>
+        </table>
+
+        <!-- Product Information Table -->
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-family: Arial, sans-serif;">
+            <tr style="background-color: #f8f9fa;">
+                <th colspan="4" style="text-align: left; padding: 12px; border: 2px solid #dee2e6; background-color: #1589ee; color: white; font-size: 16px; font-family: Arial, sans-serif; font-weight: bold;">PRODUCT INFORMATION</th>
+            </tr>
+            <tr>
+                <td style="width: 25%; padding: 8px; border: 1px solid #dee2e6; font-weight: bold; background-color: #f8f9fa; font-family: Arial, sans-serif; font-size: 12px;">Product Name:</td>
+                <td style="width: 25%; padding: 8px; border: 1px solid #dee2e6; font-family: Arial, sans-serif; font-size: 12px;">{!productName}</td>
+                <td style="width: 25%; padding: 8px; border: 1px solid #dee2e6; font-weight: bold; background-color: #f8f9fa; font-family: Arial, sans-serif; font-size: 12px;">Serial Number:</td>
+                <td style="width: 25%; padding: 8px; border: 1px solid #dee2e6; font-family: Arial, sans-serif; font-size: 12px;">{!serialNumber}</td>
+            </tr>
+            <tr>
+                <td style="padding: 8px; border: 1px solid #dee2e6; font-weight: bold; background-color: #f8f9fa; font-family: Arial, sans-serif; font-size: 12px;">Part Number:</td>
+                <td style="padding: 8px; border: 1px solid #dee2e6; font-family: Arial, sans-serif; font-size: 12px;">{!partNumber}</td>
+                <td style="padding: 8px; border: 1px solid #dee2e6; font-weight: bold; background-color: #f8f9fa; font-family: Arial, sans-serif; font-size: 12px;">Product Category:</td>
+                <td style="padding: 8px; border: 1px solid #dee2e6; font-family: Arial, sans-serif; font-size: 12px;">{!productCategory}</td>
+            </tr>
+            <tr>
+                <td style="padding: 8px; border: 1px solid #dee2e6; font-weight: bold; background-color: #f8f9fa; font-family: Arial, sans-serif; font-size: 12px;">Purchase Date:</td>
+                <td style="padding: 8px; border: 1px solid #dee2e6; font-family: Arial, sans-serif; font-size: 12px;">{!purchaseDate}</td>
+                <td style="padding: 8px; border: 1px solid #dee2e6; font-weight: bold; background-color: #f8f9fa; font-family: Arial, sans-serif; font-size: 12px;">Warranty Expires:</td>
+                <td style="padding: 8px; border: 1px solid #dee2e6; font-family: Arial, sans-serif; font-size: 12px;">{!warrantyExpirationDate}</td>
+            </tr>
+            <tr>
+                <td style="padding: 8px; border: 1px solid #dee2e6; font-weight: bold; background-color: #f8f9fa; font-family: Arial, sans-serif; font-size: 12px;">Invoice Number:</td>
+                <td style="padding: 8px; border: 1px solid #dee2e6; font-family: Arial, sans-serif; font-size: 12px;">{!originalInvoiceNumber}</td>
+                <td style="padding: 8px; border: 1px solid #dee2e6; font-weight: bold; background-color: #f8f9fa;"></td>
+                <td style="padding: 8px; border: 1px solid #dee2e6;"></td>
+            </tr>
+        </table>
+
+        <!-- Issue Details Table -->
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-family: Arial, sans-serif;">
+            <tr style="background-color: #f8f9fa;">
+                <th colspan="4" style="text-align: left; padding: 12px; border: 2px solid #dee2e6; background-color: #1589ee; color: white; font-size: 16px; font-family: Arial, sans-serif; font-weight: bold;">ISSUE DETAILS</th>
+            </tr>
+            <tr>
+                <td style="width: 25%; padding: 8px; border: 1px solid #dee2e6; font-weight: bold; background-color: #f8f9fa; font-family: Arial, sans-serif; font-size: 12px;">Issue Category:</td>
+                <td style="width: 25%; padding: 8px; border: 1px solid #dee2e6; font-family: Arial, sans-serif; font-size: 12px;">{!issueCategory}</td>
+                <td style="width: 25%; padding: 8px; border: 1px solid #dee2e6; font-weight: bold; background-color: #f8f9fa; font-family: Arial, sans-serif; font-size: 12px;">Severity Level:</td>
+                <td style="width: 25%; padding: 8px; border: 1px solid #dee2e6; color: {!IF(severityLevel == 'Critical', '#dc3545', IF(severityLevel == 'Major', '#fd7e14', '#28a745'))}; font-weight: bold; font-family: Arial, sans-serif; font-size: 12px;">{!severityLevel}</td>
+            </tr>
+            <tr>
+                <td style="padding: 8px; border: 1px solid #dee2e6; font-weight: bold; background-color: #f8f9fa; font-family: Arial, sans-serif; font-size: 12px;">Issue Started:</td>
+                <td style="padding: 8px; border: 1px solid #dee2e6; font-family: Arial, sans-serif; font-size: 12px;">{!whenIssueStarted}</td>
+                <td style="padding: 8px; border: 1px solid #dee2e6; font-weight: bold; background-color: #f8f9fa; font-family: Arial, sans-serif; font-size: 12px;">Issue Frequency:</td>
+                <td style="padding: 8px; border: 1px solid #dee2e6; font-family: Arial, sans-serif; font-size: 12px;">{!issueFrequency}</td>
+            </tr>
+        </table>
+
+        <!-- Problem Description (Full Width) -->
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-family: Arial, sans-serif;">
+            <tr style="background-color: #f8f9fa;">
+                <th style="text-align: left; padding: 12px; border: 2px solid #dee2e6; background-color: #1589ee; color: white; font-size: 16px; font-family: Arial, sans-serif; font-weight: bold;">PROBLEM DESCRIPTION</th>
+            </tr>
+            <tr>
+                <td style="padding: 12px; border: 1px solid #dee2e6; min-height: 60px; vertical-align: top; font-family: Arial, sans-serif; font-size: 12px;">{!problemDescription}</td>
+            </tr>
+        </table>
+
+        <!-- Symptoms and Steps (if available) -->
+        <apex:outputPanel rendered="{!NOT(ISBLANK(symptomsObserved))}">
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-family: Arial, sans-serif;">
+                <tr style="background-color: #f8f9fa;">
+                    <th style="text-align: left; padding: 12px; border: 2px solid #dee2e6; background-color: #1589ee; color: white; font-size: 16px; font-family: Arial, sans-serif; font-weight: bold;">SYMPTOMS OBSERVED</th>
+                </tr>
+                <tr>
+                    <td style="padding: 12px; border: 1px solid #dee2e6; min-height: 40px; vertical-align: top; font-family: Arial, sans-serif; font-size: 12px;">{!symptomsObserved}</td>
+                </tr>
+            </table>
+        </apex:outputPanel>
+
+        <apex:outputPanel rendered="{!NOT(ISBLANK(stepsToReproduce))}">
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-family: Arial, sans-serif;">
+                <tr style="background-color: #f8f9fa;">
+                    <th style="text-align: left; padding: 12px; border: 2px solid #dee2e6; background-color: #1589ee; color: white; font-size: 16px; font-family: Arial, sans-serif; font-weight: bold;">STEPS TO REPRODUCE</th>
+                </tr>
+                <tr>
+                    <td style="padding: 12px; border: 1px solid #dee2e6; min-height: 40px; vertical-align: top; font-family: Arial, sans-serif; font-size: 12px;">{!stepsToReproduce}</td>
+                </tr>
+            </table>
+        </apex:outputPanel>
+
+        <apex:outputPanel rendered="{!NOT(ISBLANK(errorMessages))}">
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-family: Arial, sans-serif;">
+                <tr style="background-color: #f8f9fa;">
+                    <th style="text-align: left; padding: 12px; border: 2px solid #dee2e6; background-color: #1589ee; color: white; font-size: 16px; font-family: Arial, sans-serif; font-weight: bold;">ERROR MESSAGES</th>
+                </tr>
+                <tr>
+                    <td style="padding: 12px; border: 1px solid #dee2e6; min-height: 40px; vertical-align: top; font-family: Arial, sans-serif; font-size: 12px;">{!errorMessages}</td>
+                </tr>
+            </table>
+        </apex:outputPanel>
+
+        <!-- Resolution Information Table -->
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-family: Arial, sans-serif;">
+            <tr style="background-color: #f8f9fa;">
+                <th colspan="4" style="text-align: left; padding: 12px; border: 2px solid #dee2e6; background-color: #1589ee; color: white; font-size: 16px; font-family: Arial, sans-serif; font-weight: bold;">RESOLUTION INFORMATION</th>
+            </tr>
+            <tr>
+                <td style="width: 25%; padding: 8px; border: 1px solid #dee2e6; font-weight: bold; background-color: #f8f9fa; font-family: Arial, sans-serif; font-size: 12px;">Decision:</td>
+                <td style="width: 25%; padding: 8px; border: 1px solid #dee2e6; color: {!IF(repairOrReplace == 'Replace', '#28a745', '#fd7e14')}; font-weight: bold; font-family: Arial, sans-serif; font-size: 12px;">{!repairOrReplace}</td>
+                <td style="width: 25%; padding: 8px; border: 1px solid #dee2e6; font-weight: bold; background-color: #f8f9fa; font-family: Arial, sans-serif; font-size: 12px;">Est. Resolution Time:</td>
+                <td style="width: 25%; padding: 8px; border: 1px solid #dee2e6; font-family: Arial, sans-serif; font-size: 12px;">{!estimatedResolutionTime}</td>
+            </tr>
+            <tr>
+                <td style="padding: 8px; border: 1px solid #dee2e6; font-weight: bold; background-color: #f8f9fa; font-family: Arial, sans-serif; font-size: 12px;">Replacement Product:</td>
+                <td style="padding: 8px; border: 1px solid #dee2e6; font-family: Arial, sans-serif; font-size: 12px;">{!replacementProduct}</td>
+                <td style="padding: 8px; border: 1px solid #dee2e6; font-weight: bold; background-color: #f8f9fa; font-family: Arial, sans-serif; font-size: 12px;">Shipping Method:</td>
+                <td style="padding: 8px; border: 1px solid #dee2e6; font-family: Arial, sans-serif; font-size: 12px;">{!shippingMethod}</td>
+            </tr>
+            <tr>
+                <td style="padding: 8px; border: 1px solid #dee2e6; font-weight: bold; background-color: #f8f9fa; font-family: Arial, sans-serif; font-size: 12px;">Return Shipping Label:</td>
+                <td style="padding: 8px; border: 1px solid #dee2e6; font-family: Arial, sans-serif; font-size: 12px;">{!IF(returnShippingLabel, 'Yes', 'No')}</td>
+                <td style="padding: 8px; border: 1px solid #dee2e6; font-weight: bold; background-color: #f8f9fa; font-family: Arial, sans-serif; font-size: 12px;">Est. Ship Date:</td>
+                <td style="padding: 8px; border: 1px solid #dee2e6; font-family: Arial, sans-serif; font-size: 12px;">{!estimatedShipDate}</td>
+            </tr>
+        </table>
+
+        <!-- Additional Information (if available) -->
+        <apex:outputPanel rendered="{!NOT(ISBLANK(specialInstructions))}">
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-family: Arial, sans-serif;">
+                <tr style="background-color: #f8f9fa;">
+                    <th style="text-align: left; padding: 12px; border: 2px solid #dee2e6; background-color: #1589ee; color: white; font-size: 16px; font-family: Arial, sans-serif; font-weight: bold;">SPECIAL INSTRUCTIONS</th>
+                </tr>
+                <tr>
+                    <td style="padding: 12px; border: 1px solid #dee2e6; min-height: 40px; vertical-align: top; font-family: Arial, sans-serif; font-size: 12px;">{!specialInstructions}</td>
+                </tr>
+            </table>
+        </apex:outputPanel>
+
+        <apex:outputPanel rendered="{!NOT(ISBLANK(approvalNotes))}">
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-family: Arial, sans-serif;">
+                <tr style="background-color: #f8f9fa;">
+                    <th style="text-align: left; padding: 12px; border: 2px solid #dee2e6; background-color: #1589ee; color: white; font-size: 16px; font-family: Arial, sans-serif; font-weight: bold;">APPROVAL NOTES</th>
+                </tr>
+                <tr>
+                    <td style="padding: 12px; border: 1px solid #dee2e6; min-height: 40px; vertical-align: top; font-family: Arial, sans-serif; font-size: 12px;">{!approvalNotes}</td>
+                </tr>
+            </table>
+        </apex:outputPanel>
+
+        <apex:outputPanel rendered="{!NOT(ISBLANK(processingNotes))}">
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-family: Arial, sans-serif;">
+                <tr style="background-color: #f8f9fa;">
+                    <th style="text-align: left; padding: 12px; border: 2px solid #dee2e6; background-color: #1589ee; color: white; font-size: 16px; font-family: Arial, sans-serif; font-weight: bold;">PROCESSING NOTES</th>
+                </tr>
+                <tr>
+                    <td style="padding: 12px; border: 1px solid #dee2e6; min-height: 40px; vertical-align: top; font-family: Arial, sans-serif; font-size: 12px;">{!processingNotes}</td>
+                </tr>
+            </table>
+        </apex:outputPanel>
+
+        <!-- Shipping Label Section - RESTORED TO ORIGINAL -->
+        <div style="page-break-before: always; margin-top: 20px;">
+            <div style="border: 3px solid #000; padding: 20px; max-width: 400px; margin: 0 auto; background-color: white;">
+                <!-- Shipping Label Header -->
+                <div style="text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 15px;">
+                    <h2 style="margin: 0; font-size: 18px; font-weight: bold; font-family: Arial, sans-serif;">RETURN SHIPPING LABEL</h2>
+                    <p style="margin: 5px 0; font-size: 12px; font-family: Arial, sans-serif;">RMA: {!rmaNumber}</p>
+                </div>
+
+                <!-- FROM Section -->
+                <div style="margin-bottom: 20px;">
+                    <div style="font-weight: bold; font-size: 14px; margin-bottom: 5px; font-family: Arial, sans-serif;">FROM:</div>
+                    <div style="font-size: 12px; font-family: Arial, sans-serif;">
+                        <div>{!customerName}</div>
+                        <div>{!shippingAddress}</div>
+                        <div>Phone: {!customerPhone}</div>
+                    </div>
+                </div>
+
+                <!-- TO Section -->
+                <div style="margin-bottom: 20px;">
+                    <div style="font-weight: bold; font-size: 14px; margin-bottom: 5px; font-family: Arial, sans-serif;">TO:</div>
+                    <div style="font-size: 12px; font-family: Arial, sans-serif;">
+                        <div>Returns Department</div>
+                        <div>2590 Orchard Parkway </div>
+                        <div>San Jose, CA 95131</div>
+                        <div>Phone: (555) 123-4567</div>
+                    </div>
+                </div>
+
+                <!-- Product Info -->
+                <div style="margin-bottom: 20px;">
+                    <div style="font-weight: bold; font-size: 14px; margin-bottom: 5px; font-family: Arial, sans-serif;">PRODUCT:</div>
+                    <div style="font-size: 12px; font-family: Arial, sans-serif;">
+                        <div>{!productName}</div>
+                        <div>S/N: {!serialNumber}</div>
+                        <div>Part: {!partNumber}</div>
+                    </div>
+                </div>
+
+                <!-- Barcode Section -->
+                <div style="text-align: center; margin: 20px 0; padding: 15px; border: 1px solid #ccc; background-color: #f9f9f9;">
+                    <div style="font-weight: bold; font-size: 12px; margin-bottom: 8px; font-family: Arial, sans-serif;">RMA BARCODE</div>
+                    <div style="font-family: 'Courier New', monospace; font-size: 24px; font-weight: bold; letter-spacing: 2px; margin-bottom: 5px;">{!rmaNumber}</div>
+                    <div style="font-family: 'Courier New', monospace; font-size: 10px; color: #666;">*{!rmaNumber}*</div>
+                </div>
+
+                <!-- Instructions -->
+                <div style="margin-top: 20px; padding: 10px; background-color: #f0f0f0; border: 1px solid #ccc;">
+                    <div style="font-weight: bold; font-size: 12px; margin-bottom: 5px; font-family: Arial, sans-serif;">SHIPPING INSTRUCTIONS:</div>
+                    <div style="font-size: 11px; font-family: Arial, sans-serif;">
+                        <div>• Package item securely</div>
+                        <div>• Include this label on outside of package</div>
+                        <div>• Ship via {!shippingMethod}</div>
+                        <div>• Keep tracking number for reference</div>
+                    </div>
+                </div>
+
+                <!-- Tracking Info -->
+                <div style="margin-top: 15px; text-align: center; font-size: 10px; color: #666; font-family: Arial, sans-serif;">
+                    <div>Generated: {!generatedDate}</div>
+                    <div>Case: {!caseNumber}</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div style="margin-top: 30px; padding-top: 15px; border-top: 2px solid #dee2e6; text-align: center; font-size: 11px; color: #666; font-family: Arial, sans-serif;">
+            <p style="margin: 5px 0; font-weight: bold;">This RMA document was automatically generated by the Salesforce RMA Generator system.</p>
+            <p style="margin: 5px 0;">For questions or support, please contact your system administrator.</p>
+            <p style="margin: 5px 0; font-family: 'Courier New', monospace; font-size: 10px;">RMA ID: {!rmaNumber} | Generated: {!generatedDate}</p>
+        </div>
+    </apex:form>
+</apex:page>
