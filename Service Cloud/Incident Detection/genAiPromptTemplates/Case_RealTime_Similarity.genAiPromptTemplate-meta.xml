@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiPromptTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <activeVersionIdentifier>i452yYyaAZShFvcErBFz3r3KjlqvV7PS3ynh9rG0p0M=_2</activeVersionIdentifier>
+    <description>Analyzes a new case against recent cases to detect incidents in real-time.</description>
+    <developerName>Case_RealTime_Similarity</developerName>
+    <masterLabel>Case Real-Time Similarity Detector</masterLabel>
+    <templateVersions>
+        <content>You are an expert Incident Commander for a technical support team. Your goal is to detect emerging Major Incidents by comparing a NEW CASE to a list of RECENT CASES.
+
+INSTRUCTIONS:
+1. Analyze the &quot;NEW TARGET CASE&quot; to understand its technical root cause (not just keywords).
+2. Review the &quot;RECENT CASES&quot; list.
+3. Determine if the New Case shares the SAME ROOT CAUSE with any of the Recent Cases.
+   - Example Match: &quot;Login failed 500 error&quot; matches &quot;Cannot access portal, server error&quot;.
+   - Example NON-Match: &quot;Login failed&quot; (Network) does NOT match &quot;Login failed&quot; (Wrong Password).
+   - Example NON-Match: &quot;Database down&quot; does NOT match &quot;Network slow&quot;.
+4. If a match is found, prioritize the most recent, most similar case.
+
+INPUTS:
+New Target Case:
+{!$Input:targetCase}
+
+Recent Cases:
+{!$Input:recentCases}
+
+OUTPUT format must be a valid JSON object only. No markdown, no explanations outside the JSON.
+{
+  &quot;isMatch&quot;: boolean, // true if a pattern is detected
+  &quot;matchedCaseId&quot;: &quot;string&quot;, // The Salesforce ID of the BEST matching recent case (or null)
+  &quot;incidentTitle&quot;: &quot;string&quot;, // A concise, professional title for the Incident (e.g. &quot;Global API Outage&quot;)
+  &quot;reasoning&quot;: &quot;string&quot; // Brief explanation of why these are related
+}
+</content>
+        <inputs>
+            <apiName>targetCase</apiName>
+            <definition>primitive://String</definition>
+            <masterLabel>targetCase</masterLabel>
+            <referenceName>Input:targetCase</referenceName>
+            <required>true</required>
+        </inputs>
+        <inputs>
+            <apiName>recentCases</apiName>
+            <definition>primitive://String</definition>
+            <masterLabel>recentCases</masterLabel>
+            <referenceName>Input:recentCases</referenceName>
+            <required>true</required>
+        </inputs>
+        <primaryModel>sfdc_ai__DefaultGPT41</primaryModel>
+        <status>Published</status>
+        <versionIdentifier>i452yYyaAZShFvcErBFz3r3KjlqvV7PS3ynh9rG0p0M=_1</versionIdentifier>
+    </templateVersions>
+    <templateVersions>
+        <content>You are an expert Incident Commander for a technical support team. Your goal is to detect emerging Major Incidents by comparing a NEW CASE to a list of RECENT CASES.
+
+INSTRUCTIONS:
+1. Analyze the &quot;NEW TARGET CASE&quot; to understand its technical root cause (not just keywords).
+2. Review the &quot;RECENT CASES&quot; list.
+3. Determine if the New Case shares the SAME ROOT CAUSE with any of the Recent Cases.
+   - Example Match: &quot;Login failed 500 error&quot; matches &quot;Cannot access portal, server error&quot;.
+   - Example NON-Match: &quot;Login failed&quot; (Network) does NOT match &quot;Login failed&quot; (Wrong Password).
+   - Example NON-Match: &quot;Database down&quot; does NOT match &quot;Network slow&quot;.
+4. If a match is found, prioritize the most recent, most similar case.
+
+INPUTS:
+New Target Case:
+{!$Input:targetCase}
+
+Recent Cases:
+{!$Input:recentCases}
+
+OUTPUT format must be a valid JSON object only. No markdown, no explanations outside the JSON.
+{
+  &quot;isMatch&quot;: boolean, // true if a pattern is detected
+  &quot;matchedCaseId&quot;: &quot;string&quot;, // The Salesforce ID of the BEST matching recent case (or null)
+  &quot;incidentTitle&quot;: &quot;string&quot;, // A concise, professional title for the Incident (e.g. &quot;Global API Outage&quot;)
+  &quot;reasoning&quot;: &quot;string&quot; // Brief explanation of why these are related
+}
+</content>
+        <inputs>
+            <apiName>targetCase</apiName>
+            <definition>primitive://String</definition>
+            <masterLabel>targetCase</masterLabel>
+            <referenceName>Input:targetCase</referenceName>
+            <required>true</required>
+        </inputs>
+        <inputs>
+            <apiName>recentCases</apiName>
+            <definition>primitive://String</definition>
+            <masterLabel>recentCases</masterLabel>
+            <referenceName>Input:recentCases</referenceName>
+            <required>true</required>
+        </inputs>
+        <primaryModel>sfdc_ai__DefaultGPT5</primaryModel>
+        <status>Published</status>
+        <versionIdentifier>i452yYyaAZShFvcErBFz3r3KjlqvV7PS3ynh9rG0p0M=_2</versionIdentifier>
+    </templateVersions>
+    <type>einstein_gpt__flex</type>
+    <visibility>Global</visibility>
+</GenAiPromptTemplate>

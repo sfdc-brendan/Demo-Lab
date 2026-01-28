@@ -9,6 +9,16 @@ Real-time incident detection for Service Cloud Cases. This package detects when 
 - **GenAI prompt templates**: `Case_Summarizer`, `Case_RealTime_Similarity` — used for summarization and similarity analysis.
 - **Custom field**: `Case.AI_Summary__c` — stores the GenAI-generated case summary.
 
+## Prerequisites
+
+Before deploying, create the following in your org (or ensure it already exists):
+
+- **Case.AI_Summary__c** — Create a **Long Text Area** custom field on the **Case** object to store the GenAI-generated summary. The flow writes the summarizer output here; the Apex handler reads it for incident analysis.  
+  - **Object**: Case  
+  - **API Name**: `AI_Summary__c`  
+  - **Type**: Long Text Area (or Text Area)  
+  - **Visible to**: as needed for your profiles/layouts  
+
 ## Requirements
 
 - Salesforce org with Einstein GenAI / Prompt Builder.
