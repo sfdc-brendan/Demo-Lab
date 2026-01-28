@@ -30,24 +30,36 @@ Lightning Web Components and related metadata for record pages, service, and ana
 
 ---
 
+### [Service Cloud](./Service%20Cloud/)
+
+Service Cloud demos: incident detection, Case-related automation, and GenAI.
+
+| Package | Description |
+|--------|-------------|
+| **[Incident Detection](./Service%20Cloud/Incident%20Detection/)** | **Real-time incident detection** for Cases. Record-triggered flow on Case create: summarizes the Case with GenAI, then invokes Apex to compare against recent open Cases. When a pattern is found, creates or reuses an **Incident** and **CaseRelatedIssue** links. Includes Flow `SDO_Service_Case_RealTime_Incident`, Apex `CaseIncidentHandler`, and GenAI prompt templates `Case_Summarizer`, `Case_RealTime_Similarity`. **Prerequisite:** Create custom field `Case.AI_Summary__c` (Long Text Area) before deploying. |
+
+---
+
 ## Quick Reference
 
 | Category | Components |
 |----------|------------|
 | **Agentforce** | Product Feature Feedback (topic + action + flow + prompt), RMA Process (flow + invocable + VF PDF) |
+| **Service Cloud** | Incident Detection (flow + Apex + GenAI prompts) |
 | **LWCs** | sdo_ContactCard, callCoaching, sentimentTracker, messagingSessionAnalytics |
-| **Flows** | Product Feature Feedback Flow, Create_Case_and_add_Documentation (RMA), SCV/MSG sentiment & coaching flows |
-| **GenAI** | Product Feature Feedback Analyzer, Call_Sentiment, Agent_Performance_Evaluation, MSG_Chat_Sentiment, MSG_Chat_Coaching |
-| **Apex** | ProductFeatureFeedbackProcessor, RMAGeneratorController, RMAGeneratorFlowAction, RMATemplateController, ChatCoachingExtractor, ChatExtractor, TextExtractor |
+| **Flows** | Product Feature Feedback Flow, Create_Case_and_add_Documentation (RMA), SDO_Service_Case_RealTime_Incident (Incident Detection), SCV/MSG sentiment & coaching flows |
+| **GenAI** | Product Feature Feedback Analyzer, Case_Summarizer, Case_RealTime_Similarity, Call_Sentiment, Agent_Performance_Evaluation, MSG_Chat_Sentiment, MSG_Chat_Coaching |
+| **Apex** | ProductFeatureFeedbackProcessor, CaseIncidentHandler, RMAGeneratorController, RMAGeneratorFlowAction, RMATemplateController, ChatCoachingExtractor, ChatExtractor, TextExtractor |
 
 ---
 
 ## Deployment
 
 - **Root [package.xml](./package.xml)** – Lists LWCs, Apex, Flows, GenAiPromptTemplates, and CustomObjects for the Sentiment and Coaching package. Use it with Salesforce CLI or your CI/CD tooling.
-- **Per-package** – Each folder (e.g. `Agentforce/Product Feature Feedback`, `Agentforce/RMA Process`, `LWCs/Sentiment and Coaching`) contains metadata in standard SFDX layout. Deploy with:
+- **Per-package** – Each folder (e.g. `Agentforce/Product Feature Feedback`, `Agentforce/RMA Process`, `Service Cloud/Incident Detection`, `LWCs/Sentiment and Coaching`) contains metadata in standard SFDX layout. Deploy with:
   ```bash
   sf project deploy start --source-dir "Agentforce/RMA Process"
+  sf project deploy start --source-dir "Service Cloud/Incident Detection"
   ```
   or your preferred manifest.
 
@@ -58,6 +70,7 @@ See each package’s README for prerequisites, object/field requirements, and co
 ## Requirements (by area)
 
 - **Agentforce packages**: Org with Agentforce and Einstein GenAI; API 58.0–65.0 as noted in each package.
+- **Incident Detection**: Service Cloud (Case, Incident, CaseRelatedIssue); Einstein GenAI; create custom field **Case.AI_Summary__c** (Long Text Area) before deploying. See [Service Cloud/Incident Detection](./Service%20Cloud/Incident%20Detection/) README.
 - **sdo_ContactCard**: Contact (and, for Voice Call, a `Contact__c` lookup on Voice Call if used there).
 - **Sentiment and Coaching**: Service Cloud Voice and/or Messaging; Voice Call and/or Messaging Session; Einstein/GenAI; custom fields on those objects (included in the package metadata).
 
