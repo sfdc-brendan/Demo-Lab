@@ -1,4 +1,4 @@
-# incidentDashboard
+# Incident Dashboard
 
 A Lightning Web Component that displays an **Active Incidents** dashboard—a grid of cards showing open Service Cloud Incidents and their related Cases.
 
