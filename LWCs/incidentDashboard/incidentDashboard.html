@@ -1,0 +1,84 @@
+<template>
+    <lightning-card title="Active Incidents" icon-name="standard:incident">
+        <div class="incident-dashboard-container">
+            <template lwc:if={error}>
+                <div class="slds-m-bottom_medium" role="alert">
+                    <div class="slds-notify slds-notify_alert slds-alert_error" role="alert">
+                        <span class="slds-assistive-text">Error</span>
+                        <h2>{error}</h2>
+                    </div>
+                </div>
+            </template>
+
+            <template lwc:if={hasData}>
+                <div class="incident-dashboard-grid">
+                    <template for:each={incidents} for:item="incident">
+                        <article key={incident.id} class="incident-dashboard-card">
+                            <div class="incident-dashboard-card__header">
+                                <header class="incident-dashboard-card__header-inner">
+                                    <h3 class="incident-dashboard-card__title">
+                                        <a href={incident.recordUrl} class="incident-dashboard-card__title-link">{incident.subject}</a>
+                                    </h3>
+                                    <div class="incident-dashboard-card__badges">
+                                        <span class="slds-badge slds-badge_{incident.statusBadgeVariant}">{incident.status}</span>
+                                        <span class="slds-badge slds-badge_inverse">{incident.priority}</span>
+                                    </div>
+                                </header>
+                            </div>
+                            <div class="incident-dashboard-card__body">
+                                <template lwc:if={incident.description}>
+                                    <p class="incident-dashboard-card__desc">{incident.description}</p>
+                                </template>
+                                <div class="incident-dashboard-card__meta">
+                                    <lightning-icon icon-name="utility:clock" size="xx-small" alternative-text="Created"></lightning-icon>
+                                    <span>{incident.createdDateFormatted}</span>
+                                    <template lwc:if={incident.ownerName}>
+                                        <span> · {incident.ownerName}</span>
+                                    </template>
+                                </div>
+                                <div class="incident-dashboard-card__cases">
+                                    <div class="incident-dashboard-card__cases-label">
+                                        <span class="slds-badge slds-badge_lightest">
+                                            <lightning-icon icon-name="standard:case" size="xx-small" class="slds-m-right_xx-small"></lightning-icon>
+                                            {incident.caseCountLabel}
+                                        </span>
+                                    </div>
+                                    <template lwc:if={incident.hasCases}>
+                                        <ul class="incident-dashboard-card__cases-list">
+                                            <template for:each={incident.relatedCases} for:item="relatedCase">
+                                                <li key={relatedCase.id} class="incident-dashboard-card__cases-item">
+                                                    <a href={relatedCase.recordUrl} class="incident-dashboard-card__case-link">{relatedCase.caseNumber}</a>
+                                                    <span class="incident-dashboard-card__case-subject slds-truncate" title={relatedCase.subject}>{relatedCase.subject}</span>
+                                                    <span class="slds-badge slds-badge_lightest">{relatedCase.status}</span>
+                                                </li>
+                                            </template>
+                                        </ul>
+                                    </template>
+                                </div>
+                            </div>
+                            <div class="incident-dashboard-card__footer">
+                                <a href={incident.recordUrl} class="incident-dashboard-card__footer-link">View incident</a>
+                            </div>
+                        </article>
+                    </template>
+                </div>
+            </template>
+
+            <template lwc:if={noData}>
+                <div class="slds-align_absolute-center slds-p-around_large">
+                    <div class="slds-text-align_center">
+                        <lightning-icon icon-name="utility:success" size="large" class="slds-m-bottom_small slds-text-color_success"></lightning-icon>
+                        <p class="slds-text-heading_small">No active incidents</p>
+                        <p class="slds-text-body_small slds-text-color_weak slds-m-top_xx-small">All incidents are closed or none have been created yet.</p>
+                    </div>
+                </div>
+            </template>
+
+            <template lwc:if={isLoading}>
+                <div class="slds-align_absolute-center slds-p-around_large">
+                    <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>
