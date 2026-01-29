@@ -2,6 +2,12 @@
 
 A Lightning Web Component that displays an **Active Incidents** dashboard—a grid of cards showing open Service Cloud Incidents and their related Cases.
 
+## Screenshot
+
+![Active Incidents Dashboard](assets/active-incidents-dashboard.png)
+
+*The dashboard shows active incidents in a grid of cards, each with status, description, related case count, and links to the incident and its cases.*
+
 ## What It Does
 
 - **Lists active incidents** — Up to 50 open Incidents (`Status != 'Closed'`), ordered by creation date.
@@ -52,7 +58,7 @@ Deploy the LWC and the Apex controller from this folder. For a Salesforce DX pro
 Then run:
 
 ```bash
-sf project deploy start --source-dir "LWCs/incidentDashboard"
+sf project deploy start --source-dir "LWCs/Incident Dashboard"
 ```
 
 (Adjust the path if your repo layout uses a different structure; you may need to deploy the LWC and classes from their standard DX paths instead.)
