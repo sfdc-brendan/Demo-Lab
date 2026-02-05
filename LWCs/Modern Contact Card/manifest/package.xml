@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <version>62.0</version>
+    
+    <!-- Lightning Web Component -->
+    <types>
+        <members>modernContactCard</members>
+        <name>LightningComponentBundle</name>
+    </types>
+    
+    <!-- Custom Fields on Contact -->
+    <types>
+        <members>Contact.ContactCardPicture__c</members>
+        <members>Contact.ContactCardBackground__c</members>
+        <members>Contact.ContactCardHealthScore__c</members>
+        <members>Contact.ContactCardTags__c</members>
+        <members>Contact.Metric_1__c</members>
+        <members>Contact.Metric_2__c</members>
+        <members>Contact.Metric_3__c</members>
+        <members>Contact.Metric_4__c</members>
+        <members>Contact.Metric_5__c</members>
+        <members>Contact.Metric_6__c</members>
+        <name>CustomField</name>
+    </types>
+    
+    <!-- Permission Set -->
+    <types>
+        <members>Modern_Contact_Card_Access</members>
+        <name>PermissionSet</name>
+    </types>
+</Package>

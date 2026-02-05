@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Modern Contact Card Access</label>
+    <description>Grants read/edit access to all custom fields used by the Modern Contact Card component</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    
+    <!-- Contact Card Picture Field -->
+    <fieldPermissions>
+        <field>Contact.ContactCardPicture__c</field>
+        <editable>true</editable>
+        <readable>true</readable>
+    </fieldPermissions>
+    
+    <!-- Contact Card Background Field -->
+    <fieldPermissions>
+        <field>Contact.ContactCardBackground__c</field>
+        <editable>true</editable>
+        <readable>true</readable>
+    </fieldPermissions>
+    
+    <!-- Contact Card Health Score Field -->
+    <fieldPermissions>
+        <field>Contact.ContactCardHealthScore__c</field>
+        <editable>true</editable>
+        <readable>true</readable>
+    </fieldPermissions>
+    
+    <!-- Contact Card Tags Field -->
+    <fieldPermissions>
+        <field>Contact.ContactCardTags__c</field>
+        <editable>true</editable>
+        <readable>true</readable>
+    </fieldPermissions>
+    
+    <!-- Metric Fields -->
+    <fieldPermissions>
+        <field>Contact.Metric_1__c</field>
+        <editable>true</editable>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <field>Contact.Metric_2__c</field>
+        <editable>true</editable>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <field>Contact.Metric_3__c</field>
+        <editable>true</editable>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <field>Contact.Metric_4__c</field>
+        <editable>true</editable>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <field>Contact.Metric_5__c</field>
+        <editable>true</editable>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <field>Contact.Metric_6__c</field>
+        <editable>true</editable>
+        <readable>true</readable>
+    </fieldPermissions>
+</PermissionSet>

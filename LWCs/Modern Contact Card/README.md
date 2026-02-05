@@ -22,19 +22,44 @@ A modern, customizable Lightning Web Component for displaying contact informatio
 
 ## Installation
 
-### Deploy the Component
+### Option 1: Deploy Everything at Once (Recommended)
 
+Deploy all components using the package manifest:
+
+```bash
+sf project deploy start --manifest manifest/package.xml --target-org YOUR_ORG_ALIAS
+```
+
+### Option 2: Deploy Individually
+
+**Deploy the LWC Component:**
 ```bash
 sf project deploy start --source-dir "force-app/main/default/lwc/modernContactCard" --target-org YOUR_ORG_ALIAS
 ```
 
-### Deploy Custom Fields
-
-The component uses custom fields on the Contact object for profile images, background, health score, tags, and metric data:
-
+**Deploy Custom Fields:**
 ```bash
 sf project deploy start --source-dir "force-app/main/default/objects/Contact/fields" --target-org YOUR_ORG_ALIAS
 ```
+
+**Deploy Permission Set:**
+```bash
+sf project deploy start --source-dir "force-app/main/default/permissionsets" --target-org YOUR_ORG_ALIAS
+```
+
+### Post-Installation
+
+1. Assign the **Modern Contact Card Access** permission set to users who need access to the custom fields
+2. Add the component to Contact, Case, MessagingSession, or VoiceCall record pages via Lightning App Builder
+3. Configure component settings as needed
+
+## Package Contents
+
+| Component | Type | Description |
+|-----------|------|-------------|
+| `modernContactCard` | LWC | The main component |
+| `Modern_Contact_Card_Access` | Permission Set | Grants access to all custom fields |
+| 10 Custom Fields | CustomField | Fields on Contact object |
 
 ## Custom Fields
 
@@ -116,6 +141,8 @@ The component can be placed on:
 ```
 Modern Contact Card/
 ├── README.md
+├── manifest/
+│   └── package.xml
 ├── assets/
 │   └── preview.png
 └── force-app/
@@ -127,19 +154,21 @@ Modern Contact Card/
             │       ├── modernContactCard.html
             │       ├── modernContactCard.js
             │       └── modernContactCard.js-meta.xml
-            └── objects/
-                └── Contact/
-                    └── fields/
-                        ├── ContactCardBackground__c.field-meta.xml
-                        ├── ContactCardHealthScore__c.field-meta.xml
-                        ├── ContactCardPicture__c.field-meta.xml
-                        ├── ContactCardTags__c.field-meta.xml
-                        ├── Metric_1__c.field-meta.xml
-                        ├── Metric_2__c.field-meta.xml
-                        ├── Metric_3__c.field-meta.xml
-                        ├── Metric_4__c.field-meta.xml
-                        ├── Metric_5__c.field-meta.xml
-                        └── Metric_6__c.field-meta.xml
+            ├── objects/
+            │   └── Contact/
+            │       └── fields/
+            │           ├── ContactCardBackground__c.field-meta.xml
+            │           ├── ContactCardHealthScore__c.field-meta.xml
+            │           ├── ContactCardPicture__c.field-meta.xml
+            │           ├── ContactCardTags__c.field-meta.xml
+            │           ├── Metric_1__c.field-meta.xml
+            │           ├── Metric_2__c.field-meta.xml
+            │           ├── Metric_3__c.field-meta.xml
+            │           ├── Metric_4__c.field-meta.xml
+            │           ├── Metric_5__c.field-meta.xml
+            │           └── Metric_6__c.field-meta.xml
+            └── permissionsets/
+                └── Modern_Contact_Card_Access.permissionset-meta.xml
 ```
 
 ## Requirements
