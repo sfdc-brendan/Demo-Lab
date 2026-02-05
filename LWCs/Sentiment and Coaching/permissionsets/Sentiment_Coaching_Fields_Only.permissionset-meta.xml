@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Grants read and edit access only to the 10 Sentiment Coaching custom fields (Voice Call and Messaging Session). No other object fields. Use when the full Sentiment_Coaching_Fields set conflicts with an org that already has Voice Call. Assign to users who need the analytics.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Sentiment Coaching Fields Only</label>
+    <license>Salesforce</license>
+    <!-- VoiceCall: only our 5 custom fields -->
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>VoiceCall.Agent_Performance_Evaluation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>VoiceCall.Agent_Performance_Rating__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>VoiceCall.Call_Sentiment__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>VoiceCall.Sentiment_Rating__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>VoiceCall.Request_Historical_Analysis__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <!-- MessagingSession: our 5 custom fields -->
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>MessagingSession.AgentPerformanceEvaluation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>MessagingSession.AgentPerformanceRating__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>MessagingSession.ChatSentiment__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>MessagingSession.SentimentRating__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>MessagingSession.Request_Historical_Analysis__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+</PermissionSet>

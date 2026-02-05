@@ -1,5 +1,5 @@
 import { LightningElement, api, wire, track } from 'lwc';
-import { getRecord, updateRecord } from 'lightning/uiRecordApi';
+import { getRecord, updateRecord, notifyRecordUpdateAvailable } from 'lightning/uiRecordApi';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { refreshApex } from '@salesforce/apex';
 
@@ -22,7 +22,7 @@ export default class SentimentTracker extends LightningElement {
     get sentimentRatingFields() {
         // Define fields based on object type
         if (this.objectApiName === 'MessagingSession') {
-            return ['MessagingSession.Sentiment_Rating__c', 'MessagingSession.Call_Sentiment__c'];
+            return ['MessagingSession.SentimentRating__c', 'MessagingSession.ChatSentiment__c'];
         } else {
             return ['VoiceCall.Sentiment_Rating__c', 'VoiceCall.Call_Sentiment__c'];
         }
@@ -50,8 +50,8 @@ export default class SentimentTracker extends LightningElement {
             
             // Handle both Voice Call and Messaging Session fields
             if (this.objectApiName === 'MessagingSession') {
-                this.sentimentRating = fields.Sentiment_Rating__c?.value || '';
-                this.callSentiment = fields.Call_Sentiment__c?.value || '';
+                this.sentimentRating = fields.SentimentRating__c?.value || '';
+                this.callSentiment = fields.ChatSentiment__c?.value || '';
             } else {
                 this.sentimentRating = fields.Sentiment_Rating__c?.value || '';
                 this.callSentiment = fields.Call_Sentiment__c?.value || '';
@@ -115,8 +115,8 @@ export default class SentimentTracker extends LightningElement {
             
             // Set fields based on object type
             if (this.objectApiName === 'MessagingSession') {
-                fields.Sentiment_Rating__c = this.sentimentRating;
-                fields.Call_Sentiment__c = this.callSentiment;
+                fields.SentimentRating__c = this.sentimentRating;
+                fields.ChatSentiment__c = this.callSentiment;
             } else {
                 fields.Sentiment_Rating__c = this.sentimentRating;
                 fields.Call_Sentiment__c = this.callSentiment;
@@ -180,5 +180,21 @@ export default class SentimentTracker extends LightningElement {
     get hasChanges() {
         return this.sentimentRating !== this.originalData.sentimentRating ||
                this.callSentiment !== this.originalData.callSentiment;
+    }
+
+    /**
+     * Refresh record data from the server. Use when analysis may have completed in the background.
+     * LDS does not auto-refresh when async flows update the record.
+     */
+    async handleRefresh() {
+        this.isLoading = true;
+        try {
+            await notifyRecordUpdateAvailable([this.recordId]);
+            this.showToast('Refreshed', 'Sentiment data updated', 'success');
+        } catch (e) {
+            this.showToast('Refresh failed', e?.body?.message || String(e), 'error');
+        } finally {
+            this.isLoading = false;
+        }
     }
 }

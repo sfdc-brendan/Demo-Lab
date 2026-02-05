@@ -1,0 +1,277 @@
+/* ============================================
+   CONTAINER-RESPONSIVE ANALYTICS COMPONENT (Voice Call)
+   ============================================ */
+
+.analytics-container {
+    width: 100%;
+    height: 100%;
+    container-type: inline-size;
+}
+
+.analytics-grid {
+    display: grid;
+    gap: 1rem;
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: "performance sentiment";
+}
+
+.analytics-card-wrapper {
+    min-width: 0;
+}
+
+.performance-card-wrapper {
+    grid-area: performance;
+}
+
+.sentiment-card-wrapper {
+    grid-area: sentiment;
+}
+
+.analytics-card {
+    height: 100%;
+    min-height: 280px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.10);
+    transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
+    transform-origin: center;
+    will-change: transform, box-shadow;
+}
+
+.analytics-card:hover {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.15);
+    transform: translateY(-1px);
+}
+
+.analytics-card:has(.evaluation-text.expanded) {
+    animation: contentExpand 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes contentExpand {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.005); }
+    100% { transform: scale(1); }
+}
+
+.analytics-card .slds-card__body {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.card-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+/* Performance Score */
+.performance-score-display {
+    font-weight: bold;
+}
+
+.score-number {
+    font-size: 3rem;
+    font-weight: 800;
+    line-height: 1;
+    transition: font-size 0.2s ease-in-out;
+}
+
+.score-total {
+    font-size: 1.5rem;
+    font-weight: 400;
+    opacity: 0.7;
+    transition: font-size 0.2s ease-in-out;
+}
+
+.score-excellent { color: #04844b; }
+.score-good { color: #0176d3; }
+.score-fair { color: #fe9339; }
+.score-poor { color: #ea001e; }
+
+/* Sentiment Badge */
+.sentiment-positive {
+    --slds-c-badge-color-background: #04844b;
+    --slds-c-badge-text-color: #ffffff;
+    font-weight: 600;
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+}
+
+.sentiment-negative {
+    --slds-c-badge-color-background: #ea001e;
+    --slds-c-badge-text-color: #ffffff;
+    font-weight: 600;
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+}
+
+.sentiment-neutral {
+    --slds-c-badge-color-background: #706e6b;
+    --slds-c-badge-text-color: #ffffff;
+    font-weight: 600;
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+}
+
+/* Expand/Collapse */
+.evaluation-text {
+    overflow: hidden;
+    position: relative;
+    transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.evaluation-text.collapsed {
+    max-height: 4.5rem;
+}
+
+.evaluation-text.collapsed::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1.5rem;
+    background: linear-gradient(180deg, transparent 0%, rgba(255, 255, 255, 0.9) 70%, #ffffff 100%);
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity 0.25s ease-out;
+}
+
+.evaluation-text.expanded {
+    max-height: 200rem;
+}
+
+.evaluation-text.expanded::after {
+    opacity: 0;
+}
+
+.formatted-evaluation-text,
+.formatted-sentiment-text {
+    transition: opacity 0.2s ease-in-out;
+}
+
+.evaluation-text lightning-formatted-rich-text {
+    display: block;
+    line-height: 1.5;
+}
+
+/* Bold section headers in evaluation output */
+.formatted-evaluation-text ::part(content) strong,
+.formatted-sentiment-text ::part(content) strong,
+.formatted-evaluation-text ::part(content) b,
+.formatted-sentiment-text ::part(content) b {
+    font-weight: 700;
+    color: #080707;
+}
+
+.expand-button-container {
+    text-align: center;
+}
+
+.expand-button {
+    --slds-c-button-neutral-color-border: #d8dde6;
+    --slds-c-button-neutral-color-background: #ffffff;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.75rem;
+    min-height: auto;
+    border-radius: 0.25rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.expand-button:hover {
+    --slds-c-button-neutral-color-background: #f3f2f2;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Icons */
+.slds-icon-custom-custom82 {
+    background-color: var(--slds-c-icon-color-background-custom, #0176d3);
+}
+
+.slds-icon-custom-custom1 {
+    background-color: var(--slds-c-icon-color-background-custom, #04844b);
+}
+
+/* No Data / Loading / Error */
+.no-data-state {
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.performance-score {
+    animation: fadeInScale 0.6s ease-out;
+}
+
+.sentiment-badge {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInScale {
+    0% { opacity: 0; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes fadeInUp {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@container (max-width: 600px) {
+    .analytics-grid {
+        grid-template-columns: 1fr;
+        grid-template-areas: "performance" "sentiment";
+        gap: 0.75rem;
+    }
+    .analytics-card { min-height: 240px; }
+    .score-number { font-size: 2.5rem; }
+    .score-total { font-size: 1.25rem; }
+    .card-title { font-size: 0.8125rem; }
+}
+
+@container (max-width: 400px) {
+    .analytics-card { min-height: 200px; }
+    .score-number { font-size: 2rem; }
+    .score-total { font-size: 1rem; }
+    .evaluation-text.collapsed { max-height: 3rem; }
+}
+
+@supports not (container-type: inline-size) {
+    @media (max-width: 600px) {
+        .analytics-grid {
+            grid-template-columns: 1fr;
+            grid-template-areas: "performance" "sentiment";
+        }
+        .score-number { font-size: 2.5rem; }
+        .score-total { font-size: 1.25rem; }
+    }
+    @media (max-width: 400px) {
+        .score-number { font-size: 2rem; }
+        .score-total { font-size: 1rem; }
+        .evaluation-text.collapsed { max-height: 3rem; }
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .evaluation-text,
+    .evaluation-text.collapsed::after,
+    .expand-button,
+    .analytics-card {
+        transition: none !important;
+        animation: none !important;
+    }
+    .analytics-card:hover {
+        transform: none;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    }
+}
+
+@media (max-width: 768px) {
+    .analytics-card { will-change: auto; }
+    .evaluation-text {
+        transition: max-height 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+}

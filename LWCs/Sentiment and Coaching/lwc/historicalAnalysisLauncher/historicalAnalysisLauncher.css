@@ -1,0 +1,9 @@
+.table-wrapper {
+    max-height: 400px;
+    overflow: auto;
+}
+
+.message-text {
+    font-size: 0.875rem;
+    color: var(--slds-g-color-neutral-base-50, #706e6b);
+}

@@ -1,67 +1,157 @@
-# Sentiment and Coaching
+# Sentiment & Coaching Analytics for Service Cloud
 
-A demo package that adds **sentiment analysis** and **agent performance coaching** for **Voice** (Service Cloud Voice) and **Messaging** (chat) interactions. It uses Einstein generative AI prompt templates, flows, Apex, and Lightning Web Components to evaluate calls and chats and store results on Voice Call and Messaging Session records.
+AI-powered sentiment analysis and agent coaching for **Voice Calls** (Service Cloud Voice) and **Messaging Sessions** (Digital Engagement). Uses Einstein GenAI to automatically extract sentiment ratings, call/chat summaries, and agent performance evaluations.
 
-## What It Does
+## Features
 
-- **Voice (SCV)** – After a call, flows extract **call sentiment** and **agent performance** from transcript/content, then store ratings and evaluations on the **Voice Call** record. LWCs display coaching and sentiment on the call record.
-- **Messaging** – After a chat, flows extract **chat sentiment** and **coaching** from the conversation, then store ratings and evaluations on the **Messaging Session** record. An LWC shows analytics on the session record.
+### Real-Time Analysis
+- **Automatic sentiment extraction** when calls/chats end
+- **Agent performance evaluation** with actionable coaching feedback
+- **Sentiment ratings** (Positive, Neutral, Negative) with detailed summaries
+- Works with both **Voice Calls** and **Messaging Sessions**
 
-All of this is powered by **Einstein Prompt Templates** (GenAI) and is intended for demo or pilot use in Service Cloud Voice and Messaging/Omni-Channel setups.
+### Historical Look Back (New)
+Analyze past records that weren't processed in real-time:
+- Find Voice Calls and Messaging Sessions from the **last 7 or 14 days** that have no sentiment/coaching data
+- **Bulk select** records to process
+- Background flows process selected records asynchronously
+- Results appear on record pages after flow completion
 
-## What’s in This Package
+## Package Contents
 
-| Category | Components | Purpose |
-|----------|------------|---------|
-| **Lightning Web Components** | `callCoaching`, `sentimentTracker`, `messagingSessionAnalytics` | Show coaching and sentiment on Voice Call and Messaging Session record pages |
-| **Flows** | `SCV_Extract_Sentiment_After_Call`, `SCV_Extract_Agent_Performance_After_Call`, `MSG_Extract_Sentiment_After_Chat`, `MSG_Extract_Coaching_After_Chat` | Run after call/chat to call prompt templates and write results to the record |
-| **GenAI Prompt Templates** | `Call_Sentiment`, `Agent_Performance_Evaluation`, `MSG_Chat_Sentiment`, `MSG_Chat_Coaching` | Used by the flows to analyze content and return sentiment/coaching text and ratings |
-| **Apex** | `ChatCoachingExtractor`, `ChatExtractor`, `TextExtractor` | Support chat/messaging extraction and text processing used by the messaging flows |
-| **Custom Fields** | On **Voice Call**: `Call_Sentiment__c`, `Sentiment_Rating__c`, `Agent_Performance_Evaluation__c`, `Agent_Performance_Rating__c`<br>On **Messaging Session**: `ChatSentiment__c`, `SentimentRating__c`, `AgentPerformanceEvaluation__c`, `AgentPerformanceRating__c` | Store sentiment and coaching output from the flows |
+### Apex Classes (4)
+| Class | Purpose |
+|-------|---------|
+| `ChatCoachingExtractor` | Parses GenAI coaching response for Messaging Sessions |
+| `ChatExtractor` | Parses GenAI sentiment response for Messaging Sessions |
+| `HistoricalAnalysisController` | Finds candidates and triggers historical analysis |
+| `TextExtractor` | Parses GenAI responses for Voice Calls |
 
-## Voice vs Messaging
+### Custom Fields (10)
 
-| Capability | Voice (SCV) | Messaging |
-|------------|-------------|-----------|
-| **Sentiment** | Call sentiment and rating | Chat sentiment and rating |
-| **Coaching** | Agent performance evaluation and rating | Agent performance evaluation and rating |
-| **Trigger** | SCV post-call flows | MSG post-chat flows |
-| **Record** | **Voice Call** | **Messaging Session** |
-| **LWCs** | `callCoaching`, `sentimentTracker` | `messagingSessionAnalytics` |
+**Messaging Session:**
+- `AgentPerformanceEvaluation__c` - Coaching feedback text
+- `AgentPerformanceRating__c` - Performance score
+- `ChatSentiment__c` - Sentiment summary
+- `SentimentRating__c` - Positive/Neutral/Negative
+- `Request_Historical_Analysis__c` - Triggers historical flows
 
-## Where You Can Use It
+**Voice Call:**
+- `Agent_Performance_Evaluation__c` - Coaching feedback text
+- `Agent_Performance_Rating__c` - Performance score
+- `Call_Sentiment__c` - Sentiment summary
+- `Sentiment_Rating__c` - Positive/Neutral/Negative
+- `Request_Historical_Analysis__c` - Triggers historical flows
 
-- **Voice** – Orgs with **Service Cloud Voice** and **Voice Call** records. Add the LWCs to Voice Call record pages and run the SCV flows from your post-call automation.
-- **Messaging** – Orgs with **Messaging** or **Omni-Channel** and **Messaging Session** records. Add the LWC to Messaging Session record pages and run the MSG flows from your post-chat automation.
+### Record-Triggered Flows (8)
 
-Deploy the metadata (LWCs, Flows, Apex, GenAI Prompt Templates, and object/field metadata) into a sandbox or demo org, then configure the flows to run when calls or chats close.
+| Flow | Object | Trigger |
+|------|--------|---------|
+| `MSG_Extract_Sentiment_After_Chat` | MessagingSession | Status = Ended |
+| `MSG_Extract_Coaching_After_Chat` | MessagingSession | Status = Ended |
+| `SCV_Extract_Sentiment_After_Call` | VoiceCall | CallDisposition = completed |
+| `SCV_Extract_Agent_Performance_After_Call` | VoiceCall | CallDisposition = completed |
+| `Historical_MSG_Extract_Sentiment_After_Chat` | MessagingSession | Request_Historical_Analysis__c = true |
+| `Historical_MSG_Extract_Coaching_After_Chat` | MessagingSession | Request_Historical_Analysis__c = true |
+| `Historical_SCV_Extract_Sentiment_After_Call` | VoiceCall | Request_Historical_Analysis__c = true |
+| `Historical_SCV_Extract_Agent_Performance_After_Call` | VoiceCall | Request_Historical_Analysis__c = true |
+
+### GenAI Prompt Templates (4)
+| Template | Purpose |
+|----------|---------|
+| `MSG_Chat_Sentiment` | Extract sentiment from Messaging Session transcript |
+| `MSG_Chat_Coaching` | Generate agent coaching for Messaging Session |
+| `Call_Sentiment` | Extract sentiment from Voice Call transcript |
+| `Agent_Performance_Evaluation` | Generate agent coaching for Voice Call |
+
+### Lightning Web Components (4)
+| Component | Use |
+|-----------|-----|
+| `messagingSessionAnalytics` | Record page component for Messaging Sessions |
+| `voiceCallAnalytics` | Record page component for Voice Calls |
+| `sentimentTracker` | Manual sentiment entry/override component |
+| `historicalAnalysisLauncher` | App/Home page for bulk historical analysis |
+
+### Permission Set (1)
+- `Sentiment_Coaching_Fields` - Read/edit access to all custom fields
 
 ## Prerequisites
 
-- **Einstein** (e.g. prompt template / GenAI) features enabled.
-- **Service Cloud Voice** (for voice) and/or **Messaging** (for chat) with Voice Call and/or Messaging Session in use.
-- The custom fields above created on **Voice Call** and **Messaging Session** (included in this package’s object metadata).
+1. **Einstein GenAI** enabled with a supported model (e.g., GPT-4.1/5)
+2. **Transcript flows** must exist in the org:
+   - `conv_sum_ms__GetTscpForMsgSession` (Messaging Session)
+   - `conv_sum_vc__GetTscpForVoiceCall` (Voice Call)
+3. **Service Cloud Voice** and/or **Digital Engagement** configured
+4. Standard `VoiceCall` and `MessagingSession` objects available
 
-## Package Layout
+## Installation
 
-```
-Sentiment and Coaching/
-├── README.md (this file)
-├── lwc/           # callCoaching, sentimentTracker, messagingSessionAnalytics
-├── classes/       # ChatCoachingExtractor, ChatExtractor, TextExtractor
-├── flows/         # SCV_*, MSG_* flows
-├── genAiPromptTemplates/  # Agent_Performance_Evaluation, Call_Sentiment, MSG_Chat_*
-└── objects/       # VoiceCall & MessagingSession fields (and related metadata)
+### Deploy Full Package
+```bash
+sf project deploy start --manifest manifest/package-sentiment-coaching-full.xml --target-org "YourOrg" --wait 15
 ```
 
-To deploy only this package, point your Salesforce CLI or IDE at this folder (or at a `package.xml`/manifest that lists these components) and deploy to the target org.
+### Deploy Without Permission Set
+Use this if your org already has Voice Call from another package:
+```bash
+sf project deploy start --manifest manifest/package-sentiment-coaching-without-permissionset.xml --target-org "YourOrg" --wait 15
+```
 
-## 📄 Disclaimer
-This project is NOT an official Salesforce product.
+Then manually create a permission set with access to the 10 custom fields.
 
-Created by Brendan Sheridan as a demonstration accelerator. Use at your own risk. This code is provided "as-is" without warranty of any kind. Always review and test thoroughly before using in any production environment.
+## Post-Installation Setup
 
-## 📝 License
-This project is provided for educational and demonstration purposes. Feel free to use, modify, and adapt for your own Salesforce implementations.
+1. **Assign the permission set** `Sentiment_Coaching_Fields` to users who need the analytics
+2. **Add LWCs to record pages:**
+   - Add `voiceCallAnalytics` to Voice Call record page
+   - Add `messagingSessionAnalytics` to Messaging Session record page
+   - (Optional) Add `sentimentTracker` for manual sentiment entry
+3. **Add Historical Analysis Launcher** to an App page, Home page, or Tab for admins who need to process historical records
 
+## Using Historical Analysis
 
+1. Navigate to the **Historical Analysis Launcher** component
+2. Select the **object type** (Voice Calls, Messaging Sessions, or Both)
+3. Choose the **time range** (Last 7 or 14 days)
+4. Click **Find Records** to search for records without analysis
+5. Select records from the list (use "Select All" for bulk selection)
+6. Click **Run Analysis** to queue selected records
+7. Background flows process records asynchronously
+8. Use **Refresh** on record pages to see results
+
+## Manifest Files
+
+| File | Use Case |
+|------|----------|
+| `package-sentiment-coaching-full.xml` | Full deployment with all components |
+| `package-sentiment-coaching-without-permissionset.xml` | Skip permission set (use when Voice Call object conflicts exist) |
+| `package-messaging-fields.xml` | Messaging Session fields only |
+| `package-media-package.xml` | Media package subset |
+
+## Troubleshooting
+
+### Permission Set Deployment Fails
+If deploying the permission set fails because Voice Call already exists:
+1. Deploy using `package-sentiment-coaching-without-permissionset.xml`
+2. Manually create a permission set with access to the 10 custom fields
+3. Or deploy `Sentiment_Coaching_Fields_Only.permissionset-meta.xml` separately
+
+### Historical Analysis Not Working
+- Ensure the `Request_Historical_Analysis__c` field is deployed on both objects
+- Verify all 4 historical flows are active
+- Check that the user has the permission set assigned
+
+### No Sentiment Data After Chat/Call Ends
+- Verify transcript flows exist (`conv_sum_ms__GetTscpForMsgSession`, `conv_sum_vc__GetTscpForVoiceCall`)
+- Check that GenAI is enabled and the model is available
+- Ensure the record-triggered flows are active
+
+## Scripts
+
+The `scripts/` folder contains helpful Apex scripts:
+- `CreateAndAssignSentimentCoachingPermissionSet.apex` - Create and assign the permission set programmatically
+- `AssignSentimentCoachingPermissionSetToAdmins.apex` - Assign to admin users
+
+## License
+
+This project is provided as-is for demonstration and POC purposes.

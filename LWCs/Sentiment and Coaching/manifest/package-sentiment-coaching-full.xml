@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+  Full Sentiment Coaching package. Use with:
+  sf project deploy start --manifest manifest/package-sentiment-coaching-full.xml --target-org <alias>
+  Or for creating an unlocked package:
+  sf package version create --definition-file config/project-scratch-def.json (or use this manifest in your package config)
+-->
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>ChatCoachingExtractor</members>
+        <members>ChatExtractor</members>
+        <members>HistoricalAnalysisController</members>
+        <members>TextExtractor</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>MessagingSession.AgentPerformanceEvaluation__c</members>
+        <members>MessagingSession.AgentPerformanceRating__c</members>
+        <members>MessagingSession.ChatSentiment__c</members>
+        <members>MessagingSession.Request_Historical_Analysis__c</members>
+        <members>MessagingSession.SentimentRating__c</members>
+        <members>VoiceCall.Agent_Performance_Evaluation__c</members>
+        <members>VoiceCall.Agent_Performance_Rating__c</members>
+        <members>VoiceCall.Call_Sentiment__c</members>
+        <members>VoiceCall.Request_Historical_Analysis__c</members>
+        <members>VoiceCall.Sentiment_Rating__c</members>
+        <name>CustomField</name>
+    </types>
+    <types>
+        <members>Historical_MSG_Extract_Coaching_After_Chat</members>
+        <members>Historical_MSG_Extract_Sentiment_After_Chat</members>
+        <members>Historical_SCV_Extract_Agent_Performance_After_Call</members>
+        <members>Historical_SCV_Extract_Sentiment_After_Call</members>
+        <members>MSG_Extract_Coaching_After_Chat</members>
+        <members>MSG_Extract_Sentiment_After_Chat</members>
+        <members>SCV_Extract_Agent_Performance_After_Call</members>
+        <members>SCV_Extract_Sentiment_After_Call</members>
+        <name>Flow</name>
+    </types>
+    <types>
+        <members>Agent_Performance_Evaluation</members>
+        <members>Call_Sentiment</members>
+        <members>MSG_Chat_Coaching</members>
+        <members>MSG_Chat_Sentiment</members>
+        <name>GenAiPromptTemplate</name>
+    </types>
+    <types>
+        <members>historicalAnalysisLauncher</members>
+        <members>messagingSessionAnalytics</members>
+        <members>sentimentTracker</members>
+        <members>voiceCallAnalytics</members>
+        <name>LightningComponentBundle</name>
+    </types>
+    <types>
+        <members>Sentiment_Coaching_Fields</members>
+        <name>PermissionSet</name>
+    </types>
+    <version>65.0</version>
+</Package>

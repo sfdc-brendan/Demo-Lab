@@ -1,10 +1,15 @@
 <template>
     <lightning-card>
-        <h2 slot="title">
+        <h2 slot="title" class="slds-grid slds-grid_vertical-align-center">
             <lightning-icon icon-name="standard:voice_call" size="small" class="slds-m-right_x-small"></lightning-icon>
-            Sentiment Analysis
+            <span class="slds-has-flexi-truncate">Sentiment Analysis</span>
+            <lightning-button icon-name="utility:refresh" onclick={handleRefresh} disabled={isLoading} title="Refresh to load latest analysis" variant="border-filled" class="slds-m-left_auto"></lightning-button>
         </h2>
         <div class="sentiment-compact">
+            <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_small">
+                <lightning-icon icon-name="utility:info" size="xx-small" class="slds-m-right_xx-small"></lightning-icon>
+                Analysis may take a minute. Use Refresh to load the latest results.
+            </p>
             <!-- Loading State -->
             <template if:true={isLoading}>
                 <lightning-spinner alternative-text="Loading sentiment data..." size="medium"></lightning-spinner>

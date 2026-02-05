@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Request_Historical_Analysis__c</fullName>
+    <description>When set to true, triggers historical sentiment and coaching analysis. Cleared automatically by the flow after processing.</description>
+    <label>Request Historical Analysis</label>
+    <type>Checkbox</type>
+    <defaultValue>false</defaultValue>
+</CustomField>

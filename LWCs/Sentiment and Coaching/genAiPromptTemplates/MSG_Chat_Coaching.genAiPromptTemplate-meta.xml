@@ -206,10 +206,17 @@ Resource Sharing: Did the agent provide helpful links, knowledge articles, or re
 In your response, limited to 100,000 characters, I only need one concise statement for each category, separated and easy to read. Each category statement should be followed by a line return. After all of these category statements, please provide an overall summary of the quality of the chat conversation, with a brief statement of how the agent performed and how they could do better. Lastly, at the very end of the response, on a separate line, I would like you to rate the overall agent performance on a scale of 0-10 - with 10 being the best possible customer experience and 0 being the worst. The rating should be displayed in whole numbers, without any decimals and you should only tell me the rating score that you applied. For example:
 Rating Score: 6
 &quot;&quot;&quot;
-OUTPUT FORMATTING REQUIREMENTS: 
-Generate an output formatted as HTML rich text.
-Paragraph titles should be wrapped with &lt;b&gt; tags
-Use emojis where necessary to categorize headers
+
+OUTPUT FORMAT (plain text only; do not use HTML, markdown, or any tags):
+- Use only plain text. Start each category on its own line with the exact label below followed by a colon, then one concise statement.
+- Use these exact category labels in this order, one per line:
+  Agent Process:
+  Customer Focus:
+  Soft Skills:
+  Communication and Clarity:
+  Professional Conduct:
+- Then add one line: Overall Summary: (then your summary paragraph).
+- On the last line write only: Rating Score: N (where N is a whole number 0-10, no other text on that line).
 
 Now generate the evaluation of the chat transcript.
 </content>
@@ -221,7 +228,6 @@ Now generate the evaluation of the chat transcript.
             <required>true</required>
         </inputs>
         <primaryModel>sfdc_ai__DefaultGPT5</primaryModel>
-        <responseFormat>HTML</responseFormat>
         <status>Published</status>
         <templateDataProviders>
             <definition>flow://conv_sum_ms__GetTscpForMsgSession</definition>

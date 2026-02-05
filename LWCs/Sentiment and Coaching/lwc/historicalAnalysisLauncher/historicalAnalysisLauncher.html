@@ -1,0 +1,103 @@
+<template>
+    <lightning-card title="Historical Analysis" icon-name="standard:scan_disabled">
+        <div class="slds-p-around_medium">
+            <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_medium">
+                Analyze past Voice Calls and Messaging Sessions (up to 2 weeks old) that don't have sentiment or coaching data yet. Select the type and range, find records, then run analysis.
+            </p>
+
+            <div class="slds-grid slds-wrap slds-gutters_small slds-m-bottom_medium">
+                <div class="slds-size_1-of-1 slds-medium-size_1-of-2">
+                    <lightning-combobox
+                        label="Object type"
+                        value={objectType}
+                        options={objectOptions}
+                        onchange={handleObjectChange}
+                        class="slds-m-bottom_small">
+                    </lightning-combobox>
+                </div>
+                <div class="slds-size_1-of-1 slds-medium-size_1-of-2">
+                    <lightning-combobox
+                        label="Age of records"
+                        value={daysBack}
+                        options={daysOptions}
+                        onchange={handleDaysChange}
+                        class="slds-m-bottom_small">
+                    </lightning-combobox>
+                </div>
+            </div>
+
+            <div class="slds-m-bottom_medium">
+                <lightning-button
+                    label="Find records to analyze"
+                    variant="brand"
+                    onclick={handleFind}
+                    disabled={isLoading}
+                    icon-name="utility:search">
+                </lightning-button>
+            </div>
+
+            <template if:true={message}>
+                <div class="slds-m-bottom_small message-text">{message}</div>
+            </template>
+
+            <template if:true={hasCandidates}>
+                <div class="slds-m-top_medium slds-m-bottom_small">
+                    <lightning-button
+                        label={runButtonLabel}
+                        variant="brand"
+                        onclick={handleRun}
+                        disabled={isRunning}
+                        icon-name="utility:refresh">
+                    </lightning-button>
+                </div>
+                <div class="table-wrapper slds-scrollable_x">
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th class="slds-cell-shrink" scope="col">
+                                    <lightning-input
+                                        type="checkbox"
+                                        data-id="select-all"
+                                        checked={allSelected}
+                                        indeterminate={someSelected}
+                                        onchange={handleSelectAll}
+                                        aria-label="Select all">
+                                    </lightning-input>
+                                </th>
+                                <th scope="col">Record ID</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Created</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={candidates} for:item="c">
+                                <tr key={c.id} data-id={c.id}>
+                                    <td class="slds-cell-shrink">
+                                        <lightning-input
+                                            type="checkbox"
+                                            data-id={c.id}
+                                            checked={c.selected}
+                                            onchange={handleSelectRow}
+                                            aria-label="Select">
+                                        </lightning-input>
+                                    </td>
+                                    <td>
+                                        <a href={c.recordUrl} target="_blank" rel="noopener noreferrer">
+                                            {c.id}
+                                        </a>
+                                    </td>
+                                    <td>{c.objectType}</td>
+                                    <td>{c.createdDateFormatted}</td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </template>
+
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Finding records..." size="medium" class="slds-m-top_medium"></lightning-spinner>
+            </template>
+        </div>
+    </lightning-card>
+</template>

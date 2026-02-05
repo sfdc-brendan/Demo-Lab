@@ -32,26 +32,26 @@
                                 </div>
                                 <p class="slds-text-body_small slds-text-color_weak">Performance Score</p>
                             </div>
-                                                            <div class="slds-text-longform slds-text-body_regular">
-                                    <div class={evaluationTextClass}>
-                                        <lightning-formatted-rich-text 
-                                            value={formattedPerformanceEvaluation}
-                                            class="formatted-evaluation-text slds-text-longform">
-                                        </lightning-formatted-rich-text>
-                                    </div>
-                                    <template if:true={showExpandButton}>
-                                        <div class="expand-button-container slds-m-top_small">
-                                            <lightning-button
-                                                variant="neutral"
-                                                label={expandButtonLabel}
-                                                icon-name={expandButtonIcon}
-                                                icon-position="right"
-                                                class="expand-button"
-                                                onclick={toggleEvaluationExpanded}>
-                                            </lightning-button>
-                                        </div>
-                                    </template>
+                            <div class="slds-text-longform">
+                                <div class={evaluationTextClass}>
+                                    <lightning-formatted-rich-text
+                                        value={formattedPerformanceEvaluation}
+                                        class="formatted-evaluation-text">
+                                    </lightning-formatted-rich-text>
                                 </div>
+                                <template if:true={showExpandButton}>
+                                    <div class="expand-button-container slds-m-top_small">
+                                        <lightning-button
+                                            variant="neutral"
+                                            label={expandButtonLabel}
+                                            icon-name={expandButtonIcon}
+                                            icon-position="right"
+                                            class="expand-button"
+                                            onclick={toggleEvaluationExpanded}>
+                                        </lightning-button>
+                                    </div>
+                                </template>
+                            </div>
                         </template>
                         <template if:false={hasPerformanceData}>
                             <div class="slds-text-align_center slds-p-vertical_large no-data-state">
@@ -70,12 +70,12 @@
                         <header class="slds-media slds-media_center slds-has-flexi-truncate">
                             <div class="slds-media__figure">
                                 <span class="slds-icon_container slds-icon-custom-custom1">
-                                    <lightning-icon icon-name="custom:custom1" alternative-text="Chat Sentiment" size="small"></lightning-icon>
+                                    <lightning-icon icon-name="custom:custom1" alternative-text="Call Sentiment" size="small"></lightning-icon>
                                 </span>
                             </div>
                             <div class="slds-media__body">
                                 <h2 class="slds-card__header-title card-title">
-                                    <span>Chat Sentiment</span>
+                                    <span>Call Sentiment</span>
                                 </h2>
                             </div>
                         </header>
@@ -85,26 +85,26 @@
                             <div class="sentiment-badge slds-text-align_center slds-m-bottom_medium">
                                 <lightning-badge label={sentimentRating} class={sentimentBadgeClass}></lightning-badge>
                             </div>
-                                                            <div class="slds-text-longform slds-text-body_regular">
-                                    <div class={sentimentTextClass}>
-                                        <lightning-formatted-rich-text 
-                                            value={chatSentiment}
-                                            class="formatted-sentiment-text slds-text-longform">
-                                        </lightning-formatted-rich-text>
-                                    </div>
-                                    <template if:true={showSentimentExpandButton}>
-                                        <div class="expand-button-container slds-m-top_small">
-                                            <lightning-button
-                                                variant="neutral"
-                                                label={sentimentExpandButtonLabel}
-                                                icon-name={sentimentExpandButtonIcon}
-                                                icon-position="right"
-                                                class="expand-button"
-                                                onclick={toggleSentimentExpanded}>
-                                            </lightning-button>
-                                        </div>
-                                    </template>
+                            <div class="slds-text-longform">
+                                <div class={sentimentTextClass}>
+                                    <lightning-formatted-rich-text
+                                        value={callSentiment}
+                                        class="formatted-sentiment-text">
+                                    </lightning-formatted-rich-text>
                                 </div>
+                                <template if:true={showSentimentExpandButton}>
+                                    <div class="expand-button-container slds-m-top_small">
+                                        <lightning-button
+                                            variant="neutral"
+                                            label={sentimentExpandButtonLabel}
+                                            icon-name={sentimentExpandButtonIcon}
+                                            icon-position="right"
+                                            class="expand-button"
+                                            onclick={toggleSentimentExpanded}>
+                                        </lightning-button>
+                                    </div>
+                                </template>
+                            </div>
                         </template>
                         <template if:false={hasSentimentData}>
                             <div class="slds-text-align_center slds-p-vertical_large no-data-state">
@@ -128,7 +128,7 @@
     <!-- Error State -->
     <template if:true={error}>
         <div class="slds-box slds-theme_error slds-m-bottom_small">
-            <p class="slds-text-body_regular"><strong>Messaging Session Analytics:</strong> {error}</p>
+            <p class="slds-text-body_regular"><strong>Voice Call Analytics:</strong> {error}</p>
         </div>
     </template>
 </template>
