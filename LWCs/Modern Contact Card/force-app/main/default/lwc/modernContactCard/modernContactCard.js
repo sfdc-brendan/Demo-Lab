@@ -9,17 +9,16 @@ import CONTACT_PHONE_FIELD from '@salesforce/schema/Contact.Phone';
 import CONTACT_MAILING_CITY_FIELD from '@salesforce/schema/Contact.MailingCity';
 import CONTACT_MAILING_STATE_FIELD from '@salesforce/schema/Contact.MailingState';
 
-// Import Case, MessagingSession, and VoiceCall lookup fields
+// Import Case and MessagingSession lookup fields
 import CASE_CONTACTID_FIELD from '@salesforce/schema/Case.ContactId';
 import MSG_CONTACTID_FIELD from '@salesforce/schema/MessagingSession.EndUserContactId';
-import VOICECALL_CONTACT_FIELD from '@salesforce/schema/VoiceCall.Contact__c';
 
-// Parent record fields mapping
+// Parent record fields mapping (standard objects only)
 const PARENT_RECORD_FIELDS = {
     Case: [CASE_CONTACTID_FIELD],
-    MessagingSession: [MSG_CONTACTID_FIELD],
-    VoiceCall: [VOICECALL_CONTACT_FIELD]
+    MessagingSession: [MSG_CONTACTID_FIELD]
 };
+// Note: VoiceCall contact field is configurable via @api property to avoid package dependencies
 
 // Contact fields to query
 const CONTACT_FIELDS = [
@@ -78,6 +77,9 @@ export default class ModernContactCard extends NavigationMixin(LightningElement)
     @api tagsField = 'ContactCardTags__c';
     @api tags = '';  // Comma-separated tags (fallback)
     @api showTags = false;
+    
+    // VoiceCall Configuration (optional - leave blank if not using VoiceCall)
+    @api voiceCallContactField = '';  // e.g., 'Contact__c' - the API name of the Contact lookup field on VoiceCall
     
     // Field Configuration - Row 1
     // Field 1: Value from Contact.Metric_1__c
@@ -297,6 +299,10 @@ export default class ModernContactCard extends NavigationMixin(LightningElement)
     }
 
     get parentFieldsToQuery() {
+        // For VoiceCall, dynamically build the field list if configured
+        if (this.objectApiName === 'VoiceCall' && this.voiceCallContactField) {
+            return [`VoiceCall.${this.voiceCallContactField}`];
+        }
         return PARENT_RECORD_FIELDS[this.objectApiName] || undefined;
     }
 
@@ -355,8 +361,11 @@ export default class ModernContactCard extends NavigationMixin(LightningElement)
                     console.log('ModernContactCard - MessagingSession EndUserContactId:', foundContactId);
                     break;
                 case 'VoiceCall':
-                    foundContactId = getFieldValue(data, VOICECALL_CONTACT_FIELD);
-                    console.log('ModernContactCard - VoiceCall Contact__c:', foundContactId);
+                    // Use configured field name for VoiceCall contact lookup
+                    if (this.voiceCallContactField && data.fields?.[this.voiceCallContactField]) {
+                        foundContactId = data.fields[this.voiceCallContactField].value;
+                        console.log('ModernContactCard - VoiceCall', this.voiceCallContactField + ':', foundContactId);
+                    }
                     break;
                 default:
                     break;

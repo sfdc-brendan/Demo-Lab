@@ -127,7 +127,17 @@ The component can be placed on:
 - **Contact** record pages
 - **Case** record pages (retrieves contact from `ContactId`)
 - **MessagingSession** record pages (retrieves contact from `EndUserContactId`)
-- **VoiceCall** record pages (retrieves contact from `Contact__c`)
+- **VoiceCall** record pages (requires configuration - see below)
+
+### VoiceCall Configuration
+
+VoiceCall support is **optional** to avoid package dependencies on custom fields. To enable:
+
+1. Place the component on a VoiceCall record page in Lightning App Builder
+2. In the component properties, find **"VoiceCall Contact Field"**
+3. Enter the API name of your Contact lookup field (e.g., `Contact__c`)
+
+If your org doesn't use VoiceCall, leave this field blank.
 
 ## Usage
 

@@ -39,6 +39,9 @@
             <property name="tags" type="String" default="" label="Fallback Tags" description="Comma-separated tags to display if Contact field is empty (e.g. VIP, Premium)" />
             <property name="showTags" type="Boolean" default="true" label="Show Tags" description="Show/hide the tag pills" />
             
+            <!-- VoiceCall Configuration (Optional) -->
+            <property name="voiceCallContactField" type="String" default="" label="VoiceCall Contact Field" description="API name of the Contact lookup field on VoiceCall (e.g. Contact__c). Leave blank if not using on VoiceCall pages." />
+            
             <!-- Field 1 Configuration - Value from Contact.Metric_1__c -->
             <property name="field1Label" type="String" default="ACCOUNT ID" label="Field 1 Label" description="Display label for Field 1 (value from Contact.Metric_1__c)" />
             <property name="field1Value" type="String" default="" label="Field 1 Fallback" description="Fallback value if Contact.Metric_1__c is empty" />
