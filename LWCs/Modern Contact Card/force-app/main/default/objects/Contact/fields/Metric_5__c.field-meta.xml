@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Metric_5__c</fullName>
+    <label>Metric 5</label>
+    <type>Text</type>
+    <length>255</length>
+    <description>Custom metric field 5 for the Modern Contact Card component (e.g., Trade-In Value)</description>
+    <inlineHelpText>Value displayed in Field 5 of the Modern Contact Card</inlineHelpText>
+</CustomField>

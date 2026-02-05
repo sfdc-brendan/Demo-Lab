@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ContactCardPicture__c</fullName>
+    <label>Contact Card Picture</label>
+    <type>Url</type>
+    <description>URL to the contact's profile picture for the Modern Contact Card component</description>
+    <inlineHelpText>Enter the full URL to the contact's profile image</inlineHelpText>
+</CustomField>

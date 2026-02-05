@@ -1,65 +1,122 @@
-# sdo_ContactCard
+# Modern Contact Card LWC
 
-A Lightning Web Component that displays a **Contact Card**—a compact, configurable card with the contact’s profile, key details, optional custom metrics, and a CSAT-style chart.
+A modern, customizable Lightning Web Component for displaying contact information with a sleek design following SLDS 2 standards.
 
-## What It Does
+## Preview
 
-- **Shows contact context** – Name, location (city/state), email, phone, and an optional profile image.
-- **Supports custom metrics** – Up to 5 configurable metric fields (labels, icons, and visibility controlled in App Builder).
-- **Includes a CSAT chart** – Dual-line chart for engagement and satisfaction-style data, with configurable labels and data.
-- **Adapts to the page** – On a **Contact** record it shows that contact; on **Case**, **Messaging Session**, or **Voice Call** it finds the related Contact and shows that.
+![Modern Contact Card Preview](assets/preview.png)
 
-## Where You Can Use It
+## Features
 
-The component is available on:
+- **Dynamic Contact Data**: Automatically retrieves contact information from related records (Contact, Case, MessagingSession, VoiceCall)
+- **Light/Dark Theme Toggle**: Configurable theme mode via Lightning App Builder
+- **Customizable Metrics**: 6 configurable data fields with labels, icons, and visibility toggles
+- **Profile Image from Contact Field**: Wire profile images to a custom URL field on the Contact record
+- **Interactive Chart**: Built-in engagement/satisfaction chart with customizable data
+- **Action Menu**: Quick actions for View Details, Edit Contact, and Send Email
+- **SLDS 2 Compliant**: Modern styling using Salesforce Lightning Design System variables
+- **Responsive Design**: Adapts to container width
 
-- **Record pages** for: Contact, Account, Lead, Case, MessagingSession, VoiceCall  
-- **App** and **Home** pages  
-- **Experience/Community** pages  
+## Installation
 
-Add it via App Builder (Lightning App Builder or Experience Builder) and place it where you want the card to appear.
+### Deploy the Component
 
-## How It Finds the Contact
+```bash
+sf project deploy start --source-dir "force-app/main/default/lwc/modernContactCard" --target-org YOUR_ORG_ALIAS
+```
 
-| Page Type        | How the Contact is resolved                                  |
-|------------------|---------------------------------------------------------------|
-| **Contact**      | The current record (Contact record page).                     |
-| **Case**         | `Case.ContactId` on the Case record.                          |
-| **MessagingSession** | `MessagingSession.EndUserContactId` on the session.    |
-| **Voice Call**   | `VoiceCall.Contact__c` (custom Contact lookup on Voice Call). |
+### Deploy Custom Fields
 
-On Contact pages the card uses the record’s Id. On other supported record types it loads the parent record, reads the Contact lookup field above, then loads and displays that Contact.
+The component uses custom fields on the Contact object for profile images and metric data:
 
-## Configuration (App Builder)
+```bash
+sf project deploy start --source-dir "force-app/main/default/objects/Contact/fields" --target-org YOUR_ORG_ALIAS
+```
 
-When you drop the component on a page, you can configure:
+## Custom Fields
 
-- **Theme** – Dark or Light.
-- **Header color** – Hex color (e.g. `#0066CC`) for the header area.
-- **Profile picture** – Show or hide.
-- **Metrics 1–5** – Labels, SLDS icon names, and show/hide for each.
-- **Chart** – Engagement data, satisfaction data, X-axis labels, and line labels (e.g. “Listening Score”, “Satisfaction Index”).
+| Field API Name | Type | Description |
+|----------------|------|-------------|
+| `ContactCardPicture__c` | URL | Profile image URL for the contact |
+| `Metric_1__c` | Text(255) | Value for metric field 1 |
+| `Metric_2__c` | Text(255) | Value for metric field 2 |
+| `Metric_3__c` | Text(255) | Value for metric field 3 |
+| `Metric_4__c` | Text(255) | Value for metric field 4 |
+| `Metric_5__c` | Text(255) | Value for metric field 5 |
+| `Metric_6__c` | Text(255) | Value for metric field 6 |
 
-## Contact Fields Used
+## Configuration
 
-The card reads these Contact fields (custom ones must exist on Contact in your org):
+The component is highly configurable through Lightning App Builder properties:
 
-- **Standard:** Name, Email, Phone, MailingCity, MailingState  
-- **Custom (optional):**  
-  - `ContactCardPicture__c` – URL for the profile image  
-  - `Metric_1__c` … `Metric_5__c` – values for the 5 configurable metric rows  
+### Theme Settings
+- **Theme Mode**: Choose between "Light" or "Dark" theme
 
-If the custom fields are missing, the component still runs; those areas are simply empty or use defaults.
+### Profile Image Settings
+- **Profile Image Field**: API name of the Contact field containing the image URL (default: `ContactCardPicture__c`)
+- **Fallback Image URL**: URL to display if the Contact field is empty
 
-## Voice Call Requirement
+### Metric Field Settings (x6)
+Each metric field has:
+- **Label**: The header text (e.g., "ACCOUNT ID")
+- **Icon**: SLDS icon name (e.g., `utility:number_input`)
+- **Value**: Fallback value if `Contact.Metric_X__c` is empty
+- **Show Field**: Toggle visibility
 
-For **Voice Call** record pages, the card uses the custom lookup **`Contact__c`** on the Voice Call object. Ensure that field exists and is populated when you want the card to show a contact on a Voice Call record.
+### Chart Settings
+- **Chart Title**: Title displayed above the chart (default: "CSAT History")
+- **Engagement Data**: Comma-separated values for the engagement line
+- **Satisfaction Data**: Comma-separated values for the satisfaction line
+- **Chart Labels**: Comma-separated x-axis labels
 
-## 📄 Disclaimer
-This project is NOT an official Salesforce product.
+## Supported Record Pages
 
-Created by Brendan Sheridan as a demonstration accelerator. Use at your own risk. This code is provided "as-is" without warranty of any kind. Always review and test thoroughly before using in any production environment.
+The component can be placed on:
+- **Contact** record pages
+- **Case** record pages (retrieves contact from `ContactId`)
+- **MessagingSession** record pages (retrieves contact from `EndUserContactId`)
+- **VoiceCall** record pages
 
-## 📝 License
-This project is provided for educational and demonstration purposes. Feel free to use, modify, and adapt for your own Salesforce implementations.
+## Usage
 
+1. Navigate to a supported record page in Lightning App Builder
+2. Drag the "Modern Contact Card" component onto the page
+3. Configure the component properties as needed
+4. Save and activate the page
+
+## File Structure
+
+```
+Modern Contact Card/
+├── README.md
+├── assets/
+│   └── preview.png
+└── force-app/
+    └── main/
+        └── default/
+            ├── lwc/
+            │   └── modernContactCard/
+            │       ├── modernContactCard.css
+            │       ├── modernContactCard.html
+            │       ├── modernContactCard.js
+            │       └── modernContactCard.js-meta.xml
+            └── objects/
+                └── Contact/
+                    └── fields/
+                        ├── ContactCardPicture__c.field-meta.xml
+                        ├── Metric_1__c.field-meta.xml
+                        ├── Metric_2__c.field-meta.xml
+                        ├── Metric_3__c.field-meta.xml
+                        ├── Metric_4__c.field-meta.xml
+                        ├── Metric_5__c.field-meta.xml
+                        └── Metric_6__c.field-meta.xml
+```
+
+## Requirements
+
+- Salesforce org with Lightning Experience enabled
+- API version 61.0 or higher
+
+## License
+
+This component is provided as-is for demonstration purposes.
