@@ -1,31 +1,16 @@
 <template>
     <article class={cardContainerClass}>
-        <!-- Header Section with Profile -->
-        <header class="card-header">
-            <div class="profile-section">
-                <!-- Profile Image with Status -->
-                <div class="profile-image-wrapper">
-                    <img 
-                        src={displayProfileImage} 
-                        alt={displayName}
-                        class="profile-image"
-                        onerror={handleImageError}
-                    />
-                    <span class="status-indicator" title="Online"></span>
-                </div>
-                
-                <!-- Name and Location -->
-                <div class="profile-info">
-                    <h1 class="contact-name">{displayName}</h1>
-                    <div class="location-wrapper">
-                        <lightning-icon 
-                            icon-name="utility:location" 
-                            size="xx-small"
-                            alternative-text="Location"
-                        ></lightning-icon>
-                        <span class="location-text">{displayLocation}</span>
+        <!-- Header Background Banner -->
+        <div class="header-background" style={headerBackgroundStyle}>
+            <!-- Top Controls: Health Pill and Menu Button -->
+            <div class="header-controls">
+                <!-- Health Score Pill -->
+                <template if:true={showHealthPill}>
+                    <div class="health-pill">
+                        <span class="health-dot" style={healthDotStyle}></span>
+                        <span class="health-text">{healthScoreLabel}: {displayHealthScore}</span>
                     </div>
-                </div>
+                </template>
                 
                 <!-- Menu Button -->
                 <lightning-button-menu
@@ -40,6 +25,46 @@
                     <lightning-menu-item value="edit" label="Edit Contact"></lightning-menu-item>
                     <lightning-menu-item value="email" label="Send Email"></lightning-menu-item>
                 </lightning-button-menu>
+            </div>
+        </div>
+
+        <!-- Profile Section (overlaps banner) -->
+        <header class="card-header">
+            <div class="profile-row">
+                <!-- Profile Image with Status -->
+                <div class="profile-image-wrapper">
+                    <img 
+                        src={displayProfileImage} 
+                        alt={displayName}
+                        class="profile-image"
+                        onerror={handleImageError}
+                    />
+                    <span class="status-indicator" title="Online"></span>
+                </div>
+                
+                <!-- Name, Location, and Tags next to profile image -->
+                <div class="profile-info">
+                    <h1 class="contact-name">{displayName}</h1>
+                    <div class="info-row">
+                        <div class="location-wrapper">
+                            <lightning-icon 
+                                icon-name="utility:location" 
+                                size="xx-small"
+                                alternative-text="Location"
+                            ></lightning-icon>
+                            <span class="location-text">{displayLocation}</span>
+                        </div>
+                        
+                        <!-- Tags -->
+                        <template if:true={showTagsPills}>
+                            <div class="tags-wrapper">
+                                <template for:each={displayTags} for:item="tag">
+                                    <span key={tag.id} class="tag-pill" style={tag.style}>{tag.label}</span>
+                                </template>
+                            </div>
+                        </template>
+                    </div>
+                </div>
             </div>
         </header>
 

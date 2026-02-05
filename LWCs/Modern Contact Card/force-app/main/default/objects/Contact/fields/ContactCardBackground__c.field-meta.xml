@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ContactCardBackground__c</fullName>
+    <label>Contact Card Background</label>
+    <type>Url</type>
+    <description>URL for the header background image in the Modern Contact Card component</description>
+</CustomField>

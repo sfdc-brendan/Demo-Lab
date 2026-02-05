@@ -9,14 +9,16 @@ import CONTACT_PHONE_FIELD from '@salesforce/schema/Contact.Phone';
 import CONTACT_MAILING_CITY_FIELD from '@salesforce/schema/Contact.MailingCity';
 import CONTACT_MAILING_STATE_FIELD from '@salesforce/schema/Contact.MailingState';
 
-// Import Case and MessagingSession lookup fields
+// Import Case, MessagingSession, and VoiceCall lookup fields
 import CASE_CONTACTID_FIELD from '@salesforce/schema/Case.ContactId';
 import MSG_CONTACTID_FIELD from '@salesforce/schema/MessagingSession.EndUserContactId';
+import VOICECALL_CONTACT_FIELD from '@salesforce/schema/VoiceCall.Contact__c';
 
 // Parent record fields mapping
 const PARENT_RECORD_FIELDS = {
     Case: [CASE_CONTACTID_FIELD],
-    MessagingSession: [MSG_CONTACTID_FIELD]
+    MessagingSession: [MSG_CONTACTID_FIELD],
+    VoiceCall: [VOICECALL_CONTACT_FIELD]
 };
 
 // Contact fields to query
@@ -28,7 +30,7 @@ const CONTACT_FIELDS = [
     CONTACT_MAILING_STATE_FIELD
 ];
 
-// Optional custom fields on Contact for metrics
+// Optional custom fields on Contact for metrics and card customization
 const METRIC_FIELDS = [
     'Contact.Metric_1__c',
     'Contact.Metric_2__c',
@@ -38,6 +40,18 @@ const METRIC_FIELDS = [
     'Contact.Metric_6__c'
 ];
 
+// Tag color palette - visually distinct colors
+const TAG_COLORS = [
+    { bg: '#e8f4fd', text: '#0176d3' },  // Blue
+    { bg: '#fef3e7', text: '#ba5d00' },  // Orange
+    { bg: '#e7f6ed', text: '#2e844a' },  // Green
+    { bg: '#fce9ea', text: '#c23934' },  // Red
+    { bg: '#f3e8fd', text: '#7526ba' },  // Purple
+    { bg: '#e8f7f8', text: '#0d9dda' },  // Cyan
+    { bg: '#fef6e8', text: '#8e6d00' },  // Gold
+    { bg: '#fce8f3', text: '#c41c7f' }   // Pink
+];
+
 export default class ModernContactCard extends NavigationMixin(LightningElement) {
     @api recordId;
     @api objectApiName;
@@ -45,10 +59,25 @@ export default class ModernContactCard extends NavigationMixin(LightningElement)
     // Theme Configuration
     @api themeMode = 'Light';
     
+    // Header Background Configuration
+    @api headerBackgroundField = 'ContactCardBackground__c';
+    @api headerBackgroundUrl = '';  // Fallback URL or default
+    
     // Profile Configuration
     @api profileImageField = 'ContactCardPicture__c';
     @api profileImageUrl = ''; // Legacy fallback
     @api fallbackImageUrl = '';
+    
+    // Health Score Configuration
+    @api healthScoreField = 'ContactCardHealthScore__c';
+    @api healthScoreLabel = 'Health';
+    @api healthScoreFallback = '';
+    @api showHealthScore = false;
+    
+    // Tags Configuration
+    @api tagsField = 'ContactCardTags__c';
+    @api tags = '';  // Comma-separated tags (fallback)
+    @api showTags = false;
     
     // Field Configuration - Row 1
     // Field 1: Value from Contact.Metric_1__c
@@ -103,6 +132,9 @@ export default class ModernContactCard extends NavigationMixin(LightningElement)
     contactLocation = '';
     contactEmail = '';
     contactProfileImageUrl = '';
+    contactBackgroundUrl = '';
+    contactHealthScore = '';
+    contactTags = '';
     
     // Metric values from Contact record
     metric1Value = '';
@@ -144,6 +176,101 @@ export default class ModernContactCard extends NavigationMixin(LightningElement)
         `);
     }
 
+    // Header background style - uses Contact field, fallback URL, or default gradient
+    get headerBackgroundStyle() {
+        const bgUrl = this.contactBackgroundUrl || this.headerBackgroundUrl;
+        if (bgUrl) {
+            return `background-image: url('${bgUrl}'); background-size: cover; background-position: center;`;
+        }
+        return ''; // Use CSS default gradient
+    }
+
+    // Health score display
+    get showHealthPill() {
+        return this.showHealthScore && this.displayHealthScore;
+    }
+
+    get displayHealthScore() {
+        return this.contactHealthScore || this.healthScoreFallback || '';
+    }
+
+    // Dynamic health dot color based on score value
+    get healthDotStyle() {
+        const score = parseInt(this.displayHealthScore, 10);
+        if (isNaN(score)) {
+            return 'background-color: #2e844a;'; // Default green
+        }
+        
+        // Clamp score between 0 and 100
+        const clampedScore = Math.max(0, Math.min(100, score));
+        
+        // Color gradient: Red (0) → Orange (35) → Yellow (50) → Light Green (70) → Green (100)
+        let color;
+        if (clampedScore <= 30) {
+            // Red to Orange: 0-30
+            const ratio = clampedScore / 30;
+            color = this.interpolateColor('#dc3545', '#fd7e14', ratio); // Red to Orange
+        } else if (clampedScore <= 50) {
+            // Orange to Yellow: 31-50
+            const ratio = (clampedScore - 30) / 20;
+            color = this.interpolateColor('#fd7e14', '#ffc107', ratio); // Orange to Yellow
+        } else if (clampedScore <= 70) {
+            // Yellow to Light Green: 51-70
+            const ratio = (clampedScore - 50) / 20;
+            color = this.interpolateColor('#ffc107', '#7cb342', ratio); // Yellow to Light Green
+        } else {
+            // Light Green to Green: 71-100
+            const ratio = (clampedScore - 70) / 30;
+            color = this.interpolateColor('#7cb342', '#2e844a', ratio); // Light Green to Green
+        }
+        
+        return `background-color: ${color};`;
+    }
+
+    // Helper method to interpolate between two hex colors
+    interpolateColor(color1, color2, ratio) {
+        const hex = (color) => {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(color);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : { r: 0, g: 0, b: 0 };
+        };
+        
+        const c1 = hex(color1);
+        const c2 = hex(color2);
+        
+        const r = Math.round(c1.r + (c2.r - c1.r) * ratio);
+        const g = Math.round(c1.g + (c2.g - c1.g) * ratio);
+        const b = Math.round(c1.b + (c2.b - c1.b) * ratio);
+        
+        return `rgb(${r}, ${g}, ${b})`;
+    }
+
+    // Tags display
+    get showTagsPills() {
+        return this.showTags && this.displayTags && this.displayTags.length > 0;
+    }
+
+    get displayTags() {
+        const tagsString = this.contactTags || this.tags || '';
+        if (!tagsString.trim()) return [];
+        
+        return tagsString.split(',')
+            .map((tag, index) => tag.trim())
+            .filter(tag => tag.length > 0)
+            .map((tag, index) => {
+                const colorIndex = index % TAG_COLORS.length;
+                const color = TAG_COLORS[colorIndex];
+                return {
+                    id: `tag-${index}`,
+                    label: tag.toUpperCase(),
+                    style: `background-color: ${color.bg}; color: ${color.text};`
+                };
+            });
+    }
+
     // Display values - use Contact metric if available, otherwise use fallback from settings
     get displayField1Value() {
         return this.metric1Value || this.field1Value || '';
@@ -173,17 +300,42 @@ export default class ModernContactCard extends NavigationMixin(LightningElement)
         return PARENT_RECORD_FIELDS[this.objectApiName] || undefined;
     }
 
-    // Build optional fields array dynamically to include profile image field
+    // Build optional fields array dynamically to include all custom fields
     get optionalContactFields() {
         const fields = [...METRIC_FIELDS];
-        // Add the profile image field if configured
+        
+        // Profile image field
         if (this.profileImageField) {
             fields.push(`Contact.${this.profileImageField}`);
         }
-        // Also always include the default field name in case it differs
         if (this.profileImageField !== 'ContactCardPicture__c') {
             fields.push('Contact.ContactCardPicture__c');
         }
+        
+        // Header background field
+        if (this.headerBackgroundField) {
+            fields.push(`Contact.${this.headerBackgroundField}`);
+        }
+        if (this.headerBackgroundField !== 'ContactCardBackground__c') {
+            fields.push('Contact.ContactCardBackground__c');
+        }
+        
+        // Health score field
+        if (this.healthScoreField) {
+            fields.push(`Contact.${this.healthScoreField}`);
+        }
+        if (this.healthScoreField !== 'ContactCardHealthScore__c') {
+            fields.push('Contact.ContactCardHealthScore__c');
+        }
+        
+        // Tags field
+        if (this.tagsField) {
+            fields.push(`Contact.${this.tagsField}`);
+        }
+        if (this.tagsField !== 'ContactCardTags__c') {
+            fields.push('Contact.ContactCardTags__c');
+        }
+        
         return fields;
     }
 
@@ -201,6 +353,10 @@ export default class ModernContactCard extends NavigationMixin(LightningElement)
                 case 'MessagingSession':
                     foundContactId = getFieldValue(data, MSG_CONTACTID_FIELD);
                     console.log('ModernContactCard - MessagingSession EndUserContactId:', foundContactId);
+                    break;
+                case 'VoiceCall':
+                    foundContactId = getFieldValue(data, VOICECALL_CONTACT_FIELD);
+                    console.log('ModernContactCard - VoiceCall Contact__c:', foundContactId);
                     break;
                 default:
                     break;
@@ -275,7 +431,7 @@ export default class ModernContactCard extends NavigationMixin(LightningElement)
             this.contactLocation = `${city || ''}${city && state ? ', ' : ''}${state || ''}`.trim();
         }
 
-        // Get profile image and metric fields from the contact data
+        // Get custom fields from the contact data
         if (contactData.fields) {
             console.log('ModernContactCard - Available fields:', Object.keys(contactData.fields));
             
@@ -291,6 +447,42 @@ export default class ModernContactCard extends NavigationMixin(LightningElement)
             }
             if (imageUrl) {
                 this.contactProfileImageUrl = imageUrl;
+            }
+            
+            // Header background - try configured field first
+            let bgUrl = null;
+            if (this.headerBackgroundField && contactData.fields[this.headerBackgroundField]) {
+                bgUrl = contactData.fields[this.headerBackgroundField].value;
+            }
+            if (!bgUrl && contactData.fields.ContactCardBackground__c) {
+                bgUrl = contactData.fields.ContactCardBackground__c.value;
+            }
+            if (bgUrl) {
+                this.contactBackgroundUrl = bgUrl;
+            }
+            
+            // Health score - try configured field first
+            let healthScore = null;
+            if (this.healthScoreField && contactData.fields[this.healthScoreField]) {
+                healthScore = contactData.fields[this.healthScoreField].value;
+            }
+            if (!healthScore && contactData.fields.ContactCardHealthScore__c) {
+                healthScore = contactData.fields.ContactCardHealthScore__c.value;
+            }
+            if (healthScore !== null && healthScore !== undefined) {
+                this.contactHealthScore = String(healthScore);
+            }
+            
+            // Tags - try configured field first
+            let tagsValue = null;
+            if (this.tagsField && contactData.fields[this.tagsField]) {
+                tagsValue = contactData.fields[this.tagsField].value;
+            }
+            if (!tagsValue && contactData.fields.ContactCardTags__c) {
+                tagsValue = contactData.fields.ContactCardTags__c.value;
+            }
+            if (tagsValue) {
+                this.contactTags = tagsValue;
             }
             
             // Metric fields - values for the 6 configurable fields

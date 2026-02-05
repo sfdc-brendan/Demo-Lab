@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ContactCardHealthScore__c</fullName>
+    <label>Contact Card Health Score</label>
+    <type>Number</type>
+    <precision>3</precision>
+    <scale>0</scale>
+    <description>Customer health score displayed in the Modern Contact Card component (0-100)</description>
+</CustomField>

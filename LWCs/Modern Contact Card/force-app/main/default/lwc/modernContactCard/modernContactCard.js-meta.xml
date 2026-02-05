@@ -19,10 +19,25 @@
             <!-- Theme Configuration -->
             <property name="themeMode" type="String" default="Light" label="Theme Mode" datasource="Light,Dark" description="Choose light or dark theme" />
             
+            <!-- Header Background Configuration -->
+            <property name="headerBackgroundField" type="String" default="ContactCardBackground__c" label="Background Image Field" description="API name of the Contact field containing the header background image URL" />
+            <property name="headerBackgroundUrl" type="String" default="" label="Default Background URL" description="Fallback URL for header background if Contact field is empty (leave empty for gradient)" />
+            
             <!-- Profile Configuration -->
             <property name="profileImageField" type="String" default="ContactCardPicture__c" label="Profile Image Field" description="API name of the Contact field containing the profile image URL (e.g. ContactCardPicture__c)" />
             <property name="profileImageUrl" type="String" default="" label="Fallback Image URL (Legacy)" description="Fallback URL if Contact field is empty" />
             <property name="fallbackImageUrl" type="String" default="" label="Fallback Image URL" description="URL to use if the Contact field is empty" />
+            
+            <!-- Health Score Configuration -->
+            <property name="healthScoreField" type="String" default="ContactCardHealthScore__c" label="Health Score Field" description="API name of the Contact field containing the health score (e.g. ContactCardHealthScore__c)" />
+            <property name="healthScoreLabel" type="String" default="Health" label="Health Score Label" description="Label to display before the health score value" />
+            <property name="healthScoreFallback" type="String" default="" label="Health Score Fallback" description="Fallback value if Contact field is empty" />
+            <property name="showHealthScore" type="Boolean" default="true" label="Show Health Score" description="Show/hide the health score pill" />
+            
+            <!-- Tags Configuration -->
+            <property name="tagsField" type="String" default="ContactCardTags__c" label="Tags Field" description="API name of the Contact field containing comma-separated tags" />
+            <property name="tags" type="String" default="" label="Fallback Tags" description="Comma-separated tags to display if Contact field is empty (e.g. VIP, Premium)" />
+            <property name="showTags" type="Boolean" default="true" label="Show Tags" description="Show/hide the tag pills" />
             
             <!-- Field 1 Configuration - Value from Contact.Metric_1__c -->
             <property name="field1Label" type="String" default="ACCOUNT ID" label="Field 1 Label" description="Display label for Field 1 (value from Contact.Metric_1__c)" />
