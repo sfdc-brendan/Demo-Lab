@@ -17,23 +17,23 @@ flowchart TB
     subgraph ApexSend["2. Apex: generateAndSendCode(contactId, 'email')"]
         C[Validate contactId & deliveryMethod]
         D[Get Contact record]
-        E{Contact.Email present?}
+        E{"Contact.Email present?"}
         F[Invalidate any active codes for Contact]
         G[Generate 6-digit code]
         H[Create Customer_Verification_Code__c record]
         I[Insert verification record]
-        J[sendCodeByEmail(Contact, code)]
+        J["sendCodeByEmail(Contact, code)"]
         C --> D --> E
         E -->|No| Fail1[Return error: no email]
         E -->|Yes| F --> G --> H --> I --> J
     end
 
     subgraph Email["3. Send email"]
-        K[Messaging.SingleEmailMessage]
-        L[setToAddresses: Contact.Email]
+        K["Messaging.SingleEmailMessage"]
+        L["setToAddresses: Contact.Email"]
         M[Subject: Your verification code]
         N[Body: Hi FirstName, your code is XXXXXX. Expires in 15 min.]
-        O[Messaging.sendEmail]
+        O["Messaging.sendEmail"]
         K --> L --> M --> N --> O
     end
 
@@ -56,8 +56,8 @@ flowchart TB
 
     subgraph ApexVerify["7. Apex: validateCode(contactId, codeEntered)"]
         V[Validate contactId & 6-digit code]
-        W[Query Customer_Verification_Code__c: Contact, code, Active, not expired]
-        X{Match found?}
+        W["Query Customer_Verification_Code__c: Contact, code, Active, not expired"]
+        X{"Match found?"}
         Y[Set Status__c = Used, update record]
         Z[Return success: Verified]
         V --> W --> X
