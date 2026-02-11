@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Send and verify OTP codes via email using the Customer Verification (OTP) LWC. Grants access to the custom object and Apex service.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>OTP Verification</label>
+    <license>Salesforce</license>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <object>Customer_Verification_Code__c</object>
+    </objectPermissions>
+    <classAccesses>
+        <apexClass>CustomerVerificationCodeService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+</PermissionSet>

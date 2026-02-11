@@ -1,0 +1,56 @@
+<template>
+    <lightning-card title="Customer Verification (OTP)" icon-name="standard:verification">
+        <div class="slds-p-around_medium">
+            <template lwc:if={contactId}>
+                <div class="slds-m-bottom_medium">
+                    <span class="slds-text-title slds-m-bottom_x-small">Send 6-digit code via email</span>
+                </div>
+
+                <div class="slds-m-bottom_medium">
+                    <lightning-button
+                        label="Send verification code"
+                        variant="brand"
+                        onclick={handleSendCode}
+                        disabled={isLoading}
+                        title="Send 6-digit code to contact's email"
+                    ></lightning-button>
+                </div>
+
+                <template lwc:if={hasActiveCode}>
+                    <div class="slds-m-bottom_medium slds-text-color_weak">
+                        {activeCodeMessage}
+                    </div>
+                </template>
+
+                <div class="slds-m-top_medium slds-border_top slds-p-top_medium">
+                    <span class="slds-text-title slds-m-bottom_x-small">Verify code from customer</span>
+                    <div class="slds-grid slds-gutters_x-small slds-m-top_x-small">
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input
+                                type="text"
+                                label="6-digit code"
+                                placeholder="000000"
+                                max-length="6"
+                                pattern="[0-9]*"
+                                value={codeInput}
+                                onchange={handleCodeInputChange}
+                            ></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2 slds-p-top_large">
+                            <lightning-button
+                                label="Verify code"
+                                variant="neutral"
+                                onclick={handleVerify}
+                                disabled={isLoading}
+                                title="Validate the code the customer recited"
+                            ></lightning-button>
+                        </div>
+                    </div>
+                </div>
+            </template>
+            <template lwc:else>
+                <p class="slds-text-color_weak">Open a Contact record to send and verify codes.</p>
+            </template>
+        </div>
+    </lightning-card>
+</template>

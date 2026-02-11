@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Expires_At__c</fullName>
+    <description>When the code expires and can no longer be used.</description>
+    <externalId>false</externalId>
+    <label>Expires At</label>
+    <required>true</required>
+    <type>DateTime</type>
+</CustomField>
