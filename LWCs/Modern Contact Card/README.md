@@ -150,6 +150,15 @@ Each metric field has:
 - **Engagement Data**: Comma-separated values for the engagement line
 - **Satisfaction Data**: Comma-separated values for the satisfaction line
 - **Chart Labels**: Comma-separated x-axis labels
+- **Engagement Legend Label**: Label for the engagement line in the legend
+- **Satisfaction Legend Label**: Label for the satisfaction line in the legend
+- **Engagement Line Color**: Hex color for the engagement line (default: `#0176d3`)
+- **Satisfaction Line Color**: Hex color for the satisfaction line (default: `#1b96ff`)
+
+Example color combinations:
+- Blue/Orange: `#0176d3` / `#fd7e14`
+- Green/Purple: `#2e844a` / `#7526ba`
+- Teal/Pink: `#0d9dda` / `#c41c7f`
 
 ## Supported Record Pages
 

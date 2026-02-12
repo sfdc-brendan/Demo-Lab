@@ -88,6 +88,8 @@
             <property name="chartLabels" type="String" default="W14,W19,W24,W29,W34,W39,W44,W49,W2,W7,W12,W17" label="Chart Labels" description="Comma-separated X-axis labels" />
             <property name="engagementLabel" type="String" default="Engage" label="Engagement Legend Label" description="Legend label for engagement line" />
             <property name="satisfactionLabel" type="String" default="Sat" label="Satisfaction Legend Label" description="Legend label for satisfaction line" />
+            <property name="engagementColor" type="String" default="#0176d3" label="Engagement Line Color" description="Hex color for the engagement line (e.g. #0176d3)" />
+            <property name="satisfactionColor" type="String" default="#1b96ff" label="Satisfaction Line Color" description="Hex color for the satisfaction line (e.g. #1b96ff)" />
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

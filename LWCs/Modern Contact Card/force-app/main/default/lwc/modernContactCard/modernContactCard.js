@@ -142,6 +142,8 @@ export default class ModernContactCard extends NavigationMixin(LightningElement)
     @api chartLabels = 'W14,W19,W24,W29,W34,W39,W44,W49,W2,W7,W12,W17';
     @api engagementLabel = 'Engage';
     @api satisfactionLabel = 'Sat';
+    @api engagementColor = '#0176d3';  // Default SLDS blue
+    @api satisfactionColor = '#1b96ff'; // Default lighter blue
 
     // Internal state
     contactIdToDisplay;
@@ -256,23 +258,30 @@ export default class ModernContactCard extends NavigationMixin(LightningElement)
 
     // Helper method to interpolate between two hex colors
     interpolateColor(color1, color2, ratio) {
-        const hex = (color) => {
-            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(color);
-            return result ? {
-                r: parseInt(result[1], 16),
-                g: parseInt(result[2], 16),
-                b: parseInt(result[3], 16)
-            } : { r: 0, g: 0, b: 0 };
-        };
-        
-        const c1 = hex(color1);
-        const c2 = hex(color2);
+        const c1 = this.hexToRgb(color1);
+        const c2 = this.hexToRgb(color2);
         
         const r = Math.round(c1.r + (c2.r - c1.r) * ratio);
         const g = Math.round(c1.g + (c2.g - c1.g) * ratio);
         const b = Math.round(c1.b + (c2.b - c1.b) * ratio);
         
         return `rgb(${r}, ${g}, ${b})`;
+    }
+
+    // Helper method to convert hex color to RGB object
+    hexToRgb(color) {
+        const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(color);
+        return result ? {
+            r: parseInt(result[1], 16),
+            g: parseInt(result[2], 16),
+            b: parseInt(result[3], 16)
+        } : { r: 0, g: 0, b: 0 };
+    }
+
+    // Helper method to convert hex color to rgba with opacity
+    hexToRgba(hexColor, opacity) {
+        const rgb = this.hexToRgb(hexColor);
+        return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${opacity})`;
     }
 
     // Tags display
@@ -368,6 +377,15 @@ export default class ModernContactCard extends NavigationMixin(LightningElement)
 
     get displayField6Value() {
         return this.metric6Value || this.field6Value || '';
+    }
+
+    // Chart legend dot styles
+    get engagementDotStyle() {
+        return `background-color: ${this.engagementColor || '#0176d3'};`;
+    }
+
+    get satisfactionDotStyle() {
+        return `background-color: ${this.satisfactionColor || '#1b96ff'};`;
     }
 
     get parentFieldsToQuery() {
@@ -723,14 +741,17 @@ export default class ModernContactCard extends NavigationMixin(LightningElement)
         // Clear canvas
         ctx.clearRect(0, 0, displayWidth, displayHeight);
 
-        // Colors - SLDS 2 compatible
+        // Colors - use configured hex colors with auto-generated fills
+        const engageHex = this.engagementColor || '#0176d3';
+        const satHex = this.satisfactionColor || '#1b96ff';
+        
         const colors = {
             grid: 'rgba(176, 185, 195, 0.3)',
             text: 'rgba(84, 105, 141, 0.8)',
-            engage: '#0176d3',
-            engageFill: 'rgba(1, 118, 211, 0.15)',
-            sat: '#1b96ff',
-            satFill: 'rgba(27, 150, 255, 0.1)'
+            engage: engageHex,
+            engageFill: this.hexToRgba(engageHex, 0.15),
+            sat: satHex,
+            satFill: this.hexToRgba(satHex, 0.1)
         };
 
         // Draw horizontal grid lines and Y-axis labels

@@ -325,14 +325,7 @@
     width: 8px;
     height: 8px;
     border-radius: 50%;
-}
-
-.legend-engage {
-    background-color: var(--slds-g-color-brand-base-50, #0176d3);
-}
-
-.legend-sat {
-    background-color: var(--slds-g-color-brand-base-40, #1b96ff);
+    /* Color set dynamically via inline style */
 }
 
 .legend-text {
