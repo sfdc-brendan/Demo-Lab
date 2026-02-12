@@ -42,6 +42,9 @@
             <!-- VoiceCall Configuration (Optional) -->
             <property name="voiceCallContactField" type="String" default="" label="VoiceCall Contact Field" description="API name of the Contact lookup field on VoiceCall (e.g. Contact__c). Leave blank if not using on VoiceCall pages." />
             
+            <!-- Brand Affinities Configuration -->
+            <property name="showBrandAffinities" type="Boolean" default="false" label="Show Brand Affinities" description="Show/hide the brand affinities section (uses Contact.Brand_1_Name__c through Brand_4_Name__c and Brand_1_Image__c through Brand_4_Image__c fields)" />
+            
             <!-- Field 1 Configuration - Value from Contact.Metric_1__c -->
             <property name="field1Label" type="String" default="ACCOUNT ID" label="Field 1 Label" description="Display label for Field 1 (value from Contact.Metric_1__c)" />
             <property name="field1Value" type="String" default="" label="Field 1 Fallback" description="Fallback value if Contact.Metric_1__c is empty" />

@@ -63,4 +63,46 @@
         <editable>true</editable>
         <readable>true</readable>
     </fieldPermissions>
+    
+    <!-- Brand Affinity Fields -->
+    <fieldPermissions>
+        <field>Contact.Brand_1_Name__c</field>
+        <editable>true</editable>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <field>Contact.Brand_1_Image__c</field>
+        <editable>true</editable>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <field>Contact.Brand_2_Name__c</field>
+        <editable>true</editable>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <field>Contact.Brand_2_Image__c</field>
+        <editable>true</editable>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <field>Contact.Brand_3_Name__c</field>
+        <editable>true</editable>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <field>Contact.Brand_3_Image__c</field>
+        <editable>true</editable>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <field>Contact.Brand_4_Name__c</field>
+        <editable>true</editable>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <field>Contact.Brand_4_Image__c</field>
+        <editable>true</editable>
+        <readable>true</readable>
+    </fieldPermissions>
 </PermissionSet>

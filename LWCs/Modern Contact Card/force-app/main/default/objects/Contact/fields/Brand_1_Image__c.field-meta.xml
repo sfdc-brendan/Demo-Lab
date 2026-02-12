@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Brand_1_Image__c</fullName>
+    <label>Brand 1 Image</label>
+    <type>Url</type>
+    <description>Brand affinity image URL for slot 1 in the Modern Contact Card component</description>
+</CustomField>

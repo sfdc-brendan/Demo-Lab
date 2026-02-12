@@ -39,6 +39,18 @@ const METRIC_FIELDS = [
     'Contact.Metric_6__c'
 ];
 
+// Brand affinity fields on Contact
+const BRAND_FIELDS = [
+    'Contact.Brand_1_Name__c',
+    'Contact.Brand_1_Image__c',
+    'Contact.Brand_2_Name__c',
+    'Contact.Brand_2_Image__c',
+    'Contact.Brand_3_Name__c',
+    'Contact.Brand_3_Image__c',
+    'Contact.Brand_4_Name__c',
+    'Contact.Brand_4_Image__c'
+];
+
 // Tag color palette - visually distinct colors
 const TAG_COLORS = [
     { bg: '#e8f4fd', text: '#0176d3' },  // Blue
@@ -80,6 +92,9 @@ export default class ModernContactCard extends NavigationMixin(LightningElement)
     
     // VoiceCall Configuration (optional - leave blank if not using VoiceCall)
     @api voiceCallContactField = '';  // e.g., 'Contact__c' - the API name of the Contact lookup field on VoiceCall
+    
+    // Brand Affinities Configuration
+    @api showBrandAffinities = false;
     
     // Field Configuration - Row 1
     // Field 1: Value from Contact.Metric_1__c
@@ -137,6 +152,16 @@ export default class ModernContactCard extends NavigationMixin(LightningElement)
     contactBackgroundUrl = '';
     contactHealthScore = '';
     contactTags = '';
+    
+    // Brand affinity values from Contact record
+    brand1Name = '';
+    brand1Image = '';
+    brand2Name = '';
+    brand2Image = '';
+    brand3Name = '';
+    brand3Image = '';
+    brand4Name = '';
+    brand4Image = '';
     
     // Metric values from Contact record
     metric1Value = '';
@@ -273,6 +298,53 @@ export default class ModernContactCard extends NavigationMixin(LightningElement)
             });
     }
 
+    // Brand affinities display
+    get showBrandSection() {
+        return this.showBrandAffinities && this.displayBrands && this.displayBrands.length > 0;
+    }
+
+    get displayBrands() {
+        const brands = [];
+        
+        // Brand 1
+        if (this.brand1Name && this.brand1Image) {
+            brands.push({
+                id: 'brand-1',
+                name: this.brand1Name,
+                image: this.brand1Image
+            });
+        }
+        
+        // Brand 2
+        if (this.brand2Name && this.brand2Image) {
+            brands.push({
+                id: 'brand-2',
+                name: this.brand2Name,
+                image: this.brand2Image
+            });
+        }
+        
+        // Brand 3
+        if (this.brand3Name && this.brand3Image) {
+            brands.push({
+                id: 'brand-3',
+                name: this.brand3Name,
+                image: this.brand3Image
+            });
+        }
+        
+        // Brand 4
+        if (this.brand4Name && this.brand4Image) {
+            brands.push({
+                id: 'brand-4',
+                name: this.brand4Name,
+                image: this.brand4Image
+            });
+        }
+        
+        return brands;
+    }
+
     // Display values - use Contact metric if available, otherwise use fallback from settings
     get displayField1Value() {
         return this.metric1Value || this.field1Value || '';
@@ -340,6 +412,11 @@ export default class ModernContactCard extends NavigationMixin(LightningElement)
         }
         if (this.tagsField !== 'ContactCardTags__c') {
             fields.push('Contact.ContactCardTags__c');
+        }
+        
+        // Brand affinity fields
+        if (this.showBrandAffinities) {
+            fields.push(...BRAND_FIELDS);
         }
         
         return fields;
@@ -501,6 +578,16 @@ export default class ModernContactCard extends NavigationMixin(LightningElement)
             this.metric4Value = contactData.fields.Metric_4__c?.value || '';
             this.metric5Value = contactData.fields.Metric_5__c?.value || '';
             this.metric6Value = contactData.fields.Metric_6__c?.value || '';
+            
+            // Brand affinity fields
+            this.brand1Name = contactData.fields.Brand_1_Name__c?.value || '';
+            this.brand1Image = contactData.fields.Brand_1_Image__c?.value || '';
+            this.brand2Name = contactData.fields.Brand_2_Name__c?.value || '';
+            this.brand2Image = contactData.fields.Brand_2_Image__c?.value || '';
+            this.brand3Name = contactData.fields.Brand_3_Name__c?.value || '';
+            this.brand3Image = contactData.fields.Brand_3_Image__c?.value || '';
+            this.brand4Name = contactData.fields.Brand_4_Name__c?.value || '';
+            this.brand4Image = contactData.fields.Brand_4_Image__c?.value || '';
         }
     }
 

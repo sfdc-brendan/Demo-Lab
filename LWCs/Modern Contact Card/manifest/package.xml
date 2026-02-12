@@ -20,6 +20,14 @@
         <members>Contact.Metric_4__c</members>
         <members>Contact.Metric_5__c</members>
         <members>Contact.Metric_6__c</members>
+        <members>Contact.Brand_1_Name__c</members>
+        <members>Contact.Brand_1_Image__c</members>
+        <members>Contact.Brand_2_Name__c</members>
+        <members>Contact.Brand_2_Image__c</members>
+        <members>Contact.Brand_3_Name__c</members>
+        <members>Contact.Brand_3_Image__c</members>
+        <members>Contact.Brand_4_Name__c</members>
+        <members>Contact.Brand_4_Image__c</members>
         <name>CustomField</name>
     </types>
     

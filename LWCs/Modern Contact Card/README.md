@@ -12,6 +12,7 @@ A modern, customizable Lightning Web Component for displaying contact informatio
 - **Dynamic Contact Data**: Automatically retrieves contact information from related records (Contact, Case, MessagingSession, VoiceCall)
 - **Health Score Pill**: Color-coded health indicator (red/orange/yellow/green based on score 0-100)
 - **Contact Tags**: Comma-separated tags displayed as colorful pills
+- **Brand Affinities**: Display up to 4 brand logos/badges with labels from Contact fields
 - **Light/Dark Theme Toggle**: Configurable theme mode via Lightning App Builder
 - **Customizable Metrics**: 6 configurable data fields with labels, icons, and visibility toggles
 - **Profile Image from Contact Field**: Wire profile images to a custom URL field on the Contact record
@@ -59,9 +60,11 @@ sf project deploy start --source-dir "force-app/main/default/permissionsets" --t
 |-----------|------|-------------|
 | `modernContactCard` | LWC | The main component |
 | `Modern_Contact_Card_Access` | Permission Set | Grants access to all custom fields |
-| 10 Custom Fields | CustomField | Fields on Contact object |
+| 18 Custom Fields | CustomField | Fields on Contact object |
 
 ## Custom Fields
+
+### Core Fields
 
 | Field API Name | Type | Description |
 |----------------|------|-------------|
@@ -69,12 +72,30 @@ sf project deploy start --source-dir "force-app/main/default/permissionsets" --t
 | `ContactCardBackground__c` | URL | Header background image URL |
 | `ContactCardHealthScore__c` | Number | Customer health score (0-100) |
 | `ContactCardTags__c` | Text | Comma-separated tags (e.g., "VIP, Decision Maker") |
+
+### Metric Fields
+
+| Field API Name | Type | Description |
+|----------------|------|-------------|
 | `Metric_1__c` | Text(255) | Value for metric field 1 |
 | `Metric_2__c` | Text(255) | Value for metric field 2 |
 | `Metric_3__c` | Text(255) | Value for metric field 3 |
 | `Metric_4__c` | Text(255) | Value for metric field 4 |
 | `Metric_5__c` | Text(255) | Value for metric field 5 |
 | `Metric_6__c` | Text(255) | Value for metric field 6 |
+
+### Brand Affinity Fields
+
+| Field API Name | Type | Description |
+|----------------|------|-------------|
+| `Brand_1_Name__c` | Text(100) | Label for brand 1 |
+| `Brand_1_Image__c` | URL | Image URL for brand 1 |
+| `Brand_2_Name__c` | Text(100) | Label for brand 2 |
+| `Brand_2_Image__c` | URL | Image URL for brand 2 |
+| `Brand_3_Name__c` | Text(100) | Label for brand 3 |
+| `Brand_3_Image__c` | URL | Image URL for brand 3 |
+| `Brand_4_Name__c` | Text(100) | Label for brand 4 |
+| `Brand_4_Image__c` | URL | Image URL for brand 4 |
 
 ## Configuration
 
@@ -107,6 +128,15 @@ Health score colors automatically adjust based on value:
 - **Tags Field**: API name of Contact field for tags (default: `ContactCardTags__c`)
 - **Fallback Tags**: Comma-separated fallback tags
 - **Show Tags**: Toggle visibility
+
+### Brand Affinities Settings
+- **Show Brand Affinities**: Toggle to show/hide the brand affinities section
+
+Brand affinities use the following Contact fields:
+- `Brand_1_Name__c` through `Brand_4_Name__c` - Brand labels
+- `Brand_1_Image__c` through `Brand_4_Image__c` - Brand logo/image URLs
+
+Only brands with **both** a name and image populated will display.
 
 ### Metric Field Settings (x6)
 Each metric field has:
@@ -167,6 +197,14 @@ Modern Contact Card/
             ├── objects/
             │   └── Contact/
             │       └── fields/
+            │           ├── Brand_1_Image__c.field-meta.xml
+            │           ├── Brand_1_Name__c.field-meta.xml
+            │           ├── Brand_2_Image__c.field-meta.xml
+            │           ├── Brand_2_Name__c.field-meta.xml
+            │           ├── Brand_3_Image__c.field-meta.xml
+            │           ├── Brand_3_Name__c.field-meta.xml
+            │           ├── Brand_4_Image__c.field-meta.xml
+            │           ├── Brand_4_Name__c.field-meta.xml
             │           ├── ContactCardBackground__c.field-meta.xml
             │           ├── ContactCardHealthScore__c.field-meta.xml
             │           ├── ContactCardPicture__c.field-meta.xml
@@ -185,7 +223,7 @@ Modern Contact Card/
 
 - Salesforce org with Lightning Experience enabled
 - API version 62.0 or higher
-- For VoiceCall support: Custom `Contact__c` lookup field on VoiceCall object
+- For VoiceCall support: Custom Contact lookup field on VoiceCall object (configurable)
 
 ## License
 
