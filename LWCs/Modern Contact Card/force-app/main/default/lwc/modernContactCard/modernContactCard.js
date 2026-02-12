@@ -136,6 +136,7 @@ export default class ModernContactCard extends NavigationMixin(LightningElement)
     @api showField6 = false;
     
     // Chart Configuration
+    @api showChart = false;
     @api chartTitle = 'CSAT History';
     @api engagementData = '55,60,65,70,68,72,75,80,78,75,72,85';
     @api satisfactionData = '70,75,72,78,80,82,78,85,82,88,85,90';

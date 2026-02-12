@@ -146,6 +146,7 @@ Each metric field has:
 - **Show Field**: Toggle visibility
 
 ### Chart Settings
+- **Show CSAT Chart**: Toggle to show/hide the entire chart section
 - **Chart Title**: Title displayed above the chart (default: "CSAT History")
 - **Engagement Data**: Comma-separated values for the engagement line
 - **Satisfaction Data**: Comma-separated values for the satisfaction line
