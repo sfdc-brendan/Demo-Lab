@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Holds text input for the Case Tagging Trends Summary AI prompt. One record is created per summary request and deleted after use.</description>
+    <label>Case Tagging Summary Context</label>
+    <nameField>
+        <label>Context Name</label>
+        <type>AutoNumber</type>
+        <displayFormat>CTSC-{0000}</displayFormat>
+    </nameField>
+    <pluralLabel>Case Tagging Summary Contexts</pluralLabel>
+    <sharingModel>ReadWrite</sharingModel>
+</CustomObject>

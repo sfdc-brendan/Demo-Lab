@@ -2,11 +2,11 @@
 
 LWCs, Apex, Flows, Agentforce topics, and GenAI assets to use in demos. **Do not use these in production environments.**
 
-A collection of ready-to-deploy Salesforce metadata and code for service, agent, and analytics demos—contact cards, sentiment and coaching, RMA document generation, and AI agents that collect feedback and create Cases.
+A collection of ready-to-deploy Salesforce metadata and code for service, agent, and analytics demos—contact cards, sentiment and coaching, RMA document generation, AI-powered case tagging, and AI agents that collect feedback and create Cases.
 
 ---
 
-## What’s in the Repo
+## What's in the Repo
 
 ### [Agentforce](./Agentforce/)
 
@@ -15,7 +15,7 @@ AI agent demos and sample metadata for Salesforce **Agentforce**. Requires an or
 | Package | Description |
 |--------|-------------|
 | **[Product Feature Feedback](./Agentforce/Product%20Feature%20Feedback/)** | Agent that detects product feedback from natural language, analyzes it with a GenAI prompt (category, sentiment, topic, escalation, routing), creates a Case routed to the right product team, and escalates critical issues. Includes a GenAiPlugin topic, GenAiFunction, Flow, GenAiPromptTemplate, and Apex processor. |
-| **[RMA Process](./Agentforce/RMA%20Process/)** | Return Merchandise Authorization: generates RMA PDFs from Case and contact data, attaches them to Cases as Files, and exposes an invocable Apex action for Flows and Agentforce (“create case and add documentation”). Flow, invocable `RMAGeneratorFlowAction`, Visualforce PDF template, and supporting Apex. |
+| **[RMA Process](./Agentforce/RMA%20Process/)** | Return Merchandise Authorization: generates RMA PDFs from Case and contact data, attaches them to Cases as Files, and exposes an invocable Apex action for Flows and Agentforce ("create case and add documentation"). Flow, invocable `RMAGeneratorFlowAction`, Visualforce PDF template, and supporting Apex. |
 
 ---
 
@@ -33,12 +33,13 @@ Lightning Web Components and related metadata for record pages, service, and ana
 
 ### [Service Cloud](./Service%20Cloud/)
 
-Service Cloud demos: incident detection, Case-related automation, and GenAI.
+Service Cloud demos: incident detection, Case-related automation, case tagging, and GenAI.
 
 | Package | Description |
 |--------|-------------|
 | **[Incident Detection](./Service%20Cloud/Incident%20Detection/)** | **Real-time incident detection** for Cases. Record-triggered flow on Case create: summarizes the Case with GenAI, then invokes Apex to compare against recent open Cases. When a pattern is found, creates or reuses an **Incident** and **CaseRelatedIssue** links. Includes Flow `SDO_Service_Case_RealTime_Incident`, Apex `CaseIncidentHandler`, and GenAI prompt templates `Case_Summarizer`, `Case_RealTime_Similarity`. **Prerequisite:** Create custom field `Case.AI_Summary__c` (Long Text Area) before deploying. |
-| **[Email OTP](./Service%20Cloud/Email%20OTP/)** | **Email OTP**: one-time 6-digit verification codes sent to the contact’s email. LWC on Contact page (send code + verify); Apex `CustomerVerificationCodeService` and custom object `Customer_Verification_Code__c`. Email-only; SMS not included. |
+| **[Email OTP](./Service%20Cloud/Email%20OTP/)** | **Email OTP**: one-time 6-digit verification codes sent to the contact's email. LWC on Contact page (send code + verify); Apex `CustomerVerificationCodeService` and custom object `Customer_Verification_Code__c`. Email-only; SMS not included. |
+| **[Case Tagging](./Service%20Cloud/Case%20Tagging/)** | **AI-powered case tagging**: analyzes Case subject, description, type, priority, origin, and status with Einstein GenAI to produce comma-separated tags (e.g. criticality, category). Includes LWC on Case record page (`caseTags`), **Case Tag Trends** dashboard LWC (`caseTagTrends`), invocable and batch for historical backfill, autolaunched flows and GenAI prompt templates. Custom fields on Case and custom metadata for configuration. See package README for mermaid diagram and setup. |
 
 ---
 
@@ -47,28 +48,29 @@ Service Cloud demos: incident detection, Case-related automation, and GenAI.
 | Category | Components |
 |----------|------------|
 | **Agentforce** | Product Feature Feedback (topic + action + flow + prompt), RMA Process (flow + invocable + VF PDF) |
-| **Service Cloud** | Incident Detection (flow + Apex + GenAI prompts), Email OTP (LWC + Apex, email verification) |
-| **LWCs** | Modern Contact Card (sdo_ContactCard), Incident Dashboard (incidentDashboard), customerVerification (Email OTP), callCoaching, sentimentTracker, messagingSessionAnalytics |
-| **Flows** | Product Feature Feedback Flow, Create_Case_and_add_Documentation (RMA), SDO_Service_Case_RealTime_Incident (Incident Detection), SCV/MSG sentiment & coaching flows |
-| **GenAI** | Product Feature Feedback Analyzer, Case_Summarizer, Case_RealTime_Similarity, Call_Sentiment, Agent_Performance_Evaluation, MSG_Chat_Sentiment, MSG_Chat_Coaching |
-| **Apex** | ProductFeatureFeedbackProcessor, CaseIncidentHandler, CaseIncidentQueueable, CaseBacklogBatch, IncidentDashboardController, CustomerVerificationCodeService, RMAGeneratorController, RMAGeneratorFlowAction, RMATemplateController, ChatCoachingExtractor, ChatExtractor, TextExtractor |
+| **Service Cloud** | Incident Detection (flow + Apex + GenAI prompts), Email OTP (LWC + Apex, email verification), **Case Tagging** (LWCs + flows + GenAI + invocable + batch) |
+| **LWCs** | Modern Contact Card (sdo_ContactCard), Incident Dashboard (incidentDashboard), customerVerification (Email OTP), **caseTags**, **caseTagTrends**, callCoaching, sentimentTracker, messagingSessionAnalytics |
+| **Flows** | Product Feature Feedback Flow, Create_Case_and_add_Documentation (RMA), SDO_Service_Case_RealTime_Incident (Incident Detection), **Case_Tagging_Analysis_Flow**, **Case_Tagging_Trends_Summary_Flow**, SCV/MSG sentiment & coaching flows |
+| **GenAI** | Product Feature Feedback Analyzer, Case_Summarizer, Case_RealTime_Similarity, **Case_Tagging_Analysis**, **Case_Tagging_Trends_Summary**, Call_Sentiment, Agent_Performance_Evaluation, MSG_Chat_Sentiment, MSG_Chat_Coaching |
+| **Apex** | ProductFeatureFeedbackProcessor, CaseIncidentHandler, CaseIncidentQueueable, CaseBacklogBatch, IncidentDashboardController, CustomerVerificationCodeService, **CaseTaggingService**, **CaseTaggingController**, **CaseTaggingInvocable**, **CaseTaggingBatch**, **CaseTaggingTrendsController**, RMAGeneratorController, RMAGeneratorFlowAction, RMATemplateController, ChatCoachingExtractor, ChatExtractor, TextExtractor |
 
 ---
 
 ## Deployment
 
 - **Root [package.xml](./package.xml)** – Lists LWCs, Apex, Flows, GenAiPromptTemplates, and CustomObjects for the Sentiment and Coaching package. Use it with Salesforce CLI or your CI/CD tooling.
-- **Per-package** – Each folder (e.g. `Agentforce/Product Feature Feedback`, `Agentforce/RMA Process`, `Service Cloud/Incident Detection`, `Service Cloud/Email OTP`, `LWCs/Incident Dashboard`, `LWCs/Modern Contact Card`, `LWCs/Sentiment and Coaching`) contains metadata in standard SFDX layout. Deploy with:
-  ```bash
-  sf project deploy start --source-dir "Agentforce/RMA Process"
-  sf project deploy start --source-dir "Service Cloud/Incident Detection"
-  sf project deploy start --source-dir "Service Cloud/Email OTP"
-  sf project deploy start --source-dir "LWCs/Incident Dashboard"
-  sf project deploy start --source-dir "LWCs/Modern Contact Card"
-  ```
-  or your preferred manifest.
+- **Per-package** – Each folder (e.g. `Agentforce/Product Feature Feedback`, `Agentforce/RMA Process`, `Service Cloud/Incident Detection`, `Service Cloud/Email OTP`, `Service Cloud/Case Tagging`, `LWCs/Incident Dashboard`, `LWCs/Modern Contact Card`, `LWCs/Sentiment and Coaching`) contains metadata in standard SFDX layout. Deploy with:
+ ```bash
+ sf project deploy start --source-dir "Agentforce/RMA Process"
+ sf project deploy start --source-dir "Service Cloud/Incident Detection"
+ sf project deploy start --source-dir "Service Cloud/Email OTP"
+ sf project deploy start --source-dir "Service Cloud/Case Tagging"
+ sf project deploy start --source-dir "LWCs/Incident Dashboard"
+ sf project deploy start --source-dir "LWCs/Modern Contact Card"
+ ```
+ or your preferred manifest.
 
-See each package’s README for prerequisites, object/field requirements, and configuration.
+See each package's README for prerequisites, object/field requirements, and configuration.
 
 ---
 
@@ -77,6 +79,7 @@ See each package’s README for prerequisites, object/field requirements, and co
 - **Agentforce packages**: Org with Agentforce and Einstein GenAI; API 58.0–65.0 as noted in each package.
 - **Incident Detection**: Service Cloud (Case, Incident, CaseRelatedIssue); Einstein GenAI; create custom field **Case.AI_Summary__c** (Long Text Area) before deploying. See [Service Cloud/Incident Detection](./Service%20Cloud/Incident%20Detection/) README.
 - **Email OTP** (folder: [Service Cloud/Email OTP](./Service%20Cloud/Email%20OTP/)): Contact with Email; assign **OTP Verification** permission set; add **Customer Verification (OTP)** LWC to Contact page. See package README.
+- **Case Tagging** (folder: [Service Cloud/Case Tagging](./Service%20Cloud/Case%20Tagging/)): Service Cloud (Case); Einstein GenAI; API 65.0+. Custom fields and custom metadata are included. Assign **Case Tagging** permission set; add **Case Tags** LWC to Case record page and **Case Tag Trends** to a tab or app page. See package README and SETUP.md.
 - **Modern Contact Card** (folder: [LWCs/Modern Contact Card](./LWCs/Modern%20Contact%20Card/)): Contact (and, for Voice Call, a `Contact__c` lookup on Voice Call if used there).
 - **Incident Dashboard** (folder: [LWCs/Incident Dashboard](./LWCs/Incident%20Dashboard/)): Service Cloud (Incident, CaseRelatedIssue, Case). Optional companion to Incident Detection for displaying active incidents on Home/App pages.
 - **Sentiment and Coaching**: Service Cloud Voice and/or Messaging; Voice Call and/or Messaging Session; Einstein/GenAI; custom fields on those objects (included in the package metadata).
@@ -85,8 +88,8 @@ See each package’s README for prerequisites, object/field requirements, and co
 
 ## Disclaimer
 
-The files in this repo are **not** an official Salesforce product.  
-These are all related as a demonstration accelerator. Use at your own risk; code is provided “as-is” without warranty. Review and test thoroughly before using in any production environment.
+The files in this repo are **not** an official Salesforce product. 
+These are all related as a demonstration accelerator. Use at your own risk; code is provided "as-is" without warranty. Review and test thoroughly before using in any production environment.
 
 ---
 

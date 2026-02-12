@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Flow_Api_Name__c</fullName>
+    <description>API name of the autolaunched Flow that runs the Prompt Template and updates the Case. Create this flow in the org (see SETUP.md).</description>
+    <externalId>false</externalId>
+    <label>Flow API Name</label>
+    <length>80</length>
+    <required>false</required>
+    <type>Text</type>
+</CustomField>

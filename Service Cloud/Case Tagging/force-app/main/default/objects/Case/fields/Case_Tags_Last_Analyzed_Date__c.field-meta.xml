@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Case_Tags_Last_Analyzed_Date__c</fullName>
+    <description>When AI case tagging analysis was last run for this case.</description>
+    <externalId>false</externalId>
+    <label>Case Tags Last Analyzed Date</label>
+    <type>DateTime</type>
+</CustomField>

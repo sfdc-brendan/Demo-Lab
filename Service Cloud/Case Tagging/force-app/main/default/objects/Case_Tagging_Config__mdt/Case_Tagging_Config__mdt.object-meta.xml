@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Case Tagging Config</label>
+    <pluralLabel>Case Tagging Configs</pluralLabel>
+    <visibility>Public</visibility>
+    <description>Configuration for Case Tagging (e.g. default historical scope in months).</description>
+</CustomObject>

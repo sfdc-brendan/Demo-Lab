@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiPromptTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <activeVersionIdentifier>i452yYyaAZShFvcErBFz3r3KjlqvV7PS3ynh9rG0p0M=_1</activeVersionIdentifier>
+    <description>Summarizes a case for incident detection analysis.</description>
+    <developerName>Case_Summarizer</developerName>
+    <masterLabel>Case Summarizer</masterLabel>
+    <templateVersions>
+        <content>You are a technical support assistant. Summarize the following Case into a concise, technical problem statement.
+        
+CASE DETAILS:
+Subject: {!$Input:Case.Subject}
+Description: {!$Input:Case.Description}
+Priority: {!$Input:Case.Priority}
+
+INSTRUCTIONS:
+1. Identify the specific technical asset or system involved (e.g., &quot;Checkout API&quot;, &quot;VPN Gateway&quot;).
+2. Identify the symptom (e.g., &quot;Timeout&quot;, &quot;500 Error&quot;).
+3. Output a single sentence summary.
+
+Example Output: &quot;Checkout API failing with 500 error during payment processing.&quot;
+</content>
+        <inputs>
+            <apiName>Case</apiName>
+            <definition>SOBJECT://Case</definition>
+            <masterLabel>Case</masterLabel>
+            <referenceName>Input:Case</referenceName>
+            <required>true</required>
+        </inputs>
+        <status>Published</status>
+        <versionIdentifier>i452yYyaAZShFvcErBFz3r3KjlqvV7PS3ynh9rG0p0M=_1</versionIdentifier>
+    </templateVersions>
+    <type>einstein_gpt__flex</type>
+    <visibility>Global</visibility>
+</GenAiPromptTemplate>

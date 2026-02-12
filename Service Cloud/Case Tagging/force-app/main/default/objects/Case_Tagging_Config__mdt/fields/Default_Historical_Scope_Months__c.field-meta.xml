@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Default_Historical_Scope_Months__c</fullName>
+    <defaultValue>2</defaultValue>
+    <description>Default number of months to include when running historical case tagging analysis.</description>
+    <externalId>false</externalId>
+    <label>Default Historical Scope (Months)</label>
+    <required>false</required>
+    <type>Number</type>
+    <precision>2</precision>
+    <scale>0</scale>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiPromptTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <activeVersionIdentifier>CaseTaggingTrendsSummaryV1Id000000000000000001=_1</activeVersionIdentifier>
+    <description>Generates a short narrative summary of case tagging trends for supervisors viewing the Case Tag Trends dashboard.</description>
+    <developerName>Case_Tagging_Trends_Summary</developerName>
+    <masterLabel>Case Tagging Trends Summary</masterLabel>
+    <templateVersions>
+        <content>You are a customer support analyst preparing an executive summary of case tagging trends for leadership and supervisors.
+
+Based on the statistics below, write an in-depth executive-style summary (4–8 sentences) that a busy executive can read in under a minute. Structure your response as follows:
+
+**Opening (1–2 sentences):** State the time period and give the headline—total tagged cases and number of unique tags. Frame whether volume is high, moderate, or low relative to tag diversity.
+
+**Key metrics and themes (2–3 sentences):** Call out the top 3–5 tags by volume and what they indicate about case mix (e.g., product issues, billing, onboarding). Note any concentration—e.g., if a few tags dominate, or if volume is spread across many tags.
+
+**Insights and recommendations (1–2 sentences):** Offer one or two actionable takeaways: where to focus training, a trend to monitor, or a suggested next step (e.g., deeper analysis on a specific tag, process improvement).
+
+Use a professional, executive-summary tone: clear, confident, and concise. Write in flowing paragraphs; you may use a short bold-style label before a sentence (e.g., "Recommendation:") if it helps clarity, but avoid long bullet lists. Use plain language.
+
+STATISTICS:
+{!$Input:Case_Tagging_Summary_Context__c.Input_Text__c}
+
+OUTPUT: Write only the executive summary, with no preamble or meta-commentary.</content>
+        <inputs>
+            <apiName>Case_Tagging_Summary_Context__c</apiName>
+            <definition>SOBJECT://Case_Tagging_Summary_Context__c</definition>
+            <masterLabel>Summary Context</masterLabel>
+            <referenceName>Input:Case_Tagging_Summary_Context__c</referenceName>
+            <required>true</required>
+        </inputs>
+        <status>Published</status>
+        <versionIdentifier>CaseTaggingTrendsSummaryV1Id000000000000000001=_1</versionIdentifier>
+    </templateVersions>
+    <type>einstein_gpt__flex</type>
+    <visibility>Global</visibility>
+</GenAiPromptTemplate>

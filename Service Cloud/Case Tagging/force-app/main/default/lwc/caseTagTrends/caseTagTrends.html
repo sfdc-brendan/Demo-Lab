@@ -1,0 +1,168 @@
+<template>
+    <lightning-card title="Case Tag Trends" icon-name="standard:insights">
+        <div slot="actions">
+            <lightning-button-menu
+                onselect={handleActionsMenuSelect}
+                alternative-text="Trends actions"
+                menu-alignment="left"
+                disabled={actionsDisabled}
+            >
+                <lightning-menu-item value="run_historical" label="Run Historical Analysis"></lightning-menu-item>
+                <lightning-menu-item value="refresh" label="Refresh"></lightning-menu-item>
+            </lightning-button-menu>
+        </div>
+        <div class="caseTagTrends-dashboard">
+            <!-- Dashboard header: scope dropdown only -->
+            <header class="caseTagTrends-header">
+                <lightning-combobox
+                    name="scope"
+                    label="Time scope"
+                    value={scopeMonths}
+                    options={scopeOptions}
+                    onchange={handleScopeChange}
+                    class="caseTagTrends-scope-combobox"
+                ></lightning-combobox>
+            </header>
+
+            <!-- KPI row (Shadcn-style metric cards) -->
+            <div class="caseTagTrends-kpi-row">
+                <div class="caseTagTrends-kpi-tile">
+                    <div class="caseTagTrends-kpi-card">
+                        <span class="caseTagTrends-kpi-value">{totalCasesTagged}</span>
+                        <span class="caseTagTrends-kpi-label">Cases tagged</span>
+                    </div>
+                </div>
+                <div class="caseTagTrends-kpi-tile">
+                    <div class="caseTagTrends-kpi-card">
+                        <span class="caseTagTrends-kpi-value">{uniqueTagCount}</span>
+                        <span class="caseTagTrends-kpi-label">Unique tags</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Two-column: Top 10 + AI Summary (card modules) -->
+            <div class="caseTagTrends-row">
+                <div class="caseTagTrends-col caseTagTrends-col-half">
+                    <section class="caseTagTrends-module" aria-labelledby="top5-heading">
+                        <h2 id="top5-heading" class="caseTagTrends-module-title">Top 5 trending tags</h2>
+                        <template lwc:if={hasTagSummary}>
+                            <ul class="caseTagTrends-top5-list" role="list">
+                                <template for:each={top5Tags} for:item="item" for:index="idx">
+                                    <li key={item.tag} class="caseTagTrends-top5-item">
+                                        <button
+                                            type="button"
+                                            class="caseTagTrends-top5-row"
+                                            data-index={idx}
+                                            onclick={handleTop5TagClick}
+                                            aria-label={item.ariaLabelTop5}
+                                        >
+                                            <span class="caseTagTrends-top5-rank">{item.rank}</span>
+                                            <span class="caseTagTrends-top5-tag">{item.tag}</span>
+                                            <span class="caseTagTrends-top5-count">{item.count}</span>
+                                        </button>
+                                    </li>
+                                </template>
+                            </ul>
+                        </template>
+                        <template lwc:else>
+                            <p class="caseTagTrends-empty">No tags in the selected scope.</p>
+                        </template>
+                    </section>
+                </div>
+                <div class="caseTagTrends-col caseTagTrends-col-half">
+                    <section class="caseTagTrends-module caseTagTrends-summary-module" aria-labelledby="summary-heading">
+                        <h2 id="summary-heading" class="caseTagTrends-module-title">Trends summary</h2>
+                        <p class="caseTagTrends-summary-desc">Generate an executive summary of tagging trends for this period—key metrics, themes, and recommendations.</p>
+                        <lightning-button
+                            label="Generate summary"
+                            variant="neutral"
+                            icon-name="utility:magicwand"
+                            onclick={handleGenerateSummary}
+                            disabled={summaryLoading}
+                            class="caseTagTrends-summary-btn"
+                        ></lightning-button>
+                        <template lwc:if={summaryLoading}>
+                            <lightning-spinner alternative-text="Generating summary" size="small"></lightning-spinner>
+                        </template>
+                        <template lwc:elseif={hasSummary}>
+                            <div class="caseTagTrends-summary-text">{summaryText}</div>
+                        </template>
+                    </section>
+                </div>
+            </div>
+
+            <!-- All tags: clickable pills in a fixed-height scrollable area -->
+            <section class="caseTagTrends-module" aria-labelledby="alltags-heading">
+                <h2 id="alltags-heading" class="caseTagTrends-module-title">All tags (click to filter cases)</h2>
+                <template lwc:if={hasTagSummary}>
+                    <div class="caseTagTrends-tag-list-scroll">
+                        <div class="caseTagTrends-tag-list">
+                            <template for:each={tagSummaryWithAria} for:item="item" for:index="idx">
+                                <button
+                                    key={item.tag}
+                                    type="button"
+                                    class={item.pillClass}
+                                    data-index={idx}
+                                    onclick={handleTagClick}
+                                    aria-label={item.ariaLabel}
+                                >
+                                    <span class="caseTagTrends-pill-label">{item.tag} ({item.count})</span>
+                                </button>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+                <template lwc:else>
+                    <p class="caseTagTrends-empty">No tags in the selected time scope.</p>
+                </template>
+            </section>
+
+            <!-- Selected tag: cases table (Shadcn "Latest Payments" style) -->
+            <template lwc:if={selectedTag}>
+                <section class="caseTagTrends-module caseTagTrends-cases-section" aria-labelledby="cases-heading">
+                    <div class="caseTagTrends-cases-header">
+                        <h2 id="cases-heading" class="caseTagTrends-module-title">
+                            Cases tagged with: {selectedTag}
+                        </h2>
+                        <lightning-button
+                            label="Clear"
+                            variant="neutral"
+                            icon-name="utility:close"
+                            onclick={handleClearSelection}
+                        ></lightning-button>
+                    </div>
+                    <template lwc:if={loadingCases}>
+                        <lightning-spinner alternative-text="Loading cases" size="small"></lightning-spinner>
+                    </template>
+                    <template lwc:elseif={hasCases}>
+                        <div class="caseTagTrends-table-wrap">
+                            <table class="caseTagTrends-table" role="grid" aria-readonly="true">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Case</th>
+                                        <th scope="col">Subject</th>
+                                        <th scope="col">Created</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={casesForTag} for:item="row">
+                                        <tr key={row.id}>
+                                            <td>
+                                                <a href={row.url} class="caseTagTrends-link" target="_blank" rel="noopener noreferrer">{row.caseNumber}</a>
+                                            </td>
+                                            <td><span class="caseTagTrends-cell-subject">{row.subject}</span></td>
+                                            <td><span class="caseTagTrends-cell-date">{row.createdDate}</span></td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                    </template>
+                    <template lwc:else>
+                        <p class="caseTagTrends-empty">No cases found with this tag.</p>
+                    </template>
+                </section>
+            </template>
+        </div>
+    </lightning-card>
+</template>

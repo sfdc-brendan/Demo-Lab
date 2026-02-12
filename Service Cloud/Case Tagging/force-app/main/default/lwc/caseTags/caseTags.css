@@ -1,0 +1,5 @@
+/* Wrapper for lightning-pill-container (SLDS 2 standard listbox of pills) */
+.pill-container-wrapper {
+    display: block;
+    min-height: 2.5rem;
+}

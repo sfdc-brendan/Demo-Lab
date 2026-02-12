@@ -1,0 +1,59 @@
+<template>
+    <lightning-card title="Case Tags" icon-name="utility:label">
+        <div slot="actions">
+            <lightning-button-menu
+                onselect={handleActionsMenuSelect}
+                alternative-text="Case tag actions"
+                menu-alignment="right"
+                disabled={analysisDisabled}
+            >
+                <lightning-menu-item value="run_analysis" label="Run Analysis"></lightning-menu-item>
+            </lightning-button-menu>
+        </div>
+        <div class="slds-p-around_medium">
+            <!-- Tags in SLDS 2 pill container (lightning-pill-container = listbox of pills with remove) -->
+            <template lwc:if={hasTags}>
+                <div class="slds-m-bottom_small">
+                    <span class="slds-text-title_bold slds-m-bottom_xx-small">Tags</span>
+                    <lightning-pill-container
+                        items={pillItems}
+                        variant="standard"
+                        onitemremove={handleRemoveTag}
+                        class="pill-container-wrapper slds-m-top_xx-small"
+                        aria-label="Case tags"
+                    ></lightning-pill-container>
+                </div>
+            </template>
+            <template lwc:else>
+                <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_small">No tags yet. Run analysis or add a tag below.</p>
+            </template>
+
+            <template lwc:if={lastAnalyzed}>
+                <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_small">Last analyzed: {lastAnalyzed}</p>
+            </template>
+
+            <!-- Add tag -->
+            <div class="slds-m-bottom_medium">
+                <lightning-input
+                    type="text"
+                    label="Add tag"
+                    placeholder="e.g. Urgent, Billing"
+                    value={newTagValue}
+                    onchange={handleNewTagChange}
+                    onkeydown={handleNewTagKeydown}
+                    class="slds-m-bottom_xx-small"
+                ></lightning-input>
+                <lightning-button
+                    label="Add tag"
+                    variant="neutral"
+                    onclick={handleAddTag}
+                    disabled={addTagDisabled}
+                ></lightning-button>
+            </div>
+
+            <template lwc:if={isLoading}>
+                <lightning-spinner alternative-text="Loading" size="small" class="slds-m-top_small"></lightning-spinner>
+            </template>
+        </div>
+    </lightning-card>
+</template>
