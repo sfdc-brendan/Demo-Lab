@@ -2,10 +2,17 @@
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <version>62.0</version>
     
-    <!-- Lightning Web Component -->
+    <!-- Lightning Web Components -->
     <types>
         <members>modernContactCard</members>
+        <members>modernAccountCard</members>
         <name>LightningComponentBundle</name>
+    </types>
+    
+    <!-- Apex Classes -->
+    <types>
+        <members>ModernAccountCardController</members>
+        <name>ApexClass</name>
     </types>
     
     <!-- Custom Fields on Contact -->

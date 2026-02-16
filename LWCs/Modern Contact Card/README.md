@@ -1,196 +1,162 @@
-# Modern Contact Card LWC
+# Modern Card Components
 
-A modern, customizable Lightning Web Component for displaying contact information with a sleek design following SLDS 2 standards.
+A collection of modern, customizable Lightning Web Components for displaying record information with sleek designs following SLDS 2 standards.
 
-## Preview
+## Components
+
+| Component | Object | Use Case |
+|-----------|--------|----------|
+| **Modern Contact Card** | Contact, Case, MessagingSession, VoiceCall | Service Cloud, customer profiles |
+| **Modern Account Card** | Account | Revenue Cloud, B2B sales |
+
+---
+
+## Modern Contact Card
+
+A configurable contact card with profile information, health scores, tags, brand affinities, and CSAT charts.
+
+### Preview
 
 ![Modern Contact Card Preview](assets/preview.png)
 
-## Features
+### Features
 
-- **Header Background Banner**: Gradient background with optional custom image from Contact field
-- **Dynamic Contact Data**: Automatically retrieves contact information from related records (Contact, Case, MessagingSession, VoiceCall)
-- **Health Score Pill**: Color-coded health indicator (red/orange/yellow/green based on score 0-100)
-- **Contact Tags**: Comma-separated tags displayed as colorful pills
-- **Brand Affinities**: Display up to 4 brand logos/badges with labels from Contact fields
-- **Light/Dark Theme Toggle**: Configurable theme mode via Lightning App Builder
-- **Customizable Metrics**: 6 configurable data fields with labels, icons, and visibility toggles
-- **Profile Image from Contact Field**: Wire profile images to a custom URL field on the Contact record
-- **Interactive Chart**: Built-in engagement/satisfaction chart with customizable data
-- **Action Menu**: Quick actions for View Details, Edit Contact, and Send Email
-- **SLDS 2 Compliant**: Modern styling using Salesforce Lightning Design System variables
-- **Responsive Design**: Adapts to container width
+- **Header Background Banner**: Gradient background with optional custom image
+- **Dynamic Contact Data**: Retrieves contact from related records (Case, MessagingSession, VoiceCall)
+- **Health Score Pill**: Color-coded indicator (red/orange/yellow/green based on 0-100)
+- **Contact Tags**: Comma-separated tags as colorful pills
+- **Brand Affinities**: Up to 4 brand logos/badges
+- **Light/Dark Theme**: Configurable theme mode
+- **Customizable Metrics**: 6 configurable data fields
+- **CSAT Chart**: Dual-line chart with customizable colors
+
+### Supported Record Pages
+
+- Contact
+- Case (resolves Contact from `ContactId`)
+- MessagingSession (resolves Contact from `EndUserContactId`)
+- VoiceCall (configurable Contact lookup field)
+
+---
+
+## Modern Account Card
+
+A Revenue Cloud-focused account card with real-time metrics from Quotes, Orders, Assets, and Invoices.
+
+### Features
+
+- **Account Header**: Logo, name, industry, type, location, employees
+- **Real-Time Metrics**: Pulls live data from related records via Apex
+- **Fallback Values**: Configurable defaults when no data exists
+- **Revenue Trend Chart**: Dual-line chart for visualizing trends
+- **Light/Dark Theme**: Configurable theme mode
+
+### Revenue Cloud Metrics
+
+| Metric | Data Source | Description |
+|--------|-------------|-------------|
+| Quote Count | `COUNT(Quote)` | Number of quotes for the account |
+| Quote Value | `SUM(Quote.TotalPrice)` | Total value of all quotes |
+| Active Assets | `COUNT(Asset)` | Number of assets for the account |
+| Order Value | `SUM(Order.TotalAmount)` | Total value of all orders |
+| Invoice Total | `SUM(Invoice.TotalAmount)` | Total invoiced amount |
+
+### Standard Account Fields Displayed
+
+- Name, Industry, Type
+- Billing City/State (location)
+- Number of Employees
+
+---
 
 ## Installation
 
-### Option 1: Deploy Everything at Once (Recommended)
-
-Deploy all components using the package manifest:
+### Deploy Everything at Once (Recommended)
 
 ```bash
 sf project deploy start --manifest manifest/package.xml --target-org YOUR_ORG_ALIAS
 ```
 
-### Option 2: Deploy Individually
+### Deploy Components Individually
 
-**Deploy the LWC Component:**
+**Contact Card only:**
 ```bash
-sf project deploy start --source-dir "force-app/main/default/lwc/modernContactCard" --target-org YOUR_ORG_ALIAS
+sf project deploy start --source-dir "force-app/main/default/lwc/modernContactCard" --source-dir "force-app/main/default/objects" --source-dir "force-app/main/default/permissionsets" --target-org YOUR_ORG_ALIAS
 ```
 
-**Deploy Custom Fields:**
+**Account Card only:**
 ```bash
-sf project deploy start --source-dir "force-app/main/default/objects/Contact/fields" --target-org YOUR_ORG_ALIAS
-```
-
-**Deploy Permission Set:**
-```bash
-sf project deploy start --source-dir "force-app/main/default/permissionsets" --target-org YOUR_ORG_ALIAS
+sf project deploy start --source-dir "force-app/main/default/lwc/modernAccountCard" --source-dir "force-app/main/default/classes" --target-org YOUR_ORG_ALIAS
 ```
 
 ### Post-Installation
 
-1. Assign the **Modern Contact Card Access** permission set to users who need access to the custom fields
-2. Add the component to Contact, Case, MessagingSession, or VoiceCall record pages via Lightning App Builder
-3. Configure component settings as needed
+1. **For Contact Card**: Assign the **Modern Contact Card Access** permission set
+2. Add components to record pages via Lightning App Builder
+3. Configure settings as needed
+
+---
 
 ## Package Contents
 
 | Component | Type | Description |
 |-----------|------|-------------|
-| `modernContactCard` | LWC | The main component |
-| `Modern_Contact_Card_Access` | Permission Set | Grants access to all custom fields |
+| `modernContactCard` | LWC | Contact card component |
+| `modernAccountCard` | LWC | Account card component |
+| `ModernAccountCardController` | Apex | Fetches aggregated metrics |
+| `Modern_Contact_Card_Access` | Permission Set | FLS for Contact custom fields |
 | 18 Custom Fields | CustomField | Fields on Contact object |
 
-## Custom Fields
-
-### Core Fields
-
-| Field API Name | Type | Description |
-|----------------|------|-------------|
-| `ContactCardPicture__c` | URL | Profile image URL for the contact |
-| `ContactCardBackground__c` | URL | Header background image URL |
-| `ContactCardHealthScore__c` | Number | Customer health score (0-100) |
-| `ContactCardTags__c` | Text | Comma-separated tags (e.g., "VIP, Decision Maker") |
-
-### Metric Fields
-
-| Field API Name | Type | Description |
-|----------------|------|-------------|
-| `Metric_1__c` | Text(255) | Value for metric field 1 |
-| `Metric_2__c` | Text(255) | Value for metric field 2 |
-| `Metric_3__c` | Text(255) | Value for metric field 3 |
-| `Metric_4__c` | Text(255) | Value for metric field 4 |
-| `Metric_5__c` | Text(255) | Value for metric field 5 |
-| `Metric_6__c` | Text(255) | Value for metric field 6 |
-
-### Brand Affinity Fields
-
-| Field API Name | Type | Description |
-|----------------|------|-------------|
-| `Brand_1_Name__c` | Text(100) | Label for brand 1 |
-| `Brand_1_Image__c` | URL | Image URL for brand 1 |
-| `Brand_2_Name__c` | Text(100) | Label for brand 2 |
-| `Brand_2_Image__c` | URL | Image URL for brand 2 |
-| `Brand_3_Name__c` | Text(100) | Label for brand 3 |
-| `Brand_3_Image__c` | URL | Image URL for brand 3 |
-| `Brand_4_Name__c` | Text(100) | Label for brand 4 |
-| `Brand_4_Image__c` | URL | Image URL for brand 4 |
+---
 
 ## Configuration
 
-The component is highly configurable through Lightning App Builder properties:
+### Modern Contact Card Settings
 
-### Theme Settings
-- **Theme Mode**: Choose between "Light" or "Dark" theme
+| Category | Settings |
+|----------|----------|
+| **Theme** | Light/Dark mode |
+| **Header** | Background image field/URL |
+| **Profile** | Image field, fallback URL |
+| **Health Score** | Field, label, fallback, show/hide |
+| **Tags** | Field, fallback, show/hide |
+| **Brand Affinities** | Show/hide (uses Brand_1-4 fields) |
+| **Metrics** | 6 configurable fields with labels, icons, fallbacks |
+| **Chart** | Show/hide, title, data, labels, colors |
+| **VoiceCall** | Contact lookup field name |
 
-### Header Background Settings
-- **Background Image Field**: API name of Contact field for background image (default: `ContactCardBackground__c`)
-- **Default Background URL**: Fallback URL if Contact field is empty (leave empty for gradient)
+### Modern Account Card Settings
 
-### Profile Image Settings
-- **Profile Image Field**: API name of the Contact field containing the image URL (default: `ContactCardPicture__c`)
-- **Fallback Image URL**: URL to display if the Contact field is empty
+| Category | Settings |
+|----------|----------|
+| **Theme** | Light/Dark mode |
+| **Header** | Background image URL |
+| **Logo** | Logo URL, fallback URL |
+| **Metrics** | Show/hide each metric, custom labels, fallback values |
+| **Chart** | Show/hide, title, data, labels, colors |
 
-### Health Score Settings
-- **Health Score Field**: API name of Contact field for health score (default: `ContactCardHealthScore__c`)
-- **Health Score Label**: Label displayed before score (default: "Health")
-- **Health Score Fallback**: Fallback value if Contact field is empty
-- **Show Health Score**: Toggle visibility
+---
 
-Health score colors automatically adjust based on value:
-- **0-30**: Red to Orange
-- **31-50**: Orange to Yellow
-- **51-70**: Yellow to Light Green
-- **71-100**: Light Green to Green
+## Custom Fields (Contact)
 
-### Tags Settings
-- **Tags Field**: API name of Contact field for tags (default: `ContactCardTags__c`)
-- **Fallback Tags**: Comma-separated fallback tags
-- **Show Tags**: Toggle visibility
+| Field API Name | Type | Description |
+|----------------|------|-------------|
+| `ContactCardPicture__c` | URL | Profile image |
+| `ContactCardBackground__c` | URL | Header background |
+| `ContactCardHealthScore__c` | Number | Health score (0-100) |
+| `ContactCardTags__c` | Text | Comma-separated tags |
+| `Metric_1__c` - `Metric_6__c` | Text | Custom metric values |
+| `Brand_1_Name__c` - `Brand_4_Name__c` | Text | Brand names |
+| `Brand_1_Image__c` - `Brand_4_Image__c` | URL | Brand logos |
 
-### Brand Affinities Settings
-- **Show Brand Affinities**: Toggle to show/hide the brand affinities section
-
-Brand affinities use the following Contact fields:
-- `Brand_1_Name__c` through `Brand_4_Name__c` - Brand labels
-- `Brand_1_Image__c` through `Brand_4_Image__c` - Brand logo/image URLs
-
-Only brands with **both** a name and image populated will display.
-
-### Metric Field Settings (x6)
-Each metric field has:
-- **Label**: The header text (e.g., "ACCOUNT ID")
-- **Icon**: SLDS icon name (e.g., `utility:number_input`)
-- **Value**: Fallback value if `Contact.Metric_X__c` is empty
-- **Show Field**: Toggle visibility
-
-### Chart Settings
-- **Show CSAT Chart**: Toggle to show/hide the entire chart section
-- **Chart Title**: Title displayed above the chart (default: "CSAT History")
-- **Engagement Data**: Comma-separated values for the engagement line
-- **Satisfaction Data**: Comma-separated values for the satisfaction line
-- **Chart Labels**: Comma-separated x-axis labels
-- **Engagement Legend Label**: Label for the engagement line in the legend
-- **Satisfaction Legend Label**: Label for the satisfaction line in the legend
-- **Engagement Line Color**: Hex color for the engagement line (default: `#0176d3`)
-- **Satisfaction Line Color**: Hex color for the satisfaction line (default: `#1b96ff`)
-
-Example color combinations:
-- Blue/Orange: `#0176d3` / `#fd7e14`
-- Green/Purple: `#2e844a` / `#7526ba`
-- Teal/Pink: `#0d9dda` / `#c41c7f`
-
-## Supported Record Pages
-
-The component can be placed on:
-- **Contact** record pages
-- **Case** record pages (retrieves contact from `ContactId`)
-- **MessagingSession** record pages (retrieves contact from `EndUserContactId`)
-- **VoiceCall** record pages (requires configuration - see below)
-
-### VoiceCall Configuration
-
-VoiceCall support is **optional** to avoid package dependencies on custom fields. To enable:
-
-1. Place the component on a VoiceCall record page in Lightning App Builder
-2. In the component properties, find **"VoiceCall Contact Field"**
-3. Enter the API name of your Contact lookup field (e.g., `Contact__c`)
-
-If your org doesn't use VoiceCall, leave this field blank.
-
-## Usage
-
-1. Navigate to a supported record page in Lightning App Builder
-2. Drag the "Modern Contact Card" component onto the page
-3. Configure the component properties as needed
-4. Save and activate the page
+---
 
 ## File Structure
 
 ```
 Modern Contact Card/
 ├── README.md
+├── INSTALL.md
 ├── manifest/
 │   └── package.xml
 ├── assets/
@@ -198,43 +164,38 @@ Modern Contact Card/
 └── force-app/
     └── main/
         └── default/
+            ├── classes/
+            │   ├── ModernAccountCardController.cls
+            │   └── ModernAccountCardController.cls-meta.xml
             ├── lwc/
-            │   └── modernContactCard/
-            │       ├── modernContactCard.css
-            │       ├── modernContactCard.html
-            │       ├── modernContactCard.js
-            │       └── modernContactCard.js-meta.xml
+            │   ├── modernContactCard/
+            │   │   ├── modernContactCard.css
+            │   │   ├── modernContactCard.html
+            │   │   ├── modernContactCard.js
+            │   │   └── modernContactCard.js-meta.xml
+            │   └── modernAccountCard/
+            │       ├── modernAccountCard.css
+            │       ├── modernAccountCard.html
+            │       ├── modernAccountCard.js
+            │       └── modernAccountCard.js-meta.xml
             ├── objects/
             │   └── Contact/
             │       └── fields/
-            │           ├── Brand_1_Image__c.field-meta.xml
-            │           ├── Brand_1_Name__c.field-meta.xml
-            │           ├── Brand_2_Image__c.field-meta.xml
-            │           ├── Brand_2_Name__c.field-meta.xml
-            │           ├── Brand_3_Image__c.field-meta.xml
-            │           ├── Brand_3_Name__c.field-meta.xml
-            │           ├── Brand_4_Image__c.field-meta.xml
-            │           ├── Brand_4_Name__c.field-meta.xml
-            │           ├── ContactCardBackground__c.field-meta.xml
-            │           ├── ContactCardHealthScore__c.field-meta.xml
-            │           ├── ContactCardPicture__c.field-meta.xml
-            │           ├── ContactCardTags__c.field-meta.xml
-            │           ├── Metric_1__c.field-meta.xml
-            │           ├── Metric_2__c.field-meta.xml
-            │           ├── Metric_3__c.field-meta.xml
-            │           ├── Metric_4__c.field-meta.xml
-            │           ├── Metric_5__c.field-meta.xml
-            │           └── Metric_6__c.field-meta.xml
+            │           └── (18 custom field definitions)
             └── permissionsets/
                 └── Modern_Contact_Card_Access.permissionset-meta.xml
 ```
 
+---
+
 ## Requirements
 
-- Salesforce org with Lightning Experience enabled
+- Salesforce org with Lightning Experience
 - API version 62.0 or higher
-- For VoiceCall support: Custom Contact lookup field on VoiceCall object (configurable)
+- For Account Card metrics: Quote, Order, Asset, Invoice objects (Revenue Cloud)
+
+---
 
 ## License
 
-This component is provided as-is for demonstration purposes.
+Provided as-is for demonstration purposes.

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>62.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Modern Account Card</masterLabel>
+    <description>A modern, SLDS 2 compliant account card for Revenue Cloud demos with real-time metrics from Quotes, Orders, Assets, and Invoices</description>
+    <targets>
+        <target>lightning__RecordPage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordPage">
+            <objects>
+                <object>Account</object>
+            </objects>
+            
+            <!-- Theme Configuration -->
+            <property name="themeMode" type="String" default="Light" label="Theme Mode" datasource="Light,Dark" description="Choose light or dark theme" />
+            
+            <!-- Header Configuration -->
+            <property name="headerBackgroundUrl" type="String" default="" label="Header Background URL" description="URL for the header background image (leave empty for gradient)" />
+            
+            <!-- Logo Configuration -->
+            <property name="logoUrl" type="String" default="" label="Account Logo URL" description="URL for the account logo image" />
+            <property name="fallbackLogoUrl" type="String" default="" label="Fallback Logo URL" description="Fallback URL if logo is not available" />
+            
+            <!-- Revenue Cloud Metrics - Show/Hide -->
+            <property name="showQuoteCount" type="Boolean" default="true" label="Show Quote Count" description="Display number of quotes for this account" />
+            <property name="showQuoteTotal" type="Boolean" default="true" label="Show Quote Total" description="Display total value of all quotes" />
+            <property name="showAssetCount" type="Boolean" default="true" label="Show Asset Count" description="Display number of assets for this account" />
+            <property name="showOrderTotal" type="Boolean" default="true" label="Show Order Total" description="Display total value of all orders" />
+            <property name="showInvoiceTotal" type="Boolean" default="true" label="Show Invoice Total" description="Display total value of all invoices" />
+            
+            <!-- Metric Labels -->
+            <property name="quoteCountLabel" type="String" default="QUOTES" label="Quote Count Label" description="Label for quote count metric" />
+            <property name="quoteTotalLabel" type="String" default="QUOTE VALUE" label="Quote Total Label" description="Label for quote total metric" />
+            <property name="assetCountLabel" type="String" default="ACTIVE ASSETS" label="Asset Count Label" description="Label for asset count metric" />
+            <property name="orderTotalLabel" type="String" default="ORDER VALUE" label="Order Total Label" description="Label for order total metric" />
+            <property name="invoiceTotalLabel" type="String" default="INVOICE TOTAL" label="Invoice Total Label" description="Label for invoice total metric" />
+            
+            <!-- Metric Fallback Values -->
+            <property name="quoteCountFallback" type="String" default="" label="Quote Count Fallback" description="Fallback value if no quote data (e.g., '5')" />
+            <property name="quoteTotalFallback" type="String" default="" label="Quote Total Fallback" description="Fallback value if no quote total (e.g., '$125,000')" />
+            <property name="assetCountFallback" type="String" default="" label="Asset Count Fallback" description="Fallback value if no asset data (e.g., '12')" />
+            <property name="orderTotalFallback" type="String" default="" label="Order Total Fallback" description="Fallback value if no order data (e.g., '$500,000')" />
+            <property name="invoiceTotalFallback" type="String" default="" label="Invoice Total Fallback" description="Fallback value if no invoice data (e.g., '$450,000')" />
+            
+            <!-- Chart Configuration -->
+            <property name="showChart" type="Boolean" default="true" label="Show Revenue Chart" description="Show/hide the revenue trend chart" />
+            <property name="chartTitle" type="String" default="Revenue Trend" label="Chart Title" description="Title displayed above the chart" />
+            <property name="chartLine1Data" type="String" default="100,150,200,180,220,280,320,350,400,450,480,520" label="Chart Line 1 Data" description="Comma-separated values for line 1" />
+            <property name="chartLine2Data" type="String" default="80,120,160,140,180,220,260,290,340,380,420,460" label="Chart Line 2 Data" description="Comma-separated values for line 2" />
+            <property name="chartLabels" type="String" default="Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec" label="Chart Labels" description="Comma-separated X-axis labels" />
+            <property name="chartLine1Label" type="String" default="Orders" label="Line 1 Legend Label" description="Legend label for line 1" />
+            <property name="chartLine2Label" type="String" default="Invoiced" label="Line 2 Legend Label" description="Legend label for line 2" />
+            <property name="chartLine1Color" type="String" default="#0176d3" label="Line 1 Color" description="Hex color for line 1 (e.g., #0176d3)" />
+            <property name="chartLine2Color" type="String" default="#2e844a" label="Line 2 Color" description="Hex color for line 2 (e.g., #2e844a)" />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

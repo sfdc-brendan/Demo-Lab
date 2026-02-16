@@ -1,0 +1,149 @@
+<template>
+    <article class={cardContainerClass}>
+        <!-- Header Background -->
+        <div class="header-background" style={headerBackgroundStyle}>
+            <div class="header-controls">
+                <lightning-button-menu
+                    alternative-text="Actions"
+                    variant="border-filled"
+                    icon-size="x-small"
+                    menu-alignment="right"
+                    class="menu-button"
+                    onselect={handleMenuSelect}
+                >
+                    <lightning-menu-item value="view" label="View Account"></lightning-menu-item>
+                    <lightning-menu-item value="edit" label="Edit Account"></lightning-menu-item>
+                    <lightning-menu-item value="quotes" label="View Quotes"></lightning-menu-item>
+                    <lightning-menu-item value="orders" label="View Orders"></lightning-menu-item>
+                </lightning-button-menu>
+            </div>
+        </div>
+
+        <!-- Card Header -->
+        <header class="card-header">
+            <div class="profile-row">
+                <!-- Account Logo -->
+                <div class="logo-wrapper">
+                    <img 
+                        src={displayLogo} 
+                        alt="Account logo" 
+                        class="account-logo"
+                        onerror={handleImageError}
+                    />
+                </div>
+                
+                <!-- Account Info -->
+                <div class="account-info">
+                    <h1 class="account-name">{displayName}</h1>
+                    <template if:true={displayIndustry}>
+                        <div class="account-industry">
+                            <lightning-icon icon-name="utility:company" size="xx-small" class="industry-icon"></lightning-icon>
+                            <span>{displayIndustry}</span>
+                        </div>
+                    </template>
+                    <template if:true={hasAccountDetails}>
+                        <div class="account-details">
+                            <template if:true={displayType}>
+                                <span class="detail-badge type-badge">{displayType}</span>
+                            </template>
+                            <template if:true={displayLocation}>
+                                <span class="detail-text">
+                                    <lightning-icon icon-name="utility:location" size="xx-small" class="detail-icon"></lightning-icon>
+                                    {displayLocation}
+                                </span>
+                            </template>
+                            <template if:true={displayEmployees}>
+                                <span class="detail-text">
+                                    <lightning-icon icon-name="utility:groups" size="xx-small" class="detail-icon"></lightning-icon>
+                                    {displayEmployees}
+                                </span>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </header>
+
+        <!-- Revenue Cloud Metrics Section -->
+        <section class="metrics-section">
+            <div class="metrics-grid">
+                <!-- Quote Count -->
+                <template if:true={showQuoteCount}>
+                    <div class="metric-item">
+                        <div class="metric-header">
+                            <lightning-icon icon-name="utility:quotation_marks" size="xx-small" class="metric-icon"></lightning-icon>
+                            <span class="metric-label">{quoteCountLabel}</span>
+                        </div>
+                        <div class="metric-value">{displayQuoteCount}</div>
+                    </div>
+                </template>
+
+                <!-- Quote Total -->
+                <template if:true={showQuoteTotal}>
+                    <div class="metric-item">
+                        <div class="metric-header">
+                            <lightning-icon icon-name="utility:money" size="xx-small" class="metric-icon"></lightning-icon>
+                            <span class="metric-label">{quoteTotalLabel}</span>
+                        </div>
+                        <div class="metric-value">{displayQuoteTotal}</div>
+                    </div>
+                </template>
+
+                <!-- Asset Count -->
+                <template if:true={showAssetCount}>
+                    <div class="metric-item">
+                        <div class="metric-header">
+                            <lightning-icon icon-name="utility:asset_object" size="xx-small" class="metric-icon"></lightning-icon>
+                            <span class="metric-label">{assetCountLabel}</span>
+                        </div>
+                        <div class="metric-value">{displayAssetCount}</div>
+                    </div>
+                </template>
+
+                <!-- Order Total -->
+                <template if:true={showOrderTotal}>
+                    <div class="metric-item">
+                        <div class="metric-header">
+                            <lightning-icon icon-name="utility:orders" size="xx-small" class="metric-icon"></lightning-icon>
+                            <span class="metric-label">{orderTotalLabel}</span>
+                        </div>
+                        <div class="metric-value">{displayOrderTotal}</div>
+                    </div>
+                </template>
+
+                <!-- Invoice Total -->
+                <template if:true={showInvoiceTotal}>
+                    <div class="metric-item">
+                        <div class="metric-header">
+                            <lightning-icon icon-name="utility:file" size="xx-small" class="metric-icon"></lightning-icon>
+                            <span class="metric-label">{invoiceTotalLabel}</span>
+                        </div>
+                        <div class="metric-value">{displayInvoiceTotal}</div>
+                    </div>
+                </template>
+            </div>
+        </section>
+
+        <!-- Chart Section -->
+        <template if:true={showChart}>
+            <section class="chart-section">
+                <div class="chart-header">
+                    <h2 class="chart-title">{chartTitle}</h2>
+                    <div class="chart-legend">
+                        <div class="legend-item">
+                            <span class="legend-dot" style={chartLine1DotStyle}></span>
+                            <span class="legend-text">{chartLine1Label}</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-dot" style={chartLine2DotStyle}></span>
+                            <span class="legend-text">{chartLine2Label}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas class="chart-canvas" lwc:ref="chartCanvas"></canvas>
+                </div>
+            </section>
+        </template>
+    </article>
+</template>

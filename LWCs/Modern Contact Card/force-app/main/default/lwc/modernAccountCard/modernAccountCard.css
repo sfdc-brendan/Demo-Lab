@@ -1,0 +1,293 @@
+/* Modern Account Card - SLDS 2 Compliant Styling */
+
+/* Base container */
+.card-container {
+    background-color: var(--slds-g-color-neutral-base-100, #ffffff);
+    border-radius: var(--slds-g-radius-border-2, 0.5rem);
+    box-shadow: var(--slds-g-shadow-1, 0 2px 4px rgba(0, 0, 0, 0.1));
+    overflow: hidden;
+    font-family: var(--slds-g-font-family, 'Salesforce Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+}
+
+/* Header Background Banner */
+.header-background {
+    height: 80px;
+    background: linear-gradient(135deg, #0176d3 0%, #032d60 100%);
+    position: relative;
+}
+
+.header-controls {
+    position: absolute;
+    top: var(--slds-g-spacing-3, 0.75rem);
+    right: var(--slds-g-spacing-3, 0.75rem);
+    display: flex;
+    align-items: center;
+    gap: var(--slds-g-spacing-2, 0.5rem);
+}
+
+.menu-button {
+    --sds-c-button-neutral-color-background: rgba(255, 255, 255, 0.9);
+    --sds-c-button-neutral-color-border: transparent;
+}
+
+/* Card Header */
+.card-header {
+    padding: 0 var(--slds-g-spacing-4, 1rem) var(--slds-g-spacing-4, 1rem);
+    margin-top: -40px;
+    position: relative;
+    z-index: 1;
+}
+
+.profile-row {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--slds-g-spacing-4, 1rem);
+}
+
+/* Account Logo */
+.logo-wrapper {
+    flex-shrink: 0;
+}
+
+.account-logo {
+    width: 80px;
+    height: 80px;
+    border-radius: var(--slds-g-radius-border-2, 0.5rem);
+    object-fit: contain;
+    background-color: var(--slds-g-color-neutral-base-100, #ffffff);
+    border: 3px solid var(--slds-g-color-neutral-base-100, #ffffff);
+    box-shadow: var(--slds-g-shadow-1, 0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+/* Account Info */
+.account-info {
+    flex: 1;
+    min-width: 0;
+    padding-top: 44px;
+}
+
+.account-name {
+    font-size: var(--slds-g-font-size-6, 1.25rem);
+    font-weight: var(--slds-g-font-weight-bold, 700);
+    color: var(--slds-g-color-neutral-base-10, #181818);
+    margin: 0 0 var(--slds-g-spacing-1, 0.25rem) 0;
+    line-height: 1.25;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.account-industry {
+    display: flex;
+    align-items: center;
+    gap: var(--slds-g-spacing-1, 0.25rem);
+    color: var(--slds-g-color-neutral-base-50, #706e6b);
+    font-size: var(--slds-g-font-size-2, 0.8125rem);
+    margin-bottom: var(--slds-g-spacing-2, 0.5rem);
+}
+
+.industry-icon {
+    --slds-c-icon-color-foreground-default: var(--slds-g-color-neutral-base-50, #706e6b);
+}
+
+.account-details {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--slds-g-spacing-2, 0.5rem);
+}
+
+.detail-badge {
+    display: inline-block;
+    padding: var(--slds-g-spacing-1, 0.25rem) var(--slds-g-spacing-2, 0.5rem);
+    border-radius: var(--slds-g-radius-border-1, 0.25rem);
+    font-size: var(--slds-g-font-size-1, 0.75rem);
+    font-weight: var(--slds-g-font-weight-semibold, 600);
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+.type-badge {
+    background-color: var(--slds-g-color-brand-base-95, #e8f4fd);
+    color: var(--slds-g-color-brand-base-50, #0176d3);
+}
+
+.detail-text {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--slds-g-spacing-1, 0.25rem);
+    color: var(--slds-g-color-neutral-base-50, #706e6b);
+    font-size: var(--slds-g-font-size-1, 0.75rem);
+}
+
+.detail-icon {
+    --slds-c-icon-color-foreground-default: var(--slds-g-color-neutral-base-50, #706e6b);
+}
+
+/* Metrics Section */
+.metrics-section {
+    padding: var(--slds-g-spacing-4, 1rem);
+    border-top: 1px solid var(--slds-g-color-border-base-1, #e5e5e5);
+}
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--slds-g-spacing-4, 1rem);
+}
+
+.metric-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--slds-g-spacing-1, 0.25rem);
+}
+
+.metric-header {
+    display: flex;
+    align-items: center;
+    gap: var(--slds-g-spacing-1, 0.25rem);
+}
+
+.metric-icon {
+    --slds-c-icon-color-foreground-default: var(--slds-g-color-neutral-base-50, #706e6b);
+}
+
+.metric-label {
+    font-size: var(--slds-g-font-size-1, 0.75rem);
+    font-weight: var(--slds-g-font-weight-semibold, 600);
+    color: var(--slds-g-color-neutral-base-50, #706e6b);
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+.metric-value {
+    font-size: var(--slds-g-font-size-5, 1.125rem);
+    font-weight: var(--slds-g-font-weight-bold, 700);
+    color: var(--slds-g-color-neutral-base-10, #181818);
+}
+
+/* Chart Section */
+.chart-section {
+    padding: var(--slds-g-spacing-4, 1rem);
+    border-top: 1px solid var(--slds-g-color-border-base-1, #e5e5e5);
+}
+
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--slds-g-spacing-3, 0.75rem);
+}
+
+.chart-title {
+    font-size: var(--slds-g-font-size-2, 0.8125rem);
+    font-weight: var(--slds-g-font-weight-semibold, 600);
+    color: var(--slds-g-color-neutral-base-30, #3e3e3c);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0;
+}
+
+.chart-legend {
+    display: flex;
+    gap: var(--slds-g-spacing-4, 1rem);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: var(--slds-g-spacing-2, 0.5rem);
+}
+
+.legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.legend-text {
+    font-size: var(--slds-g-font-size-1, 0.75rem);
+    color: var(--slds-g-color-neutral-base-50, #706e6b);
+}
+
+.chart-container {
+    width: 100%;
+    position: relative;
+}
+
+.chart-canvas {
+    width: 100%;
+    height: 140px;
+    display: block;
+}
+
+/* Dark Theme */
+.card-container.dark-theme {
+    background-color: var(--slds-g-color-neutral-base-10, #1a1a1a);
+}
+
+.card-container.dark-theme .header-background {
+    background: linear-gradient(135deg, #1b5297 0%, #0a1f3d 100%);
+}
+
+.card-container.dark-theme .menu-button {
+    --sds-c-button-neutral-color-background: rgba(50, 50, 50, 0.9);
+}
+
+.card-container.dark-theme .account-logo {
+    background-color: var(--slds-g-color-neutral-base-20, #2a2a2a);
+    border-color: var(--slds-g-color-neutral-base-20, #2a2a2a);
+}
+
+.card-container.dark-theme .account-name {
+    color: var(--slds-g-color-neutral-base-100, #ffffff);
+}
+
+.card-container.dark-theme .account-industry {
+    color: var(--slds-g-color-neutral-base-70, #aeaeae);
+}
+
+.card-container.dark-theme .industry-icon {
+    --slds-c-icon-color-foreground-default: var(--slds-g-color-neutral-base-70, #aeaeae);
+}
+
+.card-container.dark-theme .type-badge {
+    background-color: rgba(1, 118, 211, 0.2);
+    color: var(--slds-g-color-brand-base-40, #1b96ff);
+}
+
+.card-container.dark-theme .detail-text {
+    color: var(--slds-g-color-neutral-base-70, #aeaeae);
+}
+
+.card-container.dark-theme .detail-icon {
+    --slds-c-icon-color-foreground-default: var(--slds-g-color-neutral-base-70, #aeaeae);
+}
+
+.card-container.dark-theme .metrics-section {
+    border-top-color: var(--slds-g-color-border-base-4, #444444);
+}
+
+.card-container.dark-theme .metric-icon {
+    --slds-c-icon-color-foreground-default: var(--slds-g-color-neutral-base-70, #aeaeae);
+}
+
+.card-container.dark-theme .metric-label {
+    color: var(--slds-g-color-neutral-base-70, #aeaeae);
+}
+
+.card-container.dark-theme .metric-value {
+    color: var(--slds-g-color-neutral-base-100, #ffffff);
+}
+
+.card-container.dark-theme .chart-section {
+    border-top-color: var(--slds-g-color-border-base-4, #444444);
+}
+
+.card-container.dark-theme .chart-title {
+    color: var(--slds-g-color-neutral-base-80, #c9c9c9);
+}
+
+.card-container.dark-theme .legend-text {
+    color: var(--slds-g-color-neutral-base-70, #aeaeae);
+}
