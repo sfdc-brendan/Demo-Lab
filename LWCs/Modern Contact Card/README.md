@@ -45,6 +45,7 @@ A Revenue Cloud-focused account card with real-time metrics from Quotes, Orders,
 
 ### Features
 
+- **Company Logo**: Per-account logo from `Account.AccountCardLogo__c` field
 - **Account Header**: Logo, name, industry, type, location, employees
 - **Real-Time Metrics**: Pulls live data from related records via Apex
 - **Fallback Values**: Configurable defaults when no data exists
@@ -109,7 +110,7 @@ sf project deploy start --source-dir "force-app/main/default/lwc/modernAccountCa
 | `Modern_Contact_Card_Access` | Permission Set | FLS for Contact custom fields |
 | `Modern_Account_Card_Access` | Permission Set | FLS for Account custom fields |
 | 18 Custom Fields (Contact) | CustomField | Fields on Contact object |
-| 8 Custom Fields (Account) | CustomField | Brand fields on Account object |
+| 9 Custom Fields (Account) | CustomField | Logo and brand fields on Account object |
 
 ---
 
@@ -158,6 +159,7 @@ sf project deploy start --source-dir "force-app/main/default/lwc/modernAccountCa
 
 | Field API Name | Type | Description |
 |----------------|------|-------------|
+| `AccountCardLogo__c` | URL | Company logo image URL |
 | `Brand_1_Name__c` - `Brand_4_Name__c` | Text | Sub-brand names |
 | `Brand_1_Image__c` - `Brand_4_Image__c` | URL | Sub-brand logos |
 

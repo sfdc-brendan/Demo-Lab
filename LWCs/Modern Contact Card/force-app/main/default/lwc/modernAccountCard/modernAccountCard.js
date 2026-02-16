@@ -29,6 +29,9 @@ const ACCOUNT_FIELDS = [
     ACCOUNT_BILLING_STATE_FIELD
 ];
 
+// Logo field on Account (optional)
+const LOGO_FIELD = 'Account.AccountCardLogo__c';
+
 // Brand affinity fields on Account (optional)
 const BRAND_FIELDS = [
     'Account.Brand_1_Name__c',
@@ -109,6 +112,9 @@ export default class ModernAccountCard extends NavigationMixin(LightningElement)
     accountPhone = '';
     accountLocation = '';
     
+    // Logo from Account record
+    accountLogo = '';
+    
     // Brand affinity values from Account record
     accountBrand1Name = '';
     accountBrand1Image = '';
@@ -145,7 +151,8 @@ export default class ModernAccountCard extends NavigationMixin(LightningElement)
     }
 
     get displayLogo() {
-        return this.logoUrl || this.fallbackLogoUrl || this.defaultLogoUrl;
+        // Priority: Account field > LWC logoUrl setting > fallback setting > default SVG
+        return this.accountLogo || this.logoUrl || this.fallbackLogoUrl || this.defaultLogoUrl;
     }
 
     get defaultLogoUrl() {
@@ -313,12 +320,13 @@ export default class ModernAccountCard extends NavigationMixin(LightningElement)
         }).format(value);
     }
 
-    // Build optional fields for brand affinities
+    // Build optional fields for logo and brand affinities
     get optionalAccountFields() {
+        const fields = [LOGO_FIELD]; // Always try to fetch logo
         if (this.showBrandAffinities) {
-            return BRAND_FIELDS;
+            fields.push(...BRAND_FIELDS);
         }
-        return [];
+        return fields;
     }
 
     // Wire to get Account record
@@ -381,8 +389,12 @@ export default class ModernAccountCard extends NavigationMixin(LightningElement)
             this.accountLocation = `${city || ''}${city && state ? ', ' : ''}${state || ''}`.trim();
         }
         
-        // Extract brand affinity fields if available
+        // Extract optional fields if available
         if (accountData.fields) {
+            // Logo field
+            this.accountLogo = accountData.fields.AccountCardLogo__c?.value || '';
+            
+            // Brand affinity fields
             this.accountBrand1Name = accountData.fields.Brand_1_Name__c?.value || '';
             this.accountBrand1Image = accountData.fields.Brand_1_Image__c?.value || '';
             this.accountBrand2Name = accountData.fields.Brand_2_Name__c?.value || '';

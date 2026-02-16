@@ -19,9 +19,9 @@
             <!-- Header Configuration -->
             <property name="headerBackgroundUrl" type="String" default="" label="Header Background URL" description="URL for the header background image (leave empty for gradient)" />
             
-            <!-- Logo Configuration -->
-            <property name="logoUrl" type="String" default="" label="Account Logo URL" description="URL for the account logo image" />
-            <property name="fallbackLogoUrl" type="String" default="" label="Fallback Logo URL" description="Fallback URL if logo is not available" />
+            <!-- Logo Configuration (reads Account.AccountCardLogo__c first, falls back to settings below) -->
+            <property name="logoUrl" type="String" default="" label="Account Logo URL (Fallback)" description="Fallback URL if Account.AccountCardLogo__c is empty" />
+            <property name="fallbackLogoUrl" type="String" default="" label="Default Logo URL" description="Default logo URL if no other source is available" />
             
             <!-- Revenue Cloud Metrics - Show/Hide -->
             <property name="showQuoteCount" type="Boolean" default="true" label="Show Quote Count" description="Display number of quotes for this account" />

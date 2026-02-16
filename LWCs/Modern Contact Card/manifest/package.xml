@@ -40,6 +40,7 @@
     
     <!-- Custom Fields on Account -->
     <types>
+        <members>Account.AccountCardLogo__c</members>
         <members>Account.Brand_1_Name__c</members>
         <members>Account.Brand_1_Image__c</members>
         <members>Account.Brand_2_Name__c</members>

@@ -4,6 +4,13 @@
     <description>Grants access to custom fields used by the Modern Account Card component</description>
     <hasActivationRequired>false</hasActivationRequired>
     
+    <!-- Account Logo Field -->
+    <fieldPermissions>
+        <field>Account.AccountCardLogo__c</field>
+        <editable>true</editable>
+        <readable>true</readable>
+    </fieldPermissions>
+    
     <!-- Brand Affinity Fields -->
     <fieldPermissions>
         <field>Account.Brand_1_Name__c</field>
