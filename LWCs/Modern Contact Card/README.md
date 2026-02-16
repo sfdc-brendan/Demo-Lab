@@ -48,6 +48,7 @@ A Revenue Cloud-focused account card with real-time metrics from Quotes, Orders,
 - **Account Header**: Logo, name, industry, type, location, employees
 - **Real-Time Metrics**: Pulls live data from related records via Apex
 - **Fallback Values**: Configurable defaults when no data exists
+- **Brand Affinities**: Up to 4 sub-brands per account (custom fields on Account)
 - **Revenue Trend Chart**: Dual-line chart for visualizing trends
 - **Light/Dark Theme**: Configurable theme mode
 
@@ -92,8 +93,9 @@ sf project deploy start --source-dir "force-app/main/default/lwc/modernAccountCa
 ### Post-Installation
 
 1. **For Contact Card**: Assign the **Modern Contact Card Access** permission set
-2. Add components to record pages via Lightning App Builder
-3. Configure settings as needed
+2. **For Account Card**: Assign the **Modern Account Card Access** permission set
+3. Add components to record pages via Lightning App Builder
+4. Configure settings as needed
 
 ---
 
@@ -105,7 +107,9 @@ sf project deploy start --source-dir "force-app/main/default/lwc/modernAccountCa
 | `modernAccountCard` | LWC | Account card component |
 | `ModernAccountCardController` | Apex | Fetches aggregated metrics |
 | `Modern_Contact_Card_Access` | Permission Set | FLS for Contact custom fields |
-| 18 Custom Fields | CustomField | Fields on Contact object |
+| `Modern_Account_Card_Access` | Permission Set | FLS for Account custom fields |
+| 18 Custom Fields (Contact) | CustomField | Fields on Contact object |
+| 8 Custom Fields (Account) | CustomField | Brand fields on Account object |
 
 ---
 
@@ -133,6 +137,7 @@ sf project deploy start --source-dir "force-app/main/default/lwc/modernAccountCa
 | **Header** | Background image URL |
 | **Logo** | Logo URL, fallback URL |
 | **Metrics** | Show/hide each metric, custom labels, fallback values |
+| **Brand Affinities** | Show/hide, section title, fallback values (uses Account.Brand_1-4 fields) |
 | **Chart** | Show/hide, title, data, labels, colors |
 
 ---
@@ -148,6 +153,13 @@ sf project deploy start --source-dir "force-app/main/default/lwc/modernAccountCa
 | `Metric_1__c` - `Metric_6__c` | Text | Custom metric values |
 | `Brand_1_Name__c` - `Brand_4_Name__c` | Text | Brand names |
 | `Brand_1_Image__c` - `Brand_4_Image__c` | URL | Brand logos |
+
+## Custom Fields (Account)
+
+| Field API Name | Type | Description |
+|----------------|------|-------------|
+| `Brand_1_Name__c` - `Brand_4_Name__c` | Text | Sub-brand names |
+| `Brand_1_Image__c` - `Brand_4_Image__c` | URL | Sub-brand logos |
 
 ---
 
@@ -179,11 +191,15 @@ Modern Contact Card/
             │       ├── modernAccountCard.js
             │       └── modernAccountCard.js-meta.xml
             ├── objects/
-            │   └── Contact/
+            │   ├── Contact/
+            │   │   └── fields/
+            │   │       └── (18 custom field definitions)
+            │   └── Account/
             │       └── fields/
-            │           └── (18 custom field definitions)
+            │           └── (8 custom field definitions)
             └── permissionsets/
-                └── Modern_Contact_Card_Access.permissionset-meta.xml
+                ├── Modern_Contact_Card_Access.permissionset-meta.xml
+                └── Modern_Account_Card_Access.permissionset-meta.xml
 ```
 
 ---

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Brand_4_Image__c</fullName>
+    <label>Brand 4 Image</label>
+    <type>Url</type>
+    <required>false</required>
+    <description>Logo/image URL for sub-brand 4 displayed in the Account Card</description>
+</CustomField>

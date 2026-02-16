@@ -45,16 +45,16 @@
             <property name="invoiceTotalFallback" type="String" default="" label="Invoice Total Fallback" description="Fallback value if no invoice data (e.g., '$450,000')" />
             
             <!-- Brand Affinities / Sub-Brands -->
-            <property name="showBrandAffinities" type="Boolean" default="false" label="Show Brand Affinities" description="Show/hide the sub-brands section" />
+            <property name="showBrandAffinities" type="Boolean" default="false" label="Show Brand Affinities" description="Show/hide the sub-brands section (reads from Account.Brand_1_Name__c through Brand_4_Name__c and Brand_1_Image__c through Brand_4_Image__c fields, falls back to settings below)" />
             <property name="brandAffinitiesTitle" type="String" default="Sub-Brands" label="Brand Section Title" description="Title for the brand affinities section" />
-            <property name="brand1Name" type="String" default="" label="Brand 1 Name" description="Name/label for brand 1" />
-            <property name="brand1Image" type="String" default="" label="Brand 1 Image URL" description="Logo/image URL for brand 1" />
-            <property name="brand2Name" type="String" default="" label="Brand 2 Name" description="Name/label for brand 2" />
-            <property name="brand2Image" type="String" default="" label="Brand 2 Image URL" description="Logo/image URL for brand 2" />
-            <property name="brand3Name" type="String" default="" label="Brand 3 Name" description="Name/label for brand 3" />
-            <property name="brand3Image" type="String" default="" label="Brand 3 Image URL" description="Logo/image URL for brand 3" />
-            <property name="brand4Name" type="String" default="" label="Brand 4 Name" description="Name/label for brand 4" />
-            <property name="brand4Image" type="String" default="" label="Brand 4 Image URL" description="Logo/image URL for brand 4" />
+            <property name="brand1Name" type="String" default="" label="Brand 1 Name (Fallback)" description="Fallback if Account.Brand_1_Name__c is empty" />
+            <property name="brand1Image" type="String" default="" label="Brand 1 Image (Fallback)" description="Fallback if Account.Brand_1_Image__c is empty" />
+            <property name="brand2Name" type="String" default="" label="Brand 2 Name (Fallback)" description="Fallback if Account.Brand_2_Name__c is empty" />
+            <property name="brand2Image" type="String" default="" label="Brand 2 Image (Fallback)" description="Fallback if Account.Brand_2_Image__c is empty" />
+            <property name="brand3Name" type="String" default="" label="Brand 3 Name (Fallback)" description="Fallback if Account.Brand_3_Name__c is empty" />
+            <property name="brand3Image" type="String" default="" label="Brand 3 Image (Fallback)" description="Fallback if Account.Brand_3_Image__c is empty" />
+            <property name="brand4Name" type="String" default="" label="Brand 4 Name (Fallback)" description="Fallback if Account.Brand_4_Name__c is empty" />
+            <property name="brand4Image" type="String" default="" label="Brand 4 Image (Fallback)" description="Fallback if Account.Brand_4_Image__c is empty" />
             
             <!-- Chart Configuration -->
             <property name="showChart" type="Boolean" default="true" label="Show Revenue Chart" description="Show/hide the revenue trend chart" />

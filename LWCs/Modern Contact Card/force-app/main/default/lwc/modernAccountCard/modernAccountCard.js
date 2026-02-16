@@ -29,6 +29,18 @@ const ACCOUNT_FIELDS = [
     ACCOUNT_BILLING_STATE_FIELD
 ];
 
+// Brand affinity fields on Account (optional)
+const BRAND_FIELDS = [
+    'Account.Brand_1_Name__c',
+    'Account.Brand_1_Image__c',
+    'Account.Brand_2_Name__c',
+    'Account.Brand_2_Image__c',
+    'Account.Brand_3_Name__c',
+    'Account.Brand_3_Image__c',
+    'Account.Brand_4_Name__c',
+    'Account.Brand_4_Image__c'
+];
+
 export default class ModernAccountCard extends NavigationMixin(LightningElement) {
     @api recordId;
     @api objectApiName;
@@ -64,7 +76,7 @@ export default class ModernAccountCard extends NavigationMixin(LightningElement)
     @api showOrderTotal = false;
     @api showInvoiceTotal = false;
     
-    // Brand Affinities Configuration
+    // Brand Affinities Configuration (LWC settings are fallbacks; Account fields are primary)
     @api showBrandAffinities = false;
     @api brandAffinitiesTitle = 'Sub-Brands';
     @api brand1Name = '';
@@ -96,6 +108,16 @@ export default class ModernAccountCard extends NavigationMixin(LightningElement)
     accountWebsite = '';
     accountPhone = '';
     accountLocation = '';
+    
+    // Brand affinity values from Account record
+    accountBrand1Name = '';
+    accountBrand1Image = '';
+    accountBrand2Name = '';
+    accountBrand2Image = '';
+    accountBrand3Name = '';
+    accountBrand3Image = '';
+    accountBrand4Name = '';
+    accountBrand4Image = '';
     
     // Metrics from Apex
     metricsData = null;
@@ -207,35 +229,47 @@ export default class ModernAccountCard extends NavigationMixin(LightningElement)
     get displayBrands() {
         const brands = [];
         
-        if (this.brand1Name && this.brand1Image) {
+        // Brand 1 - Account field first, then LWC setting as fallback
+        const brand1NameValue = this.accountBrand1Name || this.brand1Name;
+        const brand1ImageValue = this.accountBrand1Image || this.brand1Image;
+        if (brand1NameValue && brand1ImageValue) {
             brands.push({
                 id: 'brand-1',
-                name: this.brand1Name,
-                image: this.brand1Image
+                name: brand1NameValue,
+                image: brand1ImageValue
             });
         }
         
-        if (this.brand2Name && this.brand2Image) {
+        // Brand 2
+        const brand2NameValue = this.accountBrand2Name || this.brand2Name;
+        const brand2ImageValue = this.accountBrand2Image || this.brand2Image;
+        if (brand2NameValue && brand2ImageValue) {
             brands.push({
                 id: 'brand-2',
-                name: this.brand2Name,
-                image: this.brand2Image
+                name: brand2NameValue,
+                image: brand2ImageValue
             });
         }
         
-        if (this.brand3Name && this.brand3Image) {
+        // Brand 3
+        const brand3NameValue = this.accountBrand3Name || this.brand3Name;
+        const brand3ImageValue = this.accountBrand3Image || this.brand3Image;
+        if (brand3NameValue && brand3ImageValue) {
             brands.push({
                 id: 'brand-3',
-                name: this.brand3Name,
-                image: this.brand3Image
+                name: brand3NameValue,
+                image: brand3ImageValue
             });
         }
         
-        if (this.brand4Name && this.brand4Image) {
+        // Brand 4
+        const brand4NameValue = this.accountBrand4Name || this.brand4Name;
+        const brand4ImageValue = this.accountBrand4Image || this.brand4Image;
+        if (brand4NameValue && brand4ImageValue) {
             brands.push({
                 id: 'brand-4',
-                name: this.brand4Name,
-                image: this.brand4Image
+                name: brand4NameValue,
+                image: brand4ImageValue
             });
         }
         
@@ -279,8 +313,16 @@ export default class ModernAccountCard extends NavigationMixin(LightningElement)
         }).format(value);
     }
 
+    // Build optional fields for brand affinities
+    get optionalAccountFields() {
+        if (this.showBrandAffinities) {
+            return BRAND_FIELDS;
+        }
+        return [];
+    }
+
     // Wire to get Account record
-    @wire(getRecord, { recordId: '$recordId', fields: ACCOUNT_FIELDS })
+    @wire(getRecord, { recordId: '$recordId', fields: ACCOUNT_FIELDS, optionalFields: '$optionalAccountFields' })
     wiredAccount({ error, data }) {
         if (data) {
             this.updateAccountInfo(data);
@@ -337,6 +379,18 @@ export default class ModernAccountCard extends NavigationMixin(LightningElement)
         const state = getFieldValue(accountData, ACCOUNT_BILLING_STATE_FIELD);
         if (city || state) {
             this.accountLocation = `${city || ''}${city && state ? ', ' : ''}${state || ''}`.trim();
+        }
+        
+        // Extract brand affinity fields if available
+        if (accountData.fields) {
+            this.accountBrand1Name = accountData.fields.Brand_1_Name__c?.value || '';
+            this.accountBrand1Image = accountData.fields.Brand_1_Image__c?.value || '';
+            this.accountBrand2Name = accountData.fields.Brand_2_Name__c?.value || '';
+            this.accountBrand2Image = accountData.fields.Brand_2_Image__c?.value || '';
+            this.accountBrand3Name = accountData.fields.Brand_3_Name__c?.value || '';
+            this.accountBrand3Image = accountData.fields.Brand_3_Image__c?.value || '';
+            this.accountBrand4Name = accountData.fields.Brand_4_Name__c?.value || '';
+            this.accountBrand4Image = accountData.fields.Brand_4_Image__c?.value || '';
         }
     }
 
