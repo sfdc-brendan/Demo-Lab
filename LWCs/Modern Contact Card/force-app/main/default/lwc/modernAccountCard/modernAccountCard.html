@@ -124,6 +124,23 @@
             </div>
         </section>
 
+        <!-- Brand Affinities Section -->
+        <template if:true={showBrandSection}>
+            <section class="brand-section">
+                <h2 class="section-title">{brandAffinitiesTitle}</h2>
+                <div class="brand-grid">
+                    <template for:each={displayBrands} for:item="brand">
+                        <div key={brand.id} class="brand-item">
+                            <div class="brand-image-container">
+                                <img src={brand.image} alt={brand.name} class="brand-image" />
+                            </div>
+                            <span class="brand-label">{brand.name}</span>
+                        </div>
+                    </template>
+                </div>
+            </section>
+        </template>
+
         <!-- Chart Section -->
         <template if:true={showChart}>
             <section class="chart-section">

@@ -166,6 +166,61 @@
     color: var(--slds-g-color-neutral-base-10, #181818);
 }
 
+/* Brand Affinities Section */
+.brand-section {
+    padding: var(--slds-g-spacing-4, 1rem);
+    border-top: 1px solid var(--slds-g-color-border-base-1, #e5e5e5);
+}
+
+.section-title {
+    font-size: var(--slds-g-font-size-2, 0.8125rem);
+    font-weight: var(--slds-g-font-weight-semibold, 600);
+    color: var(--slds-g-color-neutral-base-30, #3e3e3c);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0 0 var(--slds-g-spacing-3, 0.75rem) 0;
+}
+
+.brand-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--slds-g-spacing-3, 0.75rem);
+}
+
+.brand-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--slds-g-spacing-2, 0.5rem);
+}
+
+.brand-image-container {
+    width: 64px;
+    height: 64px;
+    border-radius: var(--slds-g-radius-border-2, 0.5rem);
+    background-color: var(--slds-g-color-neutral-base-95, #f3f3f3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border: 1px solid var(--slds-g-color-border-base-1, #e5e5e5);
+}
+
+.brand-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.brand-label {
+    font-size: var(--slds-g-font-size-1, 0.75rem);
+    font-weight: var(--slds-g-font-weight-semibold, 600);
+    color: var(--slds-g-color-neutral-base-30, #3e3e3c);
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
 /* Chart Section */
 .chart-section {
     padding: var(--slds-g-spacing-4, 1rem);
@@ -278,6 +333,23 @@
 
 .card-container.dark-theme .metric-value {
     color: var(--slds-g-color-neutral-base-100, #ffffff);
+}
+
+.card-container.dark-theme .brand-section {
+    border-top-color: var(--slds-g-color-border-base-4, #444444);
+}
+
+.card-container.dark-theme .section-title {
+    color: var(--slds-g-color-neutral-base-80, #c9c9c9);
+}
+
+.card-container.dark-theme .brand-image-container {
+    background-color: var(--slds-g-color-neutral-base-20, #2a2a2a);
+    border-color: var(--slds-g-color-border-base-4, #444444);
+}
+
+.card-container.dark-theme .brand-label {
+    color: var(--slds-g-color-neutral-base-80, #c9c9c9);
 }
 
 .card-container.dark-theme .chart-section {

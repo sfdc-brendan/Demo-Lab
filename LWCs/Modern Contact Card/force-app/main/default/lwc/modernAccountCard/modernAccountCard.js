@@ -64,6 +64,18 @@ export default class ModernAccountCard extends NavigationMixin(LightningElement)
     @api showOrderTotal = false;
     @api showInvoiceTotal = false;
     
+    // Brand Affinities Configuration
+    @api showBrandAffinities = false;
+    @api brandAffinitiesTitle = 'Sub-Brands';
+    @api brand1Name = '';
+    @api brand1Image = '';
+    @api brand2Name = '';
+    @api brand2Image = '';
+    @api brand3Name = '';
+    @api brand3Image = '';
+    @api brand4Name = '';
+    @api brand4Image = '';
+    
     // Chart Configuration
     @api showChart = false;
     @api chartTitle = 'Revenue Trend';
@@ -185,6 +197,49 @@ export default class ModernAccountCard extends NavigationMixin(LightningElement)
             return this.formatCurrency(this.metricsData.invoiceTotalAmount);
         }
         return this.invoiceTotalFallback || '$0';
+    }
+
+    // Brand affinities display
+    get showBrandSection() {
+        return this.showBrandAffinities && this.displayBrands && this.displayBrands.length > 0;
+    }
+
+    get displayBrands() {
+        const brands = [];
+        
+        if (this.brand1Name && this.brand1Image) {
+            brands.push({
+                id: 'brand-1',
+                name: this.brand1Name,
+                image: this.brand1Image
+            });
+        }
+        
+        if (this.brand2Name && this.brand2Image) {
+            brands.push({
+                id: 'brand-2',
+                name: this.brand2Name,
+                image: this.brand2Image
+            });
+        }
+        
+        if (this.brand3Name && this.brand3Image) {
+            brands.push({
+                id: 'brand-3',
+                name: this.brand3Name,
+                image: this.brand3Image
+            });
+        }
+        
+        if (this.brand4Name && this.brand4Image) {
+            brands.push({
+                id: 'brand-4',
+                name: this.brand4Name,
+                image: this.brand4Image
+            });
+        }
+        
+        return brands;
     }
 
     // Chart legend styles
