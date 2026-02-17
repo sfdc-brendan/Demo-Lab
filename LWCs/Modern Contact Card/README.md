@@ -90,6 +90,7 @@ sf project deploy start --manifest manifest/package.xml --target-org YOUR_ORG_AL
 Modern Contact Card/
 ├── README.md
 ├── INSTALL.md
+├── sfdx-project.json
 ├── manifest/
 │   └── package.xml
 ├── assets/

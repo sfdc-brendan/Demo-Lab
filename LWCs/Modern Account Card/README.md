@@ -99,6 +99,7 @@ The component uses this priority for displaying the account logo:
 ```
 Modern Account Card/
 ├── README.md
+├── sfdx-project.json
 ├── manifest/
 │   └── package.xml
 └── force-app/
