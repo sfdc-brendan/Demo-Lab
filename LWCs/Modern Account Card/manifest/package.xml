@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <version>62.0</version>
+    
+    <!-- Lightning Web Components -->
+    <types>
+        <members>modernAccountCard</members>
+        <name>LightningComponentBundle</name>
+    </types>
+    
+    <!-- Apex Classes -->
+    <types>
+        <members>ModernAccountCardController</members>
+        <name>ApexClass</name>
+    </types>
+    
+    <!-- Custom Fields on Account -->
+    <types>
+        <members>Account.AccountCardLogo__c</members>
+        <members>Account.Brand_1_Name__c</members>
+        <members>Account.Brand_1_Image__c</members>
+        <members>Account.Brand_2_Name__c</members>
+        <members>Account.Brand_2_Image__c</members>
+        <members>Account.Brand_3_Name__c</members>
+        <members>Account.Brand_3_Image__c</members>
+        <members>Account.Brand_4_Name__c</members>
+        <members>Account.Brand_4_Image__c</members>
+        <name>CustomField</name>
+    </types>
+    
+    <!-- Permission Set -->
+    <types>
+        <members>Modern_Account_Card_Access</members>
+        <name>PermissionSet</name>
+    </types>
+</Package>

@@ -26,6 +26,7 @@ Lightning Web Components and related metadata for record pages, service, and ana
 | Package | Description |
 |--------|-------------|
 | **[Modern Contact Card](./LWCs/Modern%20Contact%20Card/)** | Configurable **Contact Card** LWC: profile with header background banner, health score pill (color-coded 0-100), contact tags, **brand affinities** (up to 4 brand logos/badges), up to 6 custom metrics, and a dual-line CSAT-style chart. Works on Contact, Case, Messaging Session, and Voice Call record pages (resolves Contact from the record). Light/dark theme, all sections toggleable and configurable in App Builder. *(Component API name: `modernContactCard`.)* |
+| **[Modern Account Card](./LWCs/Modern%20Account%20Card/)** | **Revenue Cloud-focused Account Card** LWC: company logo (per-account), real-time metrics from Quotes, Orders, Assets, and Invoices, **sub-brand affinities** (up to 4), and a dual-line revenue trend chart. Apex controller aggregates related record data with configurable fallbacks. Light/dark theme, all sections toggleable. *(Component API name: `modernAccountCard`.)* |
 | **[Incident Dashboard](./LWCs/Incident%20Dashboard/)** | **Active Incidents** dashboard LWC: grid of cards showing open Service Cloud Incidents and their related Cases (via CaseRelatedIssue). For Home and App pages. Includes Apex `IncidentDashboardController`. Works with [Incident Detection](./Service%20Cloud/Incident%20Detection/) data. *(Component API name: `incidentDashboard`.)* |
 | **[Sentiment and Coaching](./LWCs/Sentiment%20and%20Coaching/)** | **Sentiment analysis** and **agent performance coaching** for **Service Cloud Voice** (calls) and **Messaging** (chat). Flows run after call/chat, call Einstein Prompt Templates to analyze content, and write sentiment/coaching ratings and text to Voice Call and Messaging Session. LWCs (`callCoaching`, `sentimentTracker`, `messagingSessionAnalytics`) display results on record pages. Includes Apex extractors, GenAI prompt templates, and custom fields on Voice Call and Messaging Session. |
 
@@ -49,10 +50,10 @@ Service Cloud demos: incident detection, Case-related automation, case tagging, 
 |----------|------------|
 | **Agentforce** | Product Feature Feedback (topic + action + flow + prompt), RMA Process (flow + invocable + VF PDF) |
 | **Service Cloud** | Incident Detection (flow + Apex + GenAI prompts), Email OTP (LWC + Apex, email verification), **Case Tagging** (LWCs + flows + GenAI + invocable + batch) |
-| **LWCs** | Modern Contact Card (modernContactCard), Incident Dashboard (incidentDashboard), customerVerification (Email OTP), **caseTags**, **caseTagTrends**, callCoaching, sentimentTracker, messagingSessionAnalytics |
+| **LWCs** | Modern Contact Card (modernContactCard), Modern Account Card (modernAccountCard), Incident Dashboard (incidentDashboard), customerVerification (Email OTP), **caseTags**, **caseTagTrends**, callCoaching, sentimentTracker, messagingSessionAnalytics |
 | **Flows** | Product Feature Feedback Flow, Create_Case_and_add_Documentation (RMA), SDO_Service_Case_RealTime_Incident (Incident Detection), **Case_Tagging_Analysis_Flow**, **Case_Tagging_Trends_Summary_Flow**, SCV/MSG sentiment & coaching flows |
 | **GenAI** | Product Feature Feedback Analyzer, Case_Summarizer, Case_RealTime_Similarity, **Case_Tagging_Analysis**, **Case_Tagging_Trends_Summary**, Call_Sentiment, Agent_Performance_Evaluation, MSG_Chat_Sentiment, MSG_Chat_Coaching |
-| **Apex** | ProductFeatureFeedbackProcessor, CaseIncidentHandler, CaseIncidentQueueable, CaseBacklogBatch, IncidentDashboardController, CustomerVerificationCodeService, **CaseTaggingService**, **CaseTaggingController**, **CaseTaggingInvocable**, **CaseTaggingBatch**, **CaseTaggingTrendsController**, RMAGeneratorController, RMAGeneratorFlowAction, RMATemplateController, ChatCoachingExtractor, ChatExtractor, TextExtractor |
+| **Apex** | ProductFeatureFeedbackProcessor, CaseIncidentHandler, CaseIncidentQueueable, CaseBacklogBatch, IncidentDashboardController, **ModernAccountCardController**, CustomerVerificationCodeService, **CaseTaggingService**, **CaseTaggingController**, **CaseTaggingInvocable**, **CaseTaggingBatch**, **CaseTaggingTrendsController**, RMAGeneratorController, RMAGeneratorFlowAction, RMATemplateController, ChatCoachingExtractor, ChatExtractor, TextExtractor |
 
 ---
 
@@ -67,6 +68,7 @@ Service Cloud demos: incident detection, Case-related automation, case tagging, 
  sf project deploy start --source-dir "Service Cloud/Case Tagging"
  sf project deploy start --source-dir "LWCs/Incident Dashboard"
  sf project deploy start --source-dir "LWCs/Modern Contact Card"
+ sf project deploy start --source-dir "LWCs/Modern Account Card"
  ```
  or your preferred manifest.
 
@@ -81,6 +83,7 @@ See each package's README for prerequisites, object/field requirements, and conf
 - **Email OTP** (folder: [Service Cloud/Email OTP](./Service%20Cloud/Email%20OTP/)): Contact with Email; assign **OTP Verification** permission set; add **Customer Verification (OTP)** LWC to Contact page. See package README.
 - **Case Tagging** (folder: [Service Cloud/Case Tagging](./Service%20Cloud/Case%20Tagging/)): Service Cloud (Case); Einstein GenAI; API 65.0+. Custom fields and custom metadata are included. Assign **Case Tagging** permission set; add **Case Tags** LWC to Case record page and **Case Tag Trends** to a tab or app page. See package README and SETUP.md.
 - **Modern Contact Card** (folder: [LWCs/Modern Contact Card](./LWCs/Modern%20Contact%20Card/)): Contact; custom fields included (health score, tags, brand affinities); assign **Modern Contact Card Access** permission set. For Voice Call, configure the Contact lookup field name in App Builder.
+- **Modern Account Card** (folder: [LWCs/Modern Account Card](./LWCs/Modern%20Account%20Card/)): Account; Revenue Cloud objects (Quote, Order, Asset, Invoice) for real-time metrics; custom fields included (logo, brand affinities); assign **Modern Account Card Access** permission set.
 - **Incident Dashboard** (folder: [LWCs/Incident Dashboard](./LWCs/Incident%20Dashboard/)): Service Cloud (Incident, CaseRelatedIssue, Case). Optional companion to Incident Detection for displaying active incidents on Home/App pages.
 - **Sentiment and Coaching**: Service Cloud Voice and/or Messaging; Voice Call and/or Messaging Session; Einstein/GenAI; custom fields on those objects (included in the package metadata).
 

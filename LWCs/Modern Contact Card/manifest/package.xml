@@ -5,14 +5,7 @@
     <!-- Lightning Web Components -->
     <types>
         <members>modernContactCard</members>
-        <members>modernAccountCard</members>
         <name>LightningComponentBundle</name>
-    </types>
-    
-    <!-- Apex Classes -->
-    <types>
-        <members>ModernAccountCardController</members>
-        <name>ApexClass</name>
     </types>
     
     <!-- Custom Fields on Contact -->
@@ -38,24 +31,9 @@
         <name>CustomField</name>
     </types>
     
-    <!-- Custom Fields on Account -->
-    <types>
-        <members>Account.AccountCardLogo__c</members>
-        <members>Account.Brand_1_Name__c</members>
-        <members>Account.Brand_1_Image__c</members>
-        <members>Account.Brand_2_Name__c</members>
-        <members>Account.Brand_2_Image__c</members>
-        <members>Account.Brand_3_Name__c</members>
-        <members>Account.Brand_3_Image__c</members>
-        <members>Account.Brand_4_Name__c</members>
-        <members>Account.Brand_4_Image__c</members>
-        <name>CustomField</name>
-    </types>
-    
-    <!-- Permission Sets -->
+    <!-- Permission Set -->
     <types>
         <members>Modern_Contact_Card_Access</members>
-        <members>Modern_Account_Card_Access</members>
         <name>PermissionSet</name>
     </types>
 </Package>

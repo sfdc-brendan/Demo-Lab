@@ -1,25 +1,12 @@
-# Modern Card Components
+# Modern Contact Card
 
-A collection of modern, customizable Lightning Web Components for displaying record information with sleek designs following SLDS 2 standards.
+A configurable contact card Lightning Web Component with profile information, health scores, tags, brand affinities, and CSAT charts.
 
-## Components
-
-| Component | Object | Use Case |
-|-----------|--------|----------|
-| **Modern Contact Card** | Contact, Case, MessagingSession, VoiceCall | Service Cloud, customer profiles |
-| **Modern Account Card** | Account | Revenue Cloud, B2B sales |
-
----
-
-## Modern Contact Card
-
-A configurable contact card with profile information, health scores, tags, brand affinities, and CSAT charts.
-
-### Preview
+## Preview
 
 ![Modern Contact Card Preview](assets/preview.png)
 
-### Features
+## Features
 
 - **Header Background Banner**: Gradient background with optional custom image
 - **Dynamic Contact Data**: Retrieves contact from related records (Case, MessagingSession, VoiceCall)
@@ -30,44 +17,12 @@ A configurable contact card with profile information, health scores, tags, brand
 - **Customizable Metrics**: 6 configurable data fields
 - **CSAT Chart**: Dual-line chart with customizable colors
 
-### Supported Record Pages
+## Supported Record Pages
 
 - Contact
 - Case (resolves Contact from `ContactId`)
 - MessagingSession (resolves Contact from `EndUserContactId`)
 - VoiceCall (configurable Contact lookup field)
-
----
-
-## Modern Account Card
-
-A Revenue Cloud-focused account card with real-time metrics from Quotes, Orders, Assets, and Invoices.
-
-### Features
-
-- **Company Logo**: Per-account logo from `Account.AccountCardLogo__c` field
-- **Account Header**: Logo, name, industry, type, location, employees
-- **Real-Time Metrics**: Pulls live data from related records via Apex
-- **Fallback Values**: Configurable defaults when no data exists
-- **Brand Affinities**: Up to 4 sub-brands per account (custom fields on Account)
-- **Revenue Trend Chart**: Dual-line chart for visualizing trends
-- **Light/Dark Theme**: Configurable theme mode
-
-### Revenue Cloud Metrics
-
-| Metric | Data Source | Description |
-|--------|-------------|-------------|
-| Quote Count | `COUNT(Quote)` | Number of quotes for the account |
-| Quote Value | `SUM(Quote.TotalPrice)` | Total value of all quotes |
-| Active Assets | `COUNT(Asset)` | Number of assets for the account |
-| Order Value | `SUM(Order.TotalAmount)` | Total value of all orders |
-| Invoice Total | `SUM(Invoice.TotalAmount)` | Total invoiced amount |
-
-### Standard Account Fields Displayed
-
-- Name, Industry, Type
-- Billing City/State (location)
-- Number of Employees
 
 ---
 
@@ -79,44 +34,17 @@ A Revenue Cloud-focused account card with real-time metrics from Quotes, Orders,
 sf project deploy start --manifest manifest/package.xml --target-org YOUR_ORG_ALIAS
 ```
 
-### Deploy Components Individually
-
-**Contact Card only:**
-```bash
-sf project deploy start --source-dir "force-app/main/default/lwc/modernContactCard" --source-dir "force-app/main/default/objects" --source-dir "force-app/main/default/permissionsets" --target-org YOUR_ORG_ALIAS
-```
-
-**Account Card only:**
-```bash
-sf project deploy start --source-dir "force-app/main/default/lwc/modernAccountCard" --source-dir "force-app/main/default/classes" --target-org YOUR_ORG_ALIAS
-```
-
 ### Post-Installation
 
-1. **For Contact Card**: Assign the **Modern Contact Card Access** permission set
-2. **For Account Card**: Assign the **Modern Account Card Access** permission set
-3. Add components to record pages via Lightning App Builder
-4. Configure settings as needed
-
----
-
-## Package Contents
-
-| Component | Type | Description |
-|-----------|------|-------------|
-| `modernContactCard` | LWC | Contact card component |
-| `modernAccountCard` | LWC | Account card component |
-| `ModernAccountCardController` | Apex | Fetches aggregated metrics |
-| `Modern_Contact_Card_Access` | Permission Set | FLS for Contact custom fields |
-| `Modern_Account_Card_Access` | Permission Set | FLS for Account custom fields |
-| 18 Custom Fields (Contact) | CustomField | Fields on Contact object |
-| 9 Custom Fields (Account) | CustomField | Logo and brand fields on Account object |
+1. Assign the **Modern Contact Card Access** permission set to users
+2. Add the component to record pages via Lightning App Builder
+3. Configure settings as needed
 
 ---
 
 ## Configuration
 
-### Modern Contact Card Settings
+### Component Settings
 
 | Category | Settings |
 |----------|----------|
@@ -125,21 +53,10 @@ sf project deploy start --source-dir "force-app/main/default/lwc/modernAccountCa
 | **Profile** | Image field, fallback URL |
 | **Health Score** | Field, label, fallback, show/hide |
 | **Tags** | Field, fallback, show/hide |
-| **Brand Affinities** | Show/hide (uses Brand_1-4 fields) |
+| **Brand Affinities** | Show/hide (uses Brand_1-4 fields on Contact) |
 | **Metrics** | 6 configurable fields with labels, icons, fallbacks |
 | **Chart** | Show/hide, title, data, labels, colors |
 | **VoiceCall** | Contact lookup field name |
-
-### Modern Account Card Settings
-
-| Category | Settings |
-|----------|----------|
-| **Theme** | Light/Dark mode |
-| **Header** | Background image URL |
-| **Logo** | Logo URL, fallback URL |
-| **Metrics** | Show/hide each metric, custom labels, fallback values |
-| **Brand Affinities** | Show/hide, section title, fallback values (uses Account.Brand_1-4 fields) |
-| **Chart** | Show/hide, title, data, labels, colors |
 
 ---
 
@@ -155,13 +72,15 @@ sf project deploy start --source-dir "force-app/main/default/lwc/modernAccountCa
 | `Brand_1_Name__c` - `Brand_4_Name__c` | Text | Brand names |
 | `Brand_1_Image__c` - `Brand_4_Image__c` | URL | Brand logos |
 
-## Custom Fields (Account)
+---
 
-| Field API Name | Type | Description |
-|----------------|------|-------------|
-| `AccountCardLogo__c` | URL | Company logo image URL |
-| `Brand_1_Name__c` - `Brand_4_Name__c` | Text | Sub-brand names |
-| `Brand_1_Image__c` - `Brand_4_Image__c` | URL | Sub-brand logos |
+## Package Contents
+
+| Component | Type | Description |
+|-----------|------|-------------|
+| `modernContactCard` | LWC | Contact card component |
+| `Modern_Contact_Card_Access` | Permission Set | FLS for Contact custom fields |
+| 18 Custom Fields | CustomField | Fields on Contact object |
 
 ---
 
@@ -178,30 +97,18 @@ Modern Contact Card/
 └── force-app/
     └── main/
         └── default/
-            ├── classes/
-            │   ├── ModernAccountCardController.cls
-            │   └── ModernAccountCardController.cls-meta.xml
             ├── lwc/
-            │   ├── modernContactCard/
-            │   │   ├── modernContactCard.css
-            │   │   ├── modernContactCard.html
-            │   │   ├── modernContactCard.js
-            │   │   └── modernContactCard.js-meta.xml
-            │   └── modernAccountCard/
-            │       ├── modernAccountCard.css
-            │       ├── modernAccountCard.html
-            │       ├── modernAccountCard.js
-            │       └── modernAccountCard.js-meta.xml
+            │   └── modernContactCard/
+            │       ├── modernContactCard.css
+            │       ├── modernContactCard.html
+            │       ├── modernContactCard.js
+            │       └── modernContactCard.js-meta.xml
             ├── objects/
-            │   ├── Contact/
-            │   │   └── fields/
-            │   │       └── (18 custom field definitions)
-            │   └── Account/
+            │   └── Contact/
             │       └── fields/
-            │           └── (8 custom field definitions)
+            │           └── (18 custom field definitions)
             └── permissionsets/
-                ├── Modern_Contact_Card_Access.permissionset-meta.xml
-                └── Modern_Account_Card_Access.permissionset-meta.xml
+                └── Modern_Contact_Card_Access.permissionset-meta.xml
 ```
 
 ---
@@ -210,7 +117,6 @@ Modern Contact Card/
 
 - Salesforce org with Lightning Experience
 - API version 62.0 or higher
-- For Account Card metrics: Quote, Order, Asset, Invoice objects (Revenue Cloud)
 
 ---
 
