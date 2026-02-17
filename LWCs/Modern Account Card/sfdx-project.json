@@ -1,12 +1,21 @@
 {
   "packageDirectories": [
     {
+      "versionName": "ver 0.1",
+      "versionNumber": "0.1.0.NEXT",
       "path": "force-app",
-      "default": true
+      "default": true,
+      "package": "Modern Account Card",
+      "versionDescription": "Revenue Cloud-focused Account Card LWC with real-time metrics, company logo, brand affinities, and revenue trend chart"
     }
   ],
-  "name": "Modern Account Card",
+  "name": "modern-account-card",
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "62.0"
+  "sourceApiVersion": "59.0",
+  "packageAliases": {
+    "Modern Account Card": "0HoKj000000XuZdKAK",
+    "Modern Account Card@0.1.0-1": "04tKj000000fSxKIAU",
+    "Modern Account Card@0.1.0-2": "04tKj000000fSxPIAU"
+  }
 }

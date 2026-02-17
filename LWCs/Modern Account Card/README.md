@@ -36,10 +36,29 @@ A Revenue Cloud-focused account card Lightning Web Component with real-time metr
 
 ## Installation
 
-### Deploy Everything at Once (Recommended)
+### Option 1: Package Install (Recommended when available)
 
+```
+https://login.salesforce.com/packaging/installPackage.apexp?p0=04tKj000000fSxPIAU
+```
+
+> **Note:** During Salesforce release windows, package installation may show "Mismatching Versions" if your org hasn't been upgraded yet. Use Option 2 below as an alternative.
+
+### Option 2: Deploy via CLI
+
+See **[INSTALL.md](INSTALL.md)** for detailed step-by-step instructions including:
+- Installing Salesforce CLI
+- Authenticating to your org
+- Deploying the component
+- Assigning permissions
+
+**Quick deploy:**
 ```bash
-sf project deploy start --manifest manifest/package.xml --target-org YOUR_ORG_ALIAS
+git clone https://github.com/sfdc-brendan/Demo-Lab.git
+cd Demo-Lab/LWCs/Modern\ Account\ Card
+sf org login web --alias my-org --set-default
+sf project deploy start --source-dir force-app --target-org my-org
+sf org assign permset --name Modern_Account_Card_Access --target-org my-org
 ```
 
 ### Post-Installation
@@ -99,6 +118,7 @@ The component uses this priority for displaying the account logo:
 ```
 Modern Account Card/
 ├── README.md
+├── INSTALL.md
 ├── sfdx-project.json
 ├── manifest/
 │   └── package.xml
