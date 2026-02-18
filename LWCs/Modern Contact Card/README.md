@@ -28,16 +28,32 @@ A configurable contact card Lightning Web Component with profile information, he
 
 ## Installation
 
-### Deploy Everything at Once (Recommended)
+### Quick Install (5 Steps)
 
 ```bash
-sf project deploy start --manifest manifest/package.xml --target-org YOUR_ORG_ALIAS
+# 1. Clone the repo
+git clone https://github.com/sfdc-brendan/Demo-Lab.git
+cd Demo-Lab/LWCs/Modern\ Contact\ Card
+
+# 2. Login to your org (opens browser)
+sf org login web --alias my-org --set-default
+
+# 3. Deploy
+sf project deploy start --source-dir force-app --target-org my-org
+
+# 4. Assign permissions
+sf org assign permset --name Modern_Contact_Card_Access --target-org my-org
+
+# 5. Open org and add component to Contact/Case/MessagingSession page
+sf org open --target-org my-org
 ```
+
+See **[INSTALL.md](INSTALL.md)** for detailed step-by-step instructions including troubleshooting.
 
 ### Post-Installation
 
 1. Assign the **Modern Contact Card Access** permission set to users
-2. Add the component to record pages via Lightning App Builder
+2. Add the component to record pages via Lightning App Builder (Contact, Case, Messaging Session, or Voice Call)
 3. Configure settings as needed
 
 ---
