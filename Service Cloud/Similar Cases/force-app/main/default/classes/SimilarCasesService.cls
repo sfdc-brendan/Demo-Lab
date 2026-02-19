@@ -294,7 +294,8 @@ public with sharing class SimilarCasesService {
             return articles;
         }
         try {
-            String escaped = searchPhrase.escapeSingleQuotes();
+            // escapeSingleQuotes() was removed in newer API; escape ' for SOSL FIND by doubling
+            String escaped = searchPhrase.replace('\'', '\'\'');
             String kavType = 'Knowledge__kav';
             String sosl = 'FIND {\'' + escaped + '\'} IN ALL FIELDS RETURNING ' + kavType + '(Id, Title, Summary, UrlName WHERE PublishStatus = \'Online\' LIMIT 5)';
             List<List<SObject>> searchList = Search.query(sosl);
