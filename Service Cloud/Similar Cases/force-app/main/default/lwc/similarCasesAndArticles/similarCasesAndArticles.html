@@ -1,0 +1,128 @@
+<template>
+    <lightning-card title="Similar Cases &amp; Articles" icon-name="standard:case">
+        <div class="similar-cases-container">
+            <template lwc:if={hasError}>
+                <div class="slds-m-bottom_medium" role="alert">
+                    <div class="slds-notify slds-notify_alert slds-alert_error">
+                        <span class="slds-assistive-text">Error</span>
+                        <h2>{errorMessage}</h2>
+                    </div>
+                </div>
+            </template>
+
+            <template lwc:if={recordId}>
+                <div class="slds-m-bottom_medium filter-row">
+                    <div class="slds-grid slds-grid_vertical-align-center slds-gutters_small">
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_3-of-12">
+                            <lightning-combobox
+                                name="statusFilter"
+                                label="Case status"
+                                value={statusFilter}
+                                options={statusFilterOptions}
+                                onchange={handleStatusFilterChange}
+                                class="filter-combobox"
+                            ></lightning-combobox>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12 slds-grid_vertical-align-end">
+                            <lightning-button
+                                variant="brand"
+                                label="Find Similar Cases"
+                                onclick={handleLoad}
+                                title="Find similar cases"
+                            ></lightning-button>
+                        </div>
+                    </div>
+                </div>
+            </template>
+
+            <template lwc:if={isLoading}>
+                <div class="slds-align_absolute-center slds-p-around_large">
+                    <lightning-spinner alternative-text="Loading similar cases" size="medium"></lightning-spinner>
+                </div>
+            </template>
+
+            <template lwc:elseif={hasData}>
+                <section class="slds-m-bottom_large" aria-label="Similar cases">
+                    <h3 class="slds-text-heading_small slds-m-bottom_small">Similar Cases</h3>
+                    <template lwc:if={hasSimilarCases}>
+                        <div class="similar-cases-grid">
+                            <template for:each={similarCasesWithUrls} for:item="item">
+                                <article key={item.caseId} class="similar-case-card">
+                                    <div class="similar-case-card__header">
+                                        <h3 class="similar-case-card__title">
+                                            <a href={item.caseUrl} class="similar-case-card__title-link">{item.caseNumber}</a>
+                                        </h3>
+                                        <div class="similar-case-card__badges">
+                                            <span class="relevancy-badge" title="Relevancy">{item.relevancyScore}% match</span>
+                                            <template lwc:if={item.status}>
+                                                <span class="slds-badge slds-badge_lightest">{item.status}</span>
+                                            </template>
+                                        </div>
+                                    </div>
+                                    <div class="similar-case-card__body">
+                                        <p class="similar-case-card__subject" title={item.subject}>{item.subject}</p>
+                                        <dl class="similar-case-card__meta">
+                                            <template lwc:if={item.type}>
+                                                <dt class="similar-case-card__meta-dt">Type</dt>
+                                                <dd class="similar-case-card__meta-dd">{item.type}</dd>
+                                            </template>
+                                            <template lwc:if={item.priority}>
+                                                <dt class="similar-case-card__meta-dt">Priority</dt>
+                                                <dd class="similar-case-card__meta-dd">{item.priority}</dd>
+                                            </template>
+                                            <template lwc:if={item.reason}>
+                                                <dt class="similar-case-card__meta-dt">Reason</dt>
+                                                <dd class="similar-case-card__meta-dd">{item.reason}</dd>
+                                            </template>
+                                        </dl>
+                                    </div>
+                                    <div class="similar-case-card__footer">
+                                        <a href={item.caseUrl} class="similar-case-card__footer-link">View case</a>
+                                    </div>
+                                </article>
+                            </template>
+                        </div>
+                    </template>
+                    <template lwc:else>
+                        <p class="slds-text-body_small slds-text-color_weak">No similar cases found.</p>
+                    </template>
+                </section>
+
+                <section aria-label="Related articles">
+                    <h3 class="slds-text-heading_small slds-m-bottom_small">Related Articles</h3>
+                    <template lwc:if={hasRelatedArticles}>
+                        <div class="similar-cases-grid articles-grid">
+                            <template for:each={relatedArticlesWithUrls} for:item="article">
+                                <article key={article.url} class="similar-case-card article-card">
+                                    <div class="similar-case-card__header">
+                                        <h3 class="similar-case-card__title">
+                                            <a href={article.fullUrl} class="similar-case-card__title-link" target="_blank" rel="noopener noreferrer">{article.title}</a>
+                                        </h3>
+                                        <div class="similar-case-card__badges">
+                                            <span class="relevancy-badge" title="Relevance to case">{article.relevancyScore}% match</span>
+                                        </div>
+                                    </div>
+                                    <div class="similar-case-card__body">
+                                        <template lwc:if={article.summary}>
+                                            <p class="similar-case-card__subject" title={article.summary}>{article.summary}</p>
+                                        </template>
+                                    </div>
+                                    <div class="similar-case-card__footer">
+                                        <a href={article.fullUrl} class="similar-case-card__footer-link" target="_blank" rel="noopener noreferrer">View article</a>
+                                    </div>
+                                </article>
+                            </template>
+                        </div>
+                    </template>
+                    <template lwc:else>
+                        <p class="slds-text-body_small slds-text-color_weak">No related articles at this time.</p>
+                    </template>
+                </section>
+            </template>
+
+            <template lwc:elseif={recordId}>
+                <p class="slds-text-body_small slds-text-color_weak">Select a status filter (optional) and click Find Similar Cases.</p>
+            </template>
+        </div>
+    </lightning-card>
+</template>
