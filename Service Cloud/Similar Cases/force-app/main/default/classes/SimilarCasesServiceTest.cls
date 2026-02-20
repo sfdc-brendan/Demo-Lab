@@ -15,7 +15,7 @@ private class SimilarCasesServiceTest {
         SimilarCasesService.testGenerationJson = '[{"caseId":"' + other.Id + '","relevancyScore":85}]';
 
         Test.startTest();
-        SimilarCasesService.SimilarCasesResponse response = SimilarCasesService.getSimilarCasesWithScores(current.Id, null);
+        SimilarCasesService.SimilarCasesResponse response = SimilarCasesService.getSimilarCasesWithScores(current.Id, null, null, null);
         Test.stopTest();
 
         System.assertNotEquals(null, response, 'Response should not be null');
@@ -28,7 +28,7 @@ private class SimilarCasesServiceTest {
     @IsTest
     static void getSimilarCasesWithScores_invalidId_returnsError() {
         Test.startTest();
-        SimilarCasesService.SimilarCasesResponse response = SimilarCasesService.getSimilarCasesWithScores(null, null);
+        SimilarCasesService.SimilarCasesResponse response = SimilarCasesService.getSimilarCasesWithScores(null, null, null, null);
         Test.stopTest();
         System.assertNotEquals(null, response.errorMessage, 'Should set error for null id');
         System.assertEquals(0, response.similarCases.size());
@@ -43,7 +43,7 @@ private class SimilarCasesServiceTest {
         SimilarCasesService.testGenerationJson = '[]';
 
         Test.startTest();
-        SimilarCasesService.SimilarCasesResponse response = SimilarCasesController.getSimilarCasesWithScores(c.Id, 'Closed');
+        SimilarCasesService.SimilarCasesResponse response = SimilarCasesController.getSimilarCasesWithScores(c.Id, 'Closed', null, null);
         Test.stopTest();
 
         System.assertNotEquals(null, response);

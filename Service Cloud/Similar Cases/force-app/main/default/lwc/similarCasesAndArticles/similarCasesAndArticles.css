@@ -8,6 +8,19 @@
     border-bottom: 1px solid var(--slds-g-color-border-1, #c9c9c9);
 }
 
+.filter-row-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--slds-g-spacing-2, 0.5rem);
+}
+
+.filter-row-combobox {
+    flex-shrink: 0;
+    min-width: 10rem;
+}
+
 .similar-cases-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);

@@ -4,7 +4,7 @@
  */
 public with sharing class SimilarCasesController {
     @AuraEnabled(cacheable=false)
-    public static SimilarCasesService.SimilarCasesResponse getSimilarCasesWithScores(Id recordId, String statusFilter) {
-        return SimilarCasesService.getSimilarCasesWithScores(recordId, statusFilter);
+    public static SimilarCasesService.SimilarCasesResponse getSimilarCasesWithScores(Id recordId, String statusFilter, Integer maxSimilarCases, Integer maxRelatedArticles) {
+        return SimilarCasesService.getSimilarCasesWithScores(recordId, statusFilter, maxSimilarCases, maxRelatedArticles);
     }
 }

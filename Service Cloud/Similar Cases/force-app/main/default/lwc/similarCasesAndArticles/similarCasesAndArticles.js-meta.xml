@@ -11,6 +11,8 @@
                 <object>Case</object>
             </objects>
             <property name="recordId" type="String" label="Record Id" description="Automatically set to the current record on Case record pages."/>
+            <property name="maxSimilarCases" type="Integer" label="Max Similar Cases" description="Maximum number of similar cases to show (1–20)." default="10"/>
+            <property name="maxRelatedArticles" type="Integer" label="Max Related Articles" description="Maximum number of related Knowledge articles to show (1–20)." default="10"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

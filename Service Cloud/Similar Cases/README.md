@@ -4,6 +4,10 @@ A Service Cloud Lightning Web Component for the **Case** record page that helps 
 
 **Do not use in production.** For demos and evaluation only.
 
+## Preview
+
+![Similar Cases & Articles component](assets/similar-cases-screenshot.png)
+
 ## Features
 
 - **Similar Cases**: Candidate cases (same Account or Type) are sent to the Models API; the model returns case IDs and a relevancy score (0–100). Shown in a 4-wide card grid with Case Number, Type, Priority, Reason, Status, and “View case” link.
@@ -73,6 +77,8 @@ Similar Cases/
 ├── README.md
 ├── INSTALL.md
 ├── sfdx-project.json
+├── assets/
+│   └── similar-cases-screenshot.png
 └── force-app/
     └── main/
         └── default/

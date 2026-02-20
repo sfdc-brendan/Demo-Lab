@@ -49,17 +49,18 @@ public with sharing class SimilarCasesService {
         }
     }
 
-    /**
-     * Main entry: find similar cases with relevancy scores and optional related articles.
-     * @param caseId       Current case Id.
-     * @param statusFilter Optional: filter candidates by status (e.g. 'Closed'). Empty = all statuses.
-     */
-    public static SimilarCasesResponse getSimilarCasesWithScores(Id caseId, String statusFilter) {
+    private static final Integer DEFAULT_MAX_SIMILAR = 10;
+    private static final Integer DEFAULT_MAX_ARTICLES = 10;
+    private static final Integer MAX_LIMIT_CAP = 20;
+
+    public static SimilarCasesResponse getSimilarCasesWithScores(Id caseId, String statusFilter, Integer maxSimilarCases, Integer maxRelatedArticles) {
         SimilarCasesResponse response = new SimilarCasesResponse();
         if (caseId == null || caseId.getSobjectType() != Case.SObjectType) {
             response.errorMessage = 'Invalid Case Id.';
             return response;
         }
+        Integer similarLimit = (maxSimilarCases != null && maxSimilarCases >= 1 && maxSimilarCases <= MAX_LIMIT_CAP) ? maxSimilarCases : DEFAULT_MAX_SIMILAR;
+        Integer articlesLimit = (maxRelatedArticles != null && maxRelatedArticles >= 1 && maxRelatedArticles <= MAX_LIMIT_CAP) ? maxRelatedArticles : DEFAULT_MAX_ARTICLES;
 
         try {
             Case sourceCase = getCurrentCase(caseId);
@@ -72,9 +73,9 @@ public with sharing class SimilarCasesService {
             String prompt = buildSimilarityPrompt(sourceCase, candidates);
             String generatedJson = invokeModelsApi(prompt);
             List<SimilarCaseResult> scored = parseScoredCases(generatedJson, candidates);
-            response.similarCases = enrichAndLimit(scored);
+            response.similarCases = enrichAndLimit(scored, similarLimit);
 
-            response.relatedArticles = getRelatedKnowledgeArticles(sourceCase);
+            response.relatedArticles = getRelatedKnowledgeArticles(sourceCase, articlesLimit);
         } catch (Exception e) {
             response.errorMessage = e.getMessage();
             response.similarCases = new List<SimilarCaseResult>();
@@ -262,13 +263,12 @@ public with sharing class SimilarCasesService {
         return results;
     }
 
-    private static List<SimilarCaseResult> enrichAndLimit(List<SimilarCaseResult> scored) {
+    private static List<SimilarCaseResult> enrichAndLimit(List<SimilarCaseResult> scored, Integer maxReturn) {
+        Integer cap = (maxReturn != null && maxReturn >= 1) ? Math.min(maxReturn, MAX_LIMIT_CAP) : MAX_SIMILAR_TO_RETURN;
         List<SimilarCaseResult> sorted = new List<SimilarCaseResult>(scored);
         sorted.sort(new RelevancyComparator());
         List<SimilarCaseResult> out = new List<SimilarCaseResult>();
-        for (Integer i = 0; i < sorted.size() && i < MAX_SIMILAR_TO_RETURN; i++) {
-            out.add(sorted[i]);
-        }
+        for (Integer i = 0; i < sorted.size() && i < cap; i++) out.add(sorted[i]);
         return out;
     }
 
@@ -278,7 +278,7 @@ public with sharing class SimilarCasesService {
         }
     }
 
-    private static List<RelatedArticleResult> getRelatedKnowledgeArticles(Case sourceCase) {
+    private static List<RelatedArticleResult> getRelatedKnowledgeArticles(Case sourceCase, Integer maxArticles) {
         List<RelatedArticleResult> articles = new List<RelatedArticleResult>();
         String searchTerm = sourceCase.Subject != null ? sourceCase.Subject.trim() : '';
         if (String.isBlank(searchTerm) || searchTerm.length() < 2) {
@@ -293,34 +293,77 @@ public with sharing class SimilarCasesService {
         if (String.isBlank(searchPhrase)) {
             return articles;
         }
-        try {
-            // escapeSingleQuotes() was removed in newer API; escape ' for SOSL FIND by doubling
-            String escaped = searchPhrase.replace('\'', '\'\'');
-            final String kavType = 'Knowledge__kav'; // Demo environments use this article type
-            String sosl = 'FIND {\'' + escaped + '\'} IN ALL FIELDS RETURNING ' + kavType + '(Id, Title, Summary, UrlName WHERE PublishStatus = \'Online\' LIMIT 5)';
-            List<List<SObject>> searchList = Search.query(sosl);
-            if (searchList.isEmpty() || searchList[0].isEmpty()) {
-                return articles;
-            }
-            String subjectLower = (sourceCase.Subject != null ? sourceCase.Subject : '').toLowerCase();
-            Set<String> subjectWords = subjectWordSet(subjectLower);
-            for (SObject row : searchList[0]) {
-                RelatedArticleResult a = new RelatedArticleResult();
-                a.title = (String) row.get('Title');
-                a.summary = (String) row.get('Summary');
-                if (a.summary != null && a.summary.length() > 200) {
-                    a.summary = a.summary.substring(0, 200) + '...';
-                }
-                String articleId = (String) row.get('Id');
-                a.url = '/lightning/r/' + kavType + '/' + articleId + '/view';
-                a.relevancyScore = computeArticleRelevancy(subjectWords, subjectLower, a.title, a.summary);
-                articles.add(a);
-            }
-            articles.sort(new ArticleRelevancyComparator());
-        } catch (Exception e) {
-            // Knowledge not enabled or search failed - return empty
+        List<String> findWords = getSearchWordsForSosl(searchPhrase);
+        if (findWords.isEmpty()) return articles;
+        final String kavType = 'Knowledge__kav';
+        List<RelatedArticleResult> found = runKnowledgeSosl(kavType, findWords, sourceCase, maxArticles);
+        if (found.isEmpty() && findWords.size() > 1) {
+            found = runKnowledgeSosl(kavType, new List<String>{ searchPhrase }, sourceCase, maxArticles);
         }
-        return articles;
+        return found;
+    }
+
+    private static final Integer KAV_SEARCH_WORD_LIMIT = 10;
+    private static final Integer KAV_RESULT_LIMIT = 10;
+
+    private static List<String> getSearchWordsForSosl(String searchPhrase) {
+        List<String> words = new List<String>();
+        Set<String> stopWords = new Set<String>{ 'an', 'as', 'at', 'be', 'by', 'do', 'for', 'if', 'in', 'is', 'it', 'my', 'no', 'of', 'on', 'or', 'so', 'to', 'up', 'us', 'we' };
+        for (String token : searchPhrase.split('\\s+')) {
+            String t = token.replaceAll('[^a-zA-Z0-9]', '').toLowerCase();
+            if (t.length() >= 2 && !stopWords.contains(t)) words.add(t);
+        }
+        if (words.size() > KAV_SEARCH_WORD_LIMIT) {
+            List<String> trimmed = new List<String>();
+            for (Integer i = 0; i < KAV_SEARCH_WORD_LIMIT; i++) trimmed.add(words[i]);
+            return trimmed;
+        }
+        return words;
+    }
+
+    private static List<RelatedArticleResult> runKnowledgeSosl(String kavType, List<String> terms, Case sourceCase, Integer maxArticles) {
+        List<RelatedArticleResult> articles = new List<RelatedArticleResult>();
+        if (terms.isEmpty()) return articles;
+        Integer articleCap = (maxArticles != null && maxArticles >= 1) ? Math.min(maxArticles, MAX_LIMIT_CAP) : KAV_RESULT_LIMIT;
+        String subjectLower = (sourceCase.Subject != null ? sourceCase.Subject : '').toLowerCase();
+        Set<String> subjectWords = subjectWordSet(subjectLower);
+        Map<String, RelatedArticleResult> byId = new Map<String, RelatedArticleResult>();
+        for (String w : terms) {
+            String safe = w.replace('"', '\\"').replaceAll('[\\\\{}]', '') + '*';
+            if (String.isBlank(safe) || safe.length() <= 1) continue;
+            try {
+                String sosl = 'FIND {"' + safe + '"} IN ALL FIELDS RETURNING ' + kavType + '(Id, Title, Summary, UrlName WHERE PublishStatus = \'Online\' LIMIT ' + articleCap + ')';
+                List<List<SObject>> searchList = Search.query(sosl);
+                if (searchList.isEmpty() || searchList[0].isEmpty()) continue;
+                for (SObject row : searchList[0]) {
+                    String articleId = (String) row.get('Id');
+                    if (byId.containsKey(articleId)) continue;
+                    RelatedArticleResult a = new RelatedArticleResult();
+                    a.title = (String) row.get('Title');
+                    a.summary = (String) row.get('Summary');
+                    if (a.summary != null && a.summary.length() > 200) a.summary = a.summary.substring(0, 200) + '...';
+                    a.url = '/lightning/r/' + kavType + '/' + articleId + '/view';
+                    a.relevancyScore = computeArticleRelevancy(subjectWords, subjectLower, a.title, a.summary, w);
+                    byId.put(articleId, a);
+                }
+            } catch (Exception e) { }
+        }
+        articles.addAll(byId.values());
+        articles.sort(new ArticleRelevancyComparator());
+        List<RelatedArticleResult> capped = new List<RelatedArticleResult>();
+        for (Integer i = 0; i < articles.size() && i < articleCap; i++) capped.add(articles[i]);
+        return capped;
+    }
+
+    private static Integer computeArticleRelevancy(Set<String> subjectWords, String subjectLower, String title, String summary, String searchTermThatFoundArticle) {
+        if (subjectWords.isEmpty()) return 50;
+        String combined = ((title != null ? title : '') + ' ' + (summary != null ? summary : '')).toLowerCase();
+        Integer matches = 0;
+        for (String w : subjectWords) { if (combined.contains(w)) matches++; }
+        if (String.isNotBlank(searchTermThatFoundArticle) && subjectWords.contains(searchTermThatFoundArticle.toLowerCase()) && matches == 0) matches = 1;
+        if (matches == 0) return 15;
+        Integer score = subjectWords.size() > 0 ? (matches * 100) / subjectWords.size() : 50;
+        return Math.min(100, Math.max(0, score));
     }
 
     private static Set<String> subjectWordSet(String subjectLower) {
@@ -335,24 +378,6 @@ public with sharing class SimilarCasesService {
             }
         }
         return words;
-    }
-
-    private static Integer computeArticleRelevancy(Set<String> subjectWords, String subjectLower, String title, String summary) {
-        if (subjectWords.isEmpty()) {
-            return 50;
-        }
-        String combined = ((title != null ? title : '') + ' ' + (summary != null ? summary : '')).toLowerCase();
-        Integer matches = 0;
-        for (String w : subjectWords) {
-            if (combined.contains(w)) {
-                matches++;
-            }
-        }
-        if (matches == 0) {
-            return 25;
-        }
-        Integer score = subjectWords.size() > 0 ? (matches * 100) / subjectWords.size() : 50;
-        return Math.min(100, Math.max(0, score));
     }
 
     private class ArticleRelevancyComparator implements System.Comparator<RelatedArticleResult> {

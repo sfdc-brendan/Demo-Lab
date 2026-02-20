@@ -2,6 +2,11 @@ import { LightningElement, api, track } from 'lwc';
 import getSimilarCasesWithScores from '@salesforce/apex/SimilarCasesController.getSimilarCasesWithScores';
 import { NavigationMixin } from 'lightning/navigation';
 
+const DEFAULT_MAX_SIMILAR = 10;
+const DEFAULT_MAX_ARTICLES = 10;
+const MIN_LIMIT = 1;
+const MAX_LIMIT = 20;
+
 const STATUS_OPTIONS = [
     { label: 'All statuses', value: '' },
     { label: 'New', value: 'New' },
@@ -12,6 +17,8 @@ const STATUS_OPTIONS = [
 
 export default class SimilarCasesAndArticles extends NavigationMixin(LightningElement) {
     @api recordId;
+    @api maxSimilarCases = DEFAULT_MAX_SIMILAR;
+    @api maxRelatedArticles = DEFAULT_MAX_ARTICLES;
 
     @track similarCases = [];
     @track relatedArticles = [];
@@ -73,7 +80,9 @@ export default class SimilarCasesAndArticles extends NavigationMixin(LightningEl
         this.isLoading = true;
         this.errorMessage = '';
         const statusFilter = this.statusFilter || null;
-        getSimilarCasesWithScores({ recordId: this.recordId, statusFilter })
+        const maxSimilar = this._clamp(this.maxSimilarCases, MIN_LIMIT, MAX_LIMIT) || DEFAULT_MAX_SIMILAR;
+        const maxArticles = this._clamp(this.maxRelatedArticles, MIN_LIMIT, MAX_LIMIT) || DEFAULT_MAX_ARTICLES;
+        getSimilarCasesWithScores({ recordId: this.recordId, statusFilter, maxSimilarCases: maxSimilar, maxRelatedArticles: maxArticles })
             .then((response) => {
                 this.hasLoadedOnce = true;
                 this.similarCases = response.similarCases || [];
@@ -89,5 +98,11 @@ export default class SimilarCasesAndArticles extends NavigationMixin(LightningEl
             .finally(() => {
                 this.isLoading = false;
             });
+    }
+
+    _clamp(val, min, max) {
+        const n = parseInt(val, 10);
+        if (Number.isNaN(n)) return null;
+        return Math.min(max, Math.max(min, n));
     }
 }
