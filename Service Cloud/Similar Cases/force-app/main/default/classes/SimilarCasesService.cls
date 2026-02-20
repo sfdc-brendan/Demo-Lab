@@ -293,57 +293,34 @@ public with sharing class SimilarCasesService {
         if (String.isBlank(searchPhrase)) {
             return articles;
         }
-        // escapeSingleQuotes() was removed in newer API; escape ' for SOSL FIND by doubling
-        String escaped = searchPhrase.replace('\'', '\'\'');
-        List<String> kavTypesToTry = getKnowledgeArticleTypesToSearch();
-        for (String kavType : kavTypesToTry) {
-            try {
-                String sosl = 'FIND {\'' + escaped + '\'} IN ALL FIELDS RETURNING ' + kavType + '(Id, Title, Summary, UrlName WHERE PublishStatus = \'Online\' LIMIT 5)';
-                List<List<SObject>> searchList = Search.query(sosl);
-                if (searchList.isEmpty() || searchList[0].isEmpty()) {
-                    continue;
-                }
-                String subjectLower = (sourceCase.Subject != null ? sourceCase.Subject : '').toLowerCase();
-                Set<String> subjectWords = subjectWordSet(subjectLower);
-                for (SObject row : searchList[0]) {
-                    RelatedArticleResult a = new RelatedArticleResult();
-                    a.title = (String) row.get('Title');
-                    a.summary = (String) row.get('Summary');
-                    if (a.summary != null && a.summary.length() > 200) {
-                        a.summary = a.summary.substring(0, 200) + '...';
-                    }
-                    String articleId = (String) row.get('Id');
-                    a.url = '/lightning/r/' + kavType + '/' + articleId + '/view';
-                    a.relevancyScore = computeArticleRelevancy(subjectWords, subjectLower, a.title, a.summary);
-                    articles.add(a);
-                }
-                articles.sort(new ArticleRelevancyComparator());
+        try {
+            // escapeSingleQuotes() was removed in newer API; escape ' for SOSL FIND by doubling
+            String escaped = searchPhrase.replace('\'', '\'\'');
+            final String kavType = 'Knowledge__kav'; // Demo environments use this article type
+            String sosl = 'FIND {\'' + escaped + '\'} IN ALL FIELDS RETURNING ' + kavType + '(Id, Title, Summary, UrlName WHERE PublishStatus = \'Online\' LIMIT 5)';
+            List<List<SObject>> searchList = Search.query(sosl);
+            if (searchList.isEmpty() || searchList[0].isEmpty()) {
                 return articles;
-            } catch (Exception e) {
-                // This article type may not exist or not be searchable; try next
-                continue;
             }
+            String subjectLower = (sourceCase.Subject != null ? sourceCase.Subject : '').toLowerCase();
+            Set<String> subjectWords = subjectWordSet(subjectLower);
+            for (SObject row : searchList[0]) {
+                RelatedArticleResult a = new RelatedArticleResult();
+                a.title = (String) row.get('Title');
+                a.summary = (String) row.get('Summary');
+                if (a.summary != null && a.summary.length() > 200) {
+                    a.summary = a.summary.substring(0, 200) + '...';
+                }
+                String articleId = (String) row.get('Id');
+                a.url = '/lightning/r/' + kavType + '/' + articleId + '/view';
+                a.relevancyScore = computeArticleRelevancy(subjectWords, subjectLower, a.title, a.summary);
+                articles.add(a);
+            }
+            articles.sort(new ArticleRelevancyComparator());
+        } catch (Exception e) {
+            // Knowledge not enabled or search failed - return empty
         }
         return articles;
-    }
-
-    /**
-     * Returns Knowledge article type API names to try for SOSL, in order.
-     * Prefers org's article types from schema; falls back to common types.
-     */
-    private static List<String> getKnowledgeArticleTypesToSearch() {
-        List<String> types = new List<String>();
-        Map<String, Schema.SObjectType> gd = Schema.getGlobalDescribe();
-        for (String key : gd.keySet()) {
-            if (key.endsWith('__kav') && key.length() > 5) {
-                types.add(key);
-            }
-        }
-        types.sort();
-        if (types.isEmpty()) {
-            return new List<String>{ 'Knowledge__kav', 'FAQ__kav' };
-        }
-        return types;
     }
 
     private static Set<String> subjectWordSet(String subjectLower) {
