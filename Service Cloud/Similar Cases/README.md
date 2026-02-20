@@ -25,6 +25,31 @@ A Service Cloud Lightning Web Component for the **Case** record page that helps 
 
 ---
 
+## How it works
+
+1. **User action**  
+   On a Case record page, the rep optionally selects a **Case status** filter (e.g. Closed) and clicks **Find Similar Cases**. The LWC calls Apex with the current case Id, the chosen filter, and the configured max results (similar cases and related articles).
+
+2. **Similar cases (Gen AI)**  
+   - The service loads the **current case** (Subject, Description, Account, Type, etc.).  
+   - It fetches **candidate cases**: up to 30 other Cases that share the same **Account** (or, if no Account, the same **Type**), optionally filtered by status, ordered by last modified.  
+   - It builds a **text prompt** that describes the current case and lists each candidate (Id, Number, Subject, Description).  
+   - It calls the **Einstein Models API** (`createGenerations`) with that prompt and asks the model to return a JSON array of the most relevant case IDs with a relevancy score (0–100).  
+   - The response is parsed, matched back to the candidate cases, sorted by score, and trimmed to the configured **max similar cases** (default 10, max 20).  
+   - The LWC displays these in a card grid with Case Number, Type, Priority, Reason, Status, and a “View case” link.
+
+3. **Related articles (SOSL)**  
+   - The service takes the current case **Subject**, cleans it (removes special characters, stop words), and splits it into search terms.  
+   - It runs **one SOSL search per term** against `Knowledge__kav` (e.g. `FIND {"billing*"}`, `FIND {"discrepancy*"}`) so that any article matching any term can be found. Results are merged and de-duplicated by article Id.  
+   - Each article is scored for relevance using the case subject: how many subject words appear in the article title/summary, plus the search term that returned the article (so the score reflects why the article was found).  
+   - Articles are sorted by that score, limited to the configured **max related articles** (default 10, max 20), and returned.  
+   - The LWC shows them in the same card style with title, summary, relevance %, and “View article” link.
+
+4. **Display**  
+   The component shows the two sections in order: **Similar Cases** then **Related Articles**, each in a responsive 4-column grid (fewer columns on smaller screens). Relevancy/relevance percentages are shown on each card.
+
+---
+
 ## Installation
 
 ### Option 1: Package Install (Recommended when available)
