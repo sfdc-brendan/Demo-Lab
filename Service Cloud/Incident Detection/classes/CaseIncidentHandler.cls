@@ -88,6 +88,41 @@ public with sharing class CaseIncidentHandler {
         }
     }
 
+    /**
+     * Called by CaseIncidentQueueable to run evaluation in an async context that allows callouts.
+     */
+    public static void evaluateCaseForIncidentInternal(Id caseId) {
+        evaluateCaseForIncident(new List<Id>{ caseId });
+    }
+
+    /**
+     * Calls the Case_RealTime_Similarity prompt and returns the raw AI response string.
+     * Used by CaseBacklogBatch for historical case evaluation.
+     */
+    public static String generateSimilarityAnalysis(String targetCaseInput, String recentCasesInput) {
+        try {
+            Map<String, ConnectApi.WrappedValue> inputs = new Map<String, ConnectApi.WrappedValue>();
+            ConnectApi.WrappedValue targetCaseValue = new ConnectApi.WrappedValue();
+            targetCaseValue.value = targetCaseInput;
+            inputs.put('Input:targetCase', targetCaseValue);
+            ConnectApi.WrappedValue recentCasesValue = new ConnectApi.WrappedValue();
+            recentCasesValue.value = recentCasesInput;
+            inputs.put('Input:recentCases', recentCasesValue);
+
+            ConnectApi.EinsteinPromptTemplateGenerationsInput promptInput = new ConnectApi.EinsteinPromptTemplateGenerationsInput();
+            promptInput.inputParams = inputs;
+            promptInput.isPreview = false;
+
+            ConnectApi.EinsteinPromptTemplateGenerationsRepresentation output = ConnectApi.EinsteinLLM.generateMessagesForPromptTemplate('Case_RealTime_Similarity', promptInput);
+            return output != null && output.generations != null && !output.generations.isEmpty()
+                ? output.generations[0].text
+                : null;
+        } catch (Exception e) {
+            System.debug('generateSimilarityAnalysis failed: ' + e.getMessage());
+            return null;
+        }
+    }
+
     private static void runFallbackAnalysis(Case targetCase) {
         // Helper to detect issue type from text
         String issueType = detectIssueType(targetCase.Subject + ' ' + targetCase.Description + ' ' + targetCase.AI_Summary__c);

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
-    <description>Grants read and edit access only to the 10 Sentiment Coaching custom fields (Voice Call and Messaging Session). No other object fields. Use when the full Sentiment_Coaching_Fields set conflicts with an org that already has Voice Call. Assign to users who need the analytics.</description>
+    <description>Read/edit access to 10 Sentiment Coaching fields (Voice Call + Messaging Session). Use when full Sentiment_Coaching_Fields conflicts with existing Voice Call. Assign to users who need analytics.</description>
     <hasActivationRequired>false</hasActivationRequired>
     <label>Sentiment Coaching Fields Only</label>
     <license>Salesforce</license>
