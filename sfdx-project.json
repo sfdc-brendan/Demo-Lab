@@ -1,0 +1,10 @@
+{
+  "packageDirectories": [
+    { "path": "LWCs", "default": true },
+    { "path": "Service Cloud" },
+    { "path": "Agentforce" }
+  ],
+  "namespace": "",
+  "sfdcLoginUrl": "https://login.salesforce.com",
+  "sourceApiVersion": "62.0"
+}
