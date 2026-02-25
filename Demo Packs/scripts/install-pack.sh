@@ -52,7 +52,6 @@ case "$choice" in
       --source-dir "Service Cloud/Email OTP" \
       --source-dir "Service Cloud/Case Tagging" \
       --source-dir "Service Cloud/Similar Cases" \
-      --source-dir "Service Cloud/Unified Phone Controls" \
       --source-dir "LWCs/Sentiment and Coaching" \
       --wait 15
     ;;
