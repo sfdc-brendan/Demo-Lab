@@ -34,7 +34,7 @@ Lightning Web Components and related metadata for record pages, service, and ana
 
 ### [Service Cloud](./Service%20Cloud/)
 
-Service Cloud demos: incident detection, Case-related automation, case tagging, and GenAI.
+Service Cloud demos: incident detection, Case-related automation, case tagging, voice call controls, and GenAI.
 
 | Package | Description |
 |--------|-------------|
@@ -42,6 +42,7 @@ Service Cloud demos: incident detection, Case-related automation, case tagging, 
 | **[Email OTP](./Service%20Cloud/Email%20OTP/)** | **Email OTP**: one-time 6-digit verification codes sent to the contact's email. LWC on Contact page (send code + verify); Apex `CustomerVerificationCodeService` and custom object `Customer_Verification_Code__c`. Email-only; SMS not included. |
 | **[Case Tagging](./Service%20Cloud/Case%20Tagging/)** | **AI-powered case tagging**: analyzes Case subject, description, type, priority, origin, and status with Einstein GenAI to produce comma-separated tags (e.g. criticality, category). Includes LWC on Case record page (`caseTags`), **Case Tag Trends** dashboard LWC (`caseTagTrends`), invocable and batch for historical backfill, autolaunched flows and GenAI prompt templates. Custom fields on Case and custom metadata for configuration. See package README for mermaid diagram and setup. |
 | **[Similar Cases](./Service%20Cloud/Similar%20Cases/)** | **Similar Cases & Articles**: Case record page LWC that finds similar cases (same Account or Type) via Einstein Models API and related Knowledge articles via SOSL. Status filter, relevancy scores, and 4-wide card grid. No permission set; add component to Case record page. See [INSTALL.md](./Service%20Cloud/Similar%20Cases/INSTALL.md). |
+| **[Unified Phone Controls](./Service%20Cloud/Unified%20Phone%20Controls/)** | **Service Cloud Voice** LWC for **Voice Call** record pages: call controls (mute, hold, transfer, end call, flag) and real-time call/hold timers. Uses the Service Cloud Voice Toolkit API; shows only during an active call. Docked panel or floating mini-bar; configurable toolbar style and debug mode. *(Component API name: `unifiedPhoneControls`.)* |
 
 ---
 
@@ -50,8 +51,8 @@ Service Cloud demos: incident detection, Case-related automation, case tagging, 
 | Category | Components |
 |----------|------------|
 | **Agentforce** | Product Feature Feedback (topic + action + flow + prompt), RMA Process (flow + invocable + VF PDF) |
-| **Service Cloud** | Incident Detection (flow + Apex + GenAI prompts), Email OTP (LWC + Apex, email verification), **Case Tagging** (LWCs + flows + GenAI + invocable + batch), **Similar Cases** (similarCasesAndArticles + Models API + SOSL) |
-| **LWCs** | Modern Contact Card (modernContactCard), Modern Account Card (modernAccountCard), Incident Dashboard (incidentDashboard), customerVerification (Email OTP), **caseTags**, **caseTagTrends**, **similarCasesAndArticles**, callCoaching, sentimentTracker, messagingSessionAnalytics |
+| **Service Cloud** | Incident Detection (flow + Apex + GenAI prompts), Email OTP (LWC + Apex, email verification), **Case Tagging** (LWCs + flows + GenAI + invocable + batch), **Similar Cases** (similarCasesAndArticles + Models API + SOSL), **Unified Phone Controls** (Service Cloud Voice LWC: call controls + timers on Voice Call pages) |
+| **LWCs** | Modern Contact Card (modernContactCard), Modern Account Card (modernAccountCard), Incident Dashboard (incidentDashboard), customerVerification (Email OTP), **caseTags**, **caseTagTrends**, **similarCasesAndArticles**, **unifiedPhoneControls** (Voice Call controls), callCoaching, sentimentTracker, messagingSessionAnalytics |
 | **Flows** | Product Feature Feedback Flow, Create_Case_and_add_Documentation (RMA), SDO_Service_Case_RealTime_Incident (Incident Detection), **Case_Tagging_Analysis_Flow**, **Case_Tagging_Trends_Summary_Flow**, SCV/MSG sentiment & coaching flows |
 | **GenAI** | Product Feature Feedback Analyzer, Case_Summarizer, Case_RealTime_Similarity, **Case_Tagging_Analysis**, **Case_Tagging_Trends_Summary**, Call_Sentiment, Agent_Performance_Evaluation, MSG_Chat_Sentiment, MSG_Chat_Coaching |
 | **Apex** | ProductFeatureFeedbackProcessor, CaseIncidentHandler, CaseIncidentQueueable, CaseBacklogBatch, IncidentDashboardController, **ModernAccountCardController**, CustomerVerificationCodeService, **CaseTaggingService**, **CaseTaggingController**, **CaseTaggingInvocable**, **CaseTaggingBatch**, **CaseTaggingTrendsController**, **SimilarCasesController**, **SimilarCasesService**, RMAGeneratorController, RMAGeneratorFlowAction, RMATemplateController, ChatCoachingExtractor, ChatExtractor, TextExtractor |
@@ -61,13 +62,14 @@ Service Cloud demos: incident detection, Case-related automation, case tagging, 
 ## Deployment
 
 - **Root [package.xml](./package.xml)** – Lists LWCs, Apex, Flows, GenAiPromptTemplates, and CustomObjects for the Sentiment and Coaching package. Use it with Salesforce CLI or your CI/CD tooling.
-- **Per-package** – Each folder (e.g. `Agentforce/Product Feature Feedback`, `Agentforce/RMA Process`, `Service Cloud/Incident Detection`, `Service Cloud/Email OTP`, `Service Cloud/Case Tagging`, `Service Cloud/Similar Cases`, `LWCs/Incident Dashboard`, `LWCs/Modern Contact Card`, `LWCs/Sentiment and Coaching`) contains metadata in standard SFDX layout. Deploy with:
+- **Per-package** – Each folder (e.g. `Agentforce/Product Feature Feedback`, `Agentforce/RMA Process`, `Service Cloud/Incident Detection`, `Service Cloud/Email OTP`, `Service Cloud/Case Tagging`, `Service Cloud/Similar Cases`, `Service Cloud/Unified Phone Controls`, `LWCs/Incident Dashboard`, `LWCs/Modern Contact Card`, `LWCs/Sentiment and Coaching`) contains metadata in standard SFDX layout. Deploy with:
  ```bash
  sf project deploy start --source-dir "Agentforce/RMA Process"
  sf project deploy start --source-dir "Service Cloud/Incident Detection"
  sf project deploy start --source-dir "Service Cloud/Email OTP"
  sf project deploy start --source-dir "Service Cloud/Case Tagging"
  sf project deploy start --source-dir "Service Cloud/Similar Cases"
+ sf project deploy start --source-dir "Service Cloud/Unified Phone Controls"
  sf project deploy start --source-dir "LWCs/Incident Dashboard"
  sf project deploy start --source-dir "LWCs/Modern Contact Card"
  sf project deploy start --source-dir "LWCs/Modern Account Card"
@@ -85,6 +87,7 @@ See each package's README for prerequisites, object/field requirements, and conf
 - **Email OTP** (folder: [Service Cloud/Email OTP](./Service%20Cloud/Email%20OTP/)): Contact with Email; assign **OTP Verification** permission set; add **Customer Verification (OTP)** LWC to Contact page. See package README.
 - **Case Tagging** (folder: [Service Cloud/Case Tagging](./Service%20Cloud/Case%20Tagging/)): Service Cloud (Case); Einstein GenAI; API 65.0+. Custom fields and custom metadata are included. Assign **Case Tagging** permission set; add **Case Tags** LWC to Case record page and **Case Tag Trends** to a tab or app page. See package README and SETUP.md.
 - **Similar Cases** (folder: [Service Cloud/Similar Cases](./Service%20Cloud/Similar%20Cases/)): Case record page; Einstein Models API; API 65.0+. LWC `similarCasesAndArticles` finds similar cases (same Account/Type) and related Knowledge articles. No permission set; add component to Case record page. See package [README](./Service%20Cloud/Similar%20Cases/README.md) and [INSTALL.md](./Service%20Cloud/Similar%20Cases/INSTALL.md).
+- **Unified Phone Controls** (folder: [Service Cloud/Unified Phone Controls](./Service%20Cloud/Unified%20Phone%20Controls/)): Service Cloud Voice; Lightning Experience only. LWC for Voice Call record pages: mute, hold, transfer, end call, and real-time call/hold timers. Add **Unified Phone Controls** to the Voice Call record page. See package README.
 - **Modern Contact Card** (folder: [LWCs/Modern Contact Card](./LWCs/Modern%20Contact%20Card/)): Contact; custom fields included (health score, tags, brand affinities); assign **Modern Contact Card Access** permission set. For Voice Call, configure the Contact lookup field name in App Builder.
 - **Modern Account Card** (folder: [LWCs/Modern Account Card](./LWCs/Modern%20Account%20Card/)): Account; Revenue Cloud objects (Quote, Order, Asset, Invoice) for real-time metrics; custom fields included (logo, brand affinities); assign **Modern Account Card Access** permission set.
 - **Incident Dashboard** (folder: [LWCs/Incident Dashboard](./LWCs/Incident%20Dashboard/)): Service Cloud (Incident, CaseRelatedIssue, Case). Optional companion to Incident Detection for displaying active incidents on Home/App pages.
