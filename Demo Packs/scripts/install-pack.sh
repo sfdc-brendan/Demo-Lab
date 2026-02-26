@@ -47,6 +47,10 @@ case "$choice" in
       --wait 15
     ;;
   2)
+    echo ""
+    echo "*** DISCLAIMER: Salesforce Voice must be installed in your org before installing this pack. ***"
+    echo "*** If Salesforce Voice is not installed, deployment of the Service Cloud Pack will fail.   ***"
+    echo ""
     echo "Deploying Service Cloud Pack..."
     sf project deploy start \
       --source-dir "Service Cloud/Incident Detection" \
@@ -63,6 +67,9 @@ case "$choice" in
       --source-dir "LWCs/Modern Account Card" \
       --source-dir "LWCs/Modern Contact Card" \
       --wait 15
+    echo ""
+    echo "*** DISCLAIMER: Salesforce Voice must be installed in your org before installing this pack. ***"
+    echo "*** If Salesforce Voice is not installed, deployment of the Service Cloud Pack will fail.   ***"
     echo ""
     echo "Deploying Service Cloud Pack..."
     sf project deploy start \
