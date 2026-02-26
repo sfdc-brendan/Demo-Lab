@@ -87,7 +87,7 @@ flowchart TB
 | Asset | Description |
 |-------|-------------|
 | **Apex** | `CaseTaggingService`, `CaseTaggingController`, `CaseTaggingInvocable`, `CaseTaggingBatch`, `CaseTaggingTrendsController` (+ tests) |
-| **Flows** | `Case_Tagging_Analysis_Flow` (autolaunched), `Case_Tagging_Trends_Summary_Flow` (autolaunched); optional `Agent_Response_Accuracy_Flow` (separate use case) |
+| **Flows** | `Case_Tagging_Analysis_Flow` (autolaunched), `Case_Tagging_Trends_Summary_Flow` (autolaunched) |
 | **GenAI** | `Case_Tagging_Analysis`, `Case_Tagging_Trends_Summary`, `Case_Summarizer` |
 | **LWCs** | `caseTags` (Case record page), `caseTagTrends` (dashboard/tab) |
 | **Custom metadata** | `Case_Tagging_Config__mdt` (e.g. Case_Tagging_Default) |
