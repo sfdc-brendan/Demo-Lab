@@ -31,7 +31,7 @@ cd "Demo Packs"
 The script will:
 
 1. **Step 4:** Open your browser so you can log in to the Salesforce org you want (`sf org login web --set-default`).
-2. **Step 5:** Ask you to choose a pack (Pack 1 or Service Cloud Pack), then deploy that pack’s packages to the default org.
+2. **Step 5:** Ask you to choose a pack (Pack 1, Service Cloud Pack, or both), then deploy to the default org.
 
 ---
 
