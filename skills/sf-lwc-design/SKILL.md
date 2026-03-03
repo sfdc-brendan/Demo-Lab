@@ -2,10 +2,10 @@
 name: sf-lwc-design
 description: >
   SLDS 2 design system foundation for Lightning Web Components. Generates LWC
-  with correct global styling hooks (--slds-g-*), dark mode compliance, surface/accent/feedback
-  color systems, and proper component structure. Use when creating LWC components,
-  styling LWC, applying SLDS 2 tokens, migrating from SLDS 1, or when the user
-  mentions design system, dark mode, theming, or SLDS 2.
+  with correct global styling hooks (--slds-g-*), surface/accent/feedback color systems,
+  theme-safe styling (light mode default, dark mode opt-in), and proper component
+  structure. Use when creating LWC components, styling LWC, applying SLDS 2 tokens,
+  migrating from SLDS 1, or when the user mentions design system, theming, or SLDS 2.
 license: MIT
 metadata:
   version: "1.0.0"
@@ -127,17 +127,23 @@ Use for element dimensions (width, height, icons).
 
 ---
 
-## Dark Mode Compliance
+## Theme-Safe Styling
 
-Every component must pass dark mode without code changes.
+Components use **light mode by default**. By using `--slds-g-*` hooks instead of hardcoded values, components automatically adapt if an org later enables dark mode (Cosmos dark theme) — no code changes needed. Dark mode is an opt-in enhancement, not a default requirement.
 
-### Mandatory Rules
+**Before adding dark mode support, ask the user**: "Do you want this component to support dark mode, or is light mode sufficient?"
+
+### Rules (Apply Always — Light and Dark)
 
 - **No hex/rgb/hsl literals** in CSS — always `var(--slds-g-color-*)`
 - **No inline color styles** in HTML templates
-- **Provide fallbacks**: `var(--slds-g-color-surface-1, #ffffff)`
+- **Provide fallbacks**: `var(--slds-g-color-surface-1, #ffffff)` (fallback to light mode values)
 - **Icons**: Use `lightning-icon` with SLDS utility sprites, never custom SVGs with hardcoded fill
+
+### Additional Rules (Only When Dark Mode Requested)
+
 - **Images**: Use `mix-blend-mode` or CSS filters when images must adapt to dark backgrounds
+- **Test in both themes**: Verify all text is readable and contrast ratios meet WCAG AA in both light and dark
 
 ### CSS Pattern
 
@@ -229,7 +235,7 @@ Every component must pass dark mode without code changes.
 | Category | Points | Pass Criteria |
 |----------|--------|---------------|
 | **SLDS 2 Hook Usage** | 25 | All colors, spacing, sizing, typography use `--slds-g-*` hooks |
-| **Dark Mode Ready** | 20 | Zero hardcoded colors; fallbacks on every `var()`; no inline styles |
+| **Theme-Safe Styling** | 20 | Zero hardcoded colors; fallbacks on every `var()`; no inline styles |
 | **Migration Compliance** | 15 | No SLDS 1 `--lwc-*` tokens; no deprecated class names |
 | **Component Structure** | 15 | Uses `lightning-*` base components where available; semantic HTML |
 | **Surface/Accent/Feedback** | 15 | Correct semantic use of color categories (not accent for errors, etc.) |

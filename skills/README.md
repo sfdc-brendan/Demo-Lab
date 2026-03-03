@@ -30,9 +30,9 @@ The installer auto-detects your IDE (Cursor, Claude Code, Windsurf) and installs
 
 | Skill | Purpose | Scoring |
 |-------|---------|---------|
-| **sf-lwc-design** | SLDS 2 design system foundation — styling hooks, dark mode, migration from SLDS 1 | 100 pts |
+| **sf-lwc-design** | SLDS 2 design system foundation — styling hooks, theme-safe patterns, migration from SLDS 1 | 100 pts |
 | **sf-lwc-styling** | Utility-first CSS — Tailwind-to-SLDS mapping, reusable classes, component recipes | 100 pts |
-| **sf-lwc-theming** | Custom themes — brand tokens, multi-brand support, dark/light mode, Experience Cloud themes | 100 pts |
+| **sf-lwc-theming** | Custom themes — brand tokens, multi-brand support, optional dark mode, Experience Cloud themes | 100 pts |
 
 ### User Experience
 
@@ -135,7 +135,7 @@ cp -R sf-lwc-* /path/to/your/project/.cursor/skills/
 "Migrate this component from SLDS 1 to SLDS 2"
 "Create utility CSS classes for this LWC"
 "What's the SLDS equivalent of Tailwind's bg-gray-50?"
-"Create a custom brand theme with dark mode support"
+"Create a custom brand theme for my org"
 "Build a multi-brand component system"
 ```
 
@@ -175,7 +175,7 @@ cp -R sf-lwc-* /path/to/your/project/.cursor/skills/
 ## What Each Skill Covers
 
 ### sf-lwc-design
-SLDS 2 global styling hooks reference (colors, typography, spacing, sizing, shadows, radii). Dark mode compliance rules. SLDS 1 to SLDS 2 migration table. Component structure patterns.
+SLDS 2 global styling hooks reference (colors, typography, spacing, sizing, shadows, radii). Theme-safe styling patterns (light mode default, dark mode opt-in). SLDS 1 to SLDS 2 migration table. Component structure patterns.
 
 ### sf-lwc-ux
 Shadcn-inspired component composition. Layout patterns (card grid, split view, stacked form). Interaction patterns (skeleton loading, empty states, error boundaries, toasts, optimistic updates). WCAG 2.1 AA accessibility (ARIA, keyboard nav, focus management). Responsive CSS-only techniques.
@@ -226,7 +226,7 @@ The installer overwrites existing skill files with the latest versions from GitH
 - **Cursor** (latest version)
 - **Salesforce org** with LWC support (API 45.0+)
 - **SLDS 2** recommended (API 62.0+, Spring '25+) for full styling hook support
-- **Salesforce Cosmos theme** for dark mode features
+- **Salesforce Cosmos theme** (optional, for dark mode if requested)
 - **Experience Cloud** license for sf-lwc-experience skill
 
 No external dependencies. No Node.js, no Tailwind build step, no static resources.

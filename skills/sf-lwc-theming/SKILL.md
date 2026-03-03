@@ -2,11 +2,11 @@
 name: sf-lwc-theming
 description: >
   Custom theme creation and brand token systems for Lightning Web Components. Covers
-  SLDS 2 theme extension, brand color palettes, multi-brand support, dark/light mode
-  toggling, component-level theme overrides, and Experience Cloud theme tokens. Use when
-  creating custom themes, building brand systems, configuring dark mode, customizing
-  SLDS, or when the user mentions theming, branding, custom colors, brand tokens,
-  theme toggle, or white-labeling.
+  SLDS 2 theme extension, brand color palettes, multi-brand support, component-level
+  theme overrides, and Experience Cloud theme tokens. Light mode is the default;
+  dark mode is available as an opt-in enhancement. Use when creating custom themes,
+  building brand systems, customizing SLDS, or when the user mentions theming,
+  branding, custom colors, brand tokens, or white-labeling.
 license: MIT
 metadata:
   version: "1.0.0"
@@ -16,14 +16,14 @@ metadata:
 
 # sf-lwc-theming: Custom Themes for LWC
 
-Create and apply custom themes that extend SLDS 2 for branded Salesforce experiences. Build theme systems that support multiple brands, dark/light mode, and component-level overrides — all without breaking the design system.
+Create and apply custom themes that extend SLDS 2 for branded Salesforce experiences. Build theme systems that support multiple brands and component-level overrides — all without breaking the design system. **Light mode is the default**; dark mode is an optional enhancement when explicitly requested.
 
 ## Core Principles
 
-1. **Extend, never override** — add brand tokens alongside SLDS hooks, don't reassign them
-2. **Semantic naming** — brand tokens describe purpose, not color (`--brand-primary`, not `--brand-blue`)
-3. **Theme at the boundary** — apply themes at the `:host` level, not deep in component CSS
-4. **Dark mode built in** — every custom theme must include dark variants
+1. **Light mode first** — all themes default to light mode; dark mode is opt-in
+2. **Extend, never override** — add brand tokens alongside SLDS hooks, don't reassign them
+3. **Semantic naming** — brand tokens describe purpose, not color (`--brand-primary`, not `--brand-blue`)
+4. **Theme at the boundary** — apply themes at the `:host` level, not deep in component CSS
 5. **Portable** — themes work in internal Lightning, Experience Cloud, and mobile
 
 ---
@@ -107,7 +107,9 @@ This ensures the component works in:
 
 ---
 
-## Dark Mode Theme
+## Dark Mode (Opt-In Enhancement)
+
+Dark mode is **not added by default**. Before implementing, ask the user: "Do you want this component to support dark mode?" If yes, follow the patterns below.
 
 ### Dark Token Definitions
 
@@ -316,7 +318,7 @@ When defining custom brand colors, verify contrast ratios:
 | Category | Points | Pass Criteria |
 |----------|--------|---------------|
 | **Token Architecture** | 20 | Brand tokens above SLDS; three-level fallback chain |
-| **Dark Mode** | 20 | Dark variants defined; system preference detection; manual toggle |
+| **Dark Mode (if requested)** | 20 | When requested: dark variants defined, system preference detection, manual toggle. When not requested: light mode works correctly, no hardcoded colors that would break under dark theme. |
 | **Contrast & Accessibility** | 20 | All color pairs meet WCAG AA contrast ratios |
 | **Multi-Context** | 15 | Works in internal Lightning, Experience Cloud, and mobile |
 | **Configurability** | 15 | Brand selectable via App Builder; color picker for accents |

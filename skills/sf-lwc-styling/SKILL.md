@@ -550,7 +550,7 @@ Reusable status dot + text pattern using feedback colors.
 | **Utility Class Quality** | 20 | Reusable, semantic naming; follows `.util-*` or `.recipe-*` conventions |
 | **Composition** | 20 | CSS classes combine cleanly; no `!important`; no deep nesting (max 2 levels) |
 | **Fallback Values** | 15 | Every `var()` includes a fallback for resilience |
-| **Dark Mode Safe** | 10 | All patterns render correctly under Cosmos dark theme |
+| **Theme-Safe** | 10 | All patterns use `--slds-g-*` hooks; no hardcoded values that break under alternate themes |
 | **Performance** | 10 | No redundant declarations; efficient selectors; no `*` wildcards |
 
 ### Scoring Guide

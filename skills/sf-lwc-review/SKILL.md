@@ -38,7 +38,7 @@ Read the component bundle: `.js`, `.html`, `.css`, and `.js-meta.xml`.
 
 | Pass | Skill | Points | Focus |
 |------|-------|--------|-------|
-| **Design** | sf-lwc-design | 100 | SLDS 2 hooks, dark mode, migration, structure |
+| **Design** | sf-lwc-design | 100 | SLDS 2 hooks, theme-safe styling, migration, structure |
 | **UX** | sf-lwc-ux | 100 | States, accessibility, layout, interactions |
 | **Styling** | sf-lwc-styling | 100 | Utility patterns, composition, fallbacks |
 
@@ -75,7 +75,9 @@ Scan `.css` file for:
 
 **Flag pattern**: Any CSS property with a hardcoded value that has a `--slds-g-*` equivalent.
 
-### Dark Mode Ready (20 pts)
+### Theme-Safe Styling (20 pts)
+
+These checks ensure the component works in light mode (default) and won't break if dark mode is enabled later.
 
 | Check | Points | How to Detect |
 |-------|--------|---------------|
@@ -190,11 +192,11 @@ Same checks as Design pass — reinforces zero tolerance for hardcoded values.
 
 ### Fallback Values (15 pts)
 
-Same check as Design dark mode fallbacks — every `var()` includes a fallback.
+Same check as Design theme-safe fallbacks — every `var()` includes a fallback.
 
-### Dark Mode Safe (10 pts)
+### Theme-Safe (10 pts)
 
-Confirmed through Design pass. Cross-reference score.
+Confirmed through Design pass. Cross-reference score. Verifies no hardcoded values that would break if org enables dark mode later.
 
 ### Performance (10 pts)
 
