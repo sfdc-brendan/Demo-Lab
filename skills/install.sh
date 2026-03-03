@@ -4,7 +4,19 @@ set -euo pipefail
 SKILLS_DIR="$HOME/.cursor/skills"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-SKILL_NAMES=("sf-lwc-design" "sf-lwc-ux" "sf-lwc-styling")
+SKILL_NAMES=(
+    "sf-lwc-design"
+    "sf-lwc-ux"
+    "sf-lwc-styling"
+    "sf-lwc-dataviz"
+    "sf-lwc-review"
+    "sf-lwc-mobile"
+    "sf-lwc-page-composition"
+    "sf-lwc-motion"
+    "sf-lwc-content"
+    "sf-lwc-experience"
+    "sf-lwc-theming"
+)
 
 echo "==========================================="
 echo "  LWC UI/UX Skills Installer for Cursor"
