@@ -1,6 +1,26 @@
-# LWC UI/UX Skills for Cursor
+# LWC UI/UX Skills for Agentic Coding Tools
 
-A suite of 11 Cursor agent skills that improve the visual quality, user experience, and design system compliance of Lightning Web Components on the Salesforce platform. Built on SLDS 2 global styling hooks with design patterns inspired by Tailwind CSS and Shadcn.
+A suite of 11 agent skills that improve the visual quality, user experience, and design system compliance of Lightning Web Components on the Salesforce platform. Built on SLDS 2 global styling hooks with design patterns inspired by Tailwind CSS and Shadcn.
+
+Compatible with **Cursor**, **Claude Code**, **Windsurf**, and any AI coding agent with a skills directory.
+
+---
+
+## Quick Install
+
+Copy and paste into your terminal:
+
+```bash
+curl -sSL https://raw.githubusercontent.com/sfdc-brendan/Demo-Lab/main/skills/install.sh | bash
+```
+
+Or with `wget`:
+
+```bash
+wget -qO- https://raw.githubusercontent.com/sfdc-brendan/Demo-Lab/main/skills/install.sh | bash
+```
+
+The installer auto-detects your IDE (Cursor, Claude Code, Windsurf) and installs all 11 skills. Restart your IDE after installing.
 
 ---
 
@@ -63,24 +83,37 @@ sf-lwc-design (SLDS 2 Foundation)
 
 ## Installation
 
-### Quick Install (Recommended)
+### One-Line Install (Recommended)
 
 ```bash
+curl -sSL https://raw.githubusercontent.com/sfdc-brendan/Demo-Lab/main/skills/install.sh | bash
+```
+
+Downloads all 11 skills directly from GitHub and installs them. Auto-detects Cursor (`~/.cursor/skills/`), Claude Code (`~/.claude/skills/`), and Windsurf (`~/.windsurf/skills/`). No git clone required.
+
+### Install From Clone
+
+```bash
+git clone https://github.com/sfdc-brendan/Demo-Lab.git
+cd Demo-Lab/skills
 bash install.sh
 ```
 
-This copies all 11 skills to `~/.cursor/skills/` and validates each SKILL.md before installing. Restart Cursor after installing.
+When run from a local clone, the installer copies files directly instead of downloading.
 
 ### Manual Install
 
-Copy each skill directory to your Cursor skills folder:
+Copy each skill directory to your IDE's skills folder:
 
 ```bash
-for skill in sf-lwc-design sf-lwc-ux sf-lwc-styling sf-lwc-dataviz sf-lwc-review \
-    sf-lwc-mobile sf-lwc-page-composition sf-lwc-motion sf-lwc-content \
-    sf-lwc-experience sf-lwc-theming; do
-    cp -R "$skill" ~/.cursor/skills/
-done
+# Cursor
+cp -R sf-lwc-* ~/.cursor/skills/
+
+# Claude Code
+cp -R sf-lwc-* ~/.claude/skills/
+
+# Windsurf
+cp -R sf-lwc-* ~/.windsurf/skills/
 ```
 
 ### Project-Level Install
@@ -176,26 +209,15 @@ Brand token architecture (above SLDS hooks). Dark/light mode with system prefere
 
 ---
 
-## Deploy to GitHub
+## Updating
 
-### Add to an Existing Repository
-
-```bash
-git clone https://github.com/sfdc-brendan/Demo-Lab.git
-cd Demo-Lab
-cp -R /path/to/skills .
-git add skills/
-git commit -m "Add LWC UI/UX Cursor skills (11 design skills)"
-git push origin main
-```
-
-### Install From GitHub
+Re-run the one-liner to update all skills to the latest version:
 
 ```bash
-git clone https://github.com/sfdc-brendan/Demo-Lab.git
-cd Demo-Lab/skills
-bash install.sh
+curl -sSL https://raw.githubusercontent.com/sfdc-brendan/Demo-Lab/main/skills/install.sh | bash
 ```
+
+The installer overwrites existing skill files with the latest versions from GitHub.
 
 ---
 
