@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiPlugin xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <canEscalate>true</canEscalate>
+    <description>Agentforce Agent for handling Return Merchandise Authorization (RMA) requests. Collects product and issue details from customers, creates Cases, generates professional RMA documentation, and routes cases to the appropriate support agents.</description>
+    <developerName>RMA_Process_Agent</developerName>
+    <genAiFunctions>
+        <functionName>Create_RMA_Case_and_Documentation</functionName>
+    </genAiFunctions>
+    <genAiPluginInstructions>
+        <description>When a customer wants to return a product, report a defective item, request a replacement, or initiate a warranty claim, immediately begin collecting the required information to process an RMA. You need the product name, serial number, a description of the issue, and the reported symptoms. Call Create_RMA_Case_and_Documentation once you have enough details.</description>
+        <developerName>instruction_0_rma_detection</developerName>
+        <language xsi:nil="true"/>
+        <masterLabel>instruction_0_rma_detection</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>Recognize RMA-related requests from phrases like: "I need to return this product", "My device is broken", "I want a replacement", "This item is defective", "How do I send this back?", "I need an RMA", "The product stopped working", "I want to exchange this", "Can I get a refund?", "My warranty should cover this", "The item arrived damaged", "I need to file a return".</description>
+        <developerName>instruction_1_rma_triggers</developerName>
+        <language xsi:nil="true"/>
+        <masterLabel>instruction_1_rma_triggers</masterLabel>
+        <sortOrder>1</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>Collect the following information from the customer before calling the action: 1) Product name or model, 2) Serial number, 3) Description of the issue or defect, 4) What symptoms or problems they observed, 5) Any troubleshooting steps they already tried. If the customer cannot provide a serial number, ask them where to find it on their product. Provide a brief case subject summarizing the return reason.</description>
+        <developerName>instruction_2_data_collection</developerName>
+        <language xsi:nil="true"/>
+        <masterLabel>instruction_2_data_collection</masterLabel>
+        <sortOrder>2</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>After processing the RMA, confirm the results to the customer: "I've created a support case and generated your RMA documentation. Your RMA number is [RMA Number] and your case has been routed to a support agent for review. You'll receive the RMA document with return instructions shortly." If the RMA generation failed, apologize and offer to escalate to a human agent.</description>
+        <developerName>instruction_3_confirmation_response</developerName>
+        <language xsi:nil="true"/>
+        <masterLabel>instruction_3_confirmation_response</masterLabel>
+        <sortOrder>3</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>For severe issues such as safety concerns, complete product failure, or items that arrived damaged, treat these with urgency. Acknowledge the severity: "I understand this is a serious issue. Let me prioritize your return request right away." Ensure the case subject reflects the severity so the support team can act quickly.</description>
+        <developerName>instruction_4_severity_handling</developerName>
+        <language xsi:nil="true"/>
+        <masterLabel>instruction_4_severity_handling</masterLabel>
+        <sortOrder>4</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>Ask the customer if there is anything else they need help with after the RMA is processed. Reassure them: "Your return is being handled. Is there anything else about your product experience I can help with?" If the customer has questions about return shipping or timelines, let them know their assigned support agent will follow up with specific details.</description>
+        <developerName>instruction_5_follow_up</developerName>
+        <language xsi:nil="true"/>
+        <masterLabel>instruction_5_follow_up</masterLabel>
+        <sortOrder>5</sortOrder>
+    </genAiPluginInstructions>
+    <language>en_US</language>
+    <masterLabel>RMA Process Agent</masterLabel>
+    <pluginType>Topic</pluginType>
+    <scope>Return Merchandise Authorization processing for product returns, exchanges, and warranty claims. Collects product and defect details from customers, creates support cases, generates RMA documentation with return instructions, and routes cases to support agents for fulfillment.</scope>
+</GenAiPlugin>

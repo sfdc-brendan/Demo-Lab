@@ -1,0 +1,12 @@
+{
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "output" : {
+      "title" : "output",
+      "description" : "Status message from the RMA process indicating whether the case was created and the RMA document was generated successfully",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

@@ -1,0 +1,63 @@
+{
+  "required" : [ "caseSubject", "issue", "productName", "serialNumber" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "caseSubject" : {
+      "title" : "caseSubject",
+      "description" : "A brief subject line describing the customer's return reason, such as 'Defective Toast Go 3 - Screen Cracked' or 'Product Not Working - Requesting Replacement'. Extract from the customer's description of their issue.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : true
+    },
+    "issue" : {
+      "title" : "issue",
+      "description" : "The customer's description of the problem with their product. This should capture what went wrong, how the product is failing, or why they need to return it. Extract the full issue description from user input.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : true
+    },
+    "productName" : {
+      "title" : "productName",
+      "description" : "The name or model of the product the customer wants to return, such as 'Toast Go 3', 'Toast Flex', or the specific product model. Ask the customer if not provided.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : true
+    },
+    "serialNumber" : {
+      "title" : "serialNumber",
+      "description" : "The serial number of the product being returned. This is typically found on the product label or in the customer's order details. Ask the customer for this information.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : true
+    },
+    "reportedIssues" : {
+      "title" : "reportedIssues",
+      "description" : "Specific symptoms or problems the customer has observed with the product, such as 'screen is cracked', 'device won't power on', 'overheating during use'. Extract from the customer's description.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : true
+    },
+    "stepstoproduce" : {
+      "title" : "stepstoproduce",
+      "description" : "Any troubleshooting steps the customer has already tried, such as 'restarted the device', 'factory reset', 'checked power cable'. Ask the customer what they have tried so far.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : true
+    },
+    "errormessage" : {
+      "title" : "errormessage",
+      "description" : "Any error messages or error codes the customer has seen on the product. This could be on-screen errors, blinking light patterns, or audible alerts. Optional if no errors were displayed.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : true
+    },
+    "additionalNotes" : {
+      "title" : "additionalNotes",
+      "description" : "Any additional details or context the customer wants to share about the return, such as special handling requests, preferred contact method, or timeline constraints.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : true
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}
