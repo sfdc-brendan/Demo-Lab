@@ -4,7 +4,7 @@
   "properties" : {
     "contactId" : {
       "title" : "contactId",
-      "description" : "The Contact ID of the customer requesting the RMA. This should be extracted from the current Contact record context when the user is on a Contact record page, or from the authenticated user's contact record in a messaging session.",
+      "description" : "The Salesforce Contact ID of the customer requesting the RMA. Use the MessagingSession EndUserContactId or Contact Id from the current session context. Do not ask the customer for this value.",
       "lightning:type" : "lightning__textType",
       "lightning:isPII" : false,
       "copilotAction:isUserInput" : false
