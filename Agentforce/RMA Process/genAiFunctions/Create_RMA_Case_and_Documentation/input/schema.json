@@ -1,10 +1,10 @@
 {
-  "required" : [ "caseSubject", "issue", "productName", "serialNumber", "contactId" ],
+  "required" : [ "caseSubject", "issue", "productName", "serialNumber" ],
   "unevaluatedProperties" : false,
   "properties" : {
     "contactId" : {
       "title" : "contactId",
-      "description" : "The Salesforce Contact ID of the customer requesting the RMA. Use the MessagingSession EndUserContactId or Contact Id from the current session context. Do not ask the customer for this value.",
+      "description" : "The Salesforce Contact ID of the customer. Set this to the value of EndUserContactId from the MessagingSession context, or the Contact Id from the current record context. If available, always pass this value. Do not ask the customer for this.",
       "lightning:type" : "lightning__textType",
       "lightning:isPII" : false,
       "copilotAction:isUserInput" : false

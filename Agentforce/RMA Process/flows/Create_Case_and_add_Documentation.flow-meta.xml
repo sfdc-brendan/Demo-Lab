@@ -5,7 +5,7 @@
         <name>Generate_RMA_Document</name>
         <label>Generate RMA Document</label>
         <locationX>176</locationX>
-        <locationY>518</locationY>
+        <locationY>878</locationY>
         <actionName>RMAGeneratorFlowAction</actionName>
         <actionType>apex</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -141,7 +141,50 @@
     </actionCalls>
     <apiVersion>65.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
-    <description>Creates a Case from Agentforce input, generates an RMA PDF document, and attaches it to the Case. Portable across orgs with no hardcoded IDs.</description>
+    <assignments>
+        <description>Sets the contactId from the MessagingSession EndUserContactId when the agent did not provide it</description>
+        <name>Set_Contact_From_Session</name>
+        <label>Set Contact From Session</label>
+        <locationX>44</locationX>
+        <locationY>398</locationY>
+        <assignmentItems>
+            <assignToReference>contactId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_Messaging_Session.EndUserContactId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Create_Case</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <description>Checks whether the agent provided a contactId. If not, attempts to resolve it from the active MessagingSession.</description>
+        <name>Has_Contact_Id</name>
+        <label>Has Contact Id?</label>
+        <locationX>176</locationX>
+        <locationY>158</locationY>
+        <defaultConnector>
+            <targetReference>Create_Case</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Contact Provided</defaultConnectorLabel>
+        <rules>
+            <name>Contact_Missing</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>contactId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Messaging_Session</targetReference>
+            </connector>
+            <label>Contact Missing</label>
+        </rules>
+    </decisions>
+    <description>Creates a Case from Agentforce input, generates an RMA PDF document, and attaches it to the Case. Resolves the customer Contact from the MessagingSession when not provided by the agent. Portable across orgs with no hardcoded IDs.</description>
     <environments>Default</environments>
     <interviewLabel>Create Case and add Documentation {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Create Case and add Documentation</label>
@@ -169,7 +212,7 @@
         <name>Create_Case</name>
         <label>Create Case</label>
         <locationX>176</locationX>
-        <locationY>158</locationY>
+        <locationY>518</locationY>
         <connector>
             <targetReference>Get_Contact</targetReference>
         </connector>
@@ -195,11 +238,42 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordLookups>
+        <description>Finds the most recent active MessagingSession with a Contact to resolve the customer identity when contactId was not provided by the agent</description>
+        <name>Get_Messaging_Session</name>
+        <label>Get Messaging Session</label>
+        <locationX>44</locationX>
+        <locationY>278</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Set_Contact_From_Session</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>EndUserContactId</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Active</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>MessagingSession</object>
+        <sortField>CreatedDate</sortField>
+        <sortOrder>Desc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <description>Retrieves the Contact record to populate customer details on the RMA document</description>
         <name>Get_Contact</name>
         <label>Get Contact</label>
         <locationX>176</locationX>
-        <locationY>338</locationY>
+        <locationY>698</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Generate_RMA_Document</targetReference>
@@ -221,7 +295,7 @@
         <locationX>50</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Create_Case</targetReference>
+            <targetReference>Has_Contact_Id</targetReference>
         </connector>
     </start>
     <status>Active</status>
@@ -242,7 +316,7 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
-        <description>The Salesforce Contact ID for the customer requesting the RMA. Provided by the Agentforce agent from session context.</description>
+        <description>The Salesforce Contact ID for the customer requesting the RMA. Provided by the Agentforce agent from session context, or resolved from the active MessagingSession.</description>
         <name>contactId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
