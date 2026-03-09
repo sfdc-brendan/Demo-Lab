@@ -5,10 +5,10 @@ public with sharing class RMAGeneratorFlowAction {
         @InvocableVariable(required=true label='Case ID' description='The ID of the Case to attach the RMA to')
         public String caseId;
         
-        @InvocableVariable(required=true label='Customer Name' description='Customer name for the RMA')
+        @InvocableVariable(required=false label='Customer Name' description='Customer name for the RMA. Falls back to Case Contact if not provided.')
         public String customerName;
         
-        @InvocableVariable(required=true label='Customer Email' description='Customer email for the RMA')
+        @InvocableVariable(required=false label='Customer Email' description='Customer email for the RMA. Falls back to Case Contact if not provided.')
         public String customerEmail;
         
         @InvocableVariable(required=false label='Customer Phone' description='Customer phone number')
@@ -120,15 +120,8 @@ public with sharing class RMAGeneratorFlowAction {
             FlowOutput output = new FlowOutput();
             
             try {
-                // Validate required inputs
                 if (String.isBlank(input.caseId)) {
                     throw new IllegalArgumentException('Case ID is required');
-                }
-                if (String.isBlank(input.customerName)) {
-                    throw new IllegalArgumentException('Customer Name is required');
-                }
-                if (String.isBlank(input.customerEmail)) {
-                    throw new IllegalArgumentException('Customer Email is required');
                 }
                 if (String.isBlank(input.productName)) {
                     throw new IllegalArgumentException('Product Name is required');
@@ -139,15 +132,8 @@ public with sharing class RMAGeneratorFlowAction {
                 if (String.isBlank(input.problemDescription)) {
                     throw new IllegalArgumentException('Problem Description is required');
                 }
-                if (String.isBlank(input.issueCategory)) {
-                    throw new IllegalArgumentException('Issue Category is required');
-                }
-                if (String.isBlank(input.severityLevel)) {
-                    throw new IllegalArgumentException('Severity Level is required');
-                }
-                if (String.isBlank(input.repairOrReplace)) {
-                    throw new IllegalArgumentException('Repair vs Replace Decision is required');
-                }
+
+                resolveContactDetails(input);
                 
                 // Generate RMA number
                 String rmaNumber = generateRMANumber();
@@ -218,7 +204,37 @@ public with sharing class RMAGeneratorFlowAction {
         return outputs;
     }
     
-    // Helper method to get Case Number
+    private static void resolveContactDetails(FlowInput input) {
+        if (String.isNotBlank(input.customerName) && String.isNotBlank(input.customerEmail)) {
+            return;
+        }
+        try {
+            Case c = [
+                SELECT Contact.Name, Contact.Email, Contact.Phone
+                FROM Case
+                WHERE Id = :input.caseId AND ContactId != null
+                LIMIT 1
+            ];
+            if (String.isBlank(input.customerName) && c.Contact != null) {
+                input.customerName = c.Contact.Name;
+            }
+            if (String.isBlank(input.customerEmail) && c.Contact != null) {
+                input.customerEmail = c.Contact.Email;
+            }
+            if (String.isBlank(input.customerPhone) && c.Contact != null) {
+                input.customerPhone = c.Contact.Phone;
+            }
+        } catch (Exception e) {
+            // No contact on case
+        }
+        if (String.isBlank(input.customerName)) {
+            input.customerName = 'Customer';
+        }
+        if (String.isBlank(input.customerEmail)) {
+            input.customerEmail = 'noreply@example.com';
+        }
+    }
+
     private static String getCaseNumber(String caseId) {
         try {
             Case caseRecord = [SELECT CaseNumber FROM Case WHERE Id = :caseId LIMIT 1];
