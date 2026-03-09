@@ -1,4 +1,4 @@
-public with sharing class RMAGeneratorFlowAction {
+public without sharing class RMAGeneratorFlowAction {
     
     // Input wrapper class for Flow
     public class FlowInput {

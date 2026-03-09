@@ -15,8 +15,9 @@ public without sharing class RMAGeneratorController {
             
             // Create ContentVersion record
             ContentVersion cv = new ContentVersion();
-            cv.Title = 'RMA-' + (String) data.get('rmaNumber') + '.pdf';
-            cv.PathOnClient = 'RMA-' + (String) data.get('rmaNumber') + '.pdf';
+            String rmaNum = (String) data.get('rmaNumber');
+            cv.Title = rmaNum + '.pdf';
+            cv.PathOnClient = rmaNum + '.pdf';
             cv.VersionData = pdfBlob;
             cv.IsMajorVersion = true;
             

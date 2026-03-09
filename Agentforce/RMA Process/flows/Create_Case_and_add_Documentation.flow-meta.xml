@@ -159,7 +159,7 @@
         </connector>
     </assignments>
     <decisions>
-        <description>Checks whether the agent provided a contactId. If not, attempts to resolve it from the active MessagingSession.</description>
+        <description>Checks whether the agent provided a contactId. Uses ISBLANK to catch both null and empty-string values.</description>
         <name>Has_Contact_Id</name>
         <label>Has Contact Id?</label>
         <locationX>176</locationX>
@@ -170,12 +170,19 @@
         <defaultConnectorLabel>Contact Provided</defaultConnectorLabel>
         <rules>
             <name>Contact_Missing</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>or</conditionLogic>
             <conditions>
                 <leftValueReference>contactId</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>contactId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -238,7 +245,7 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordLookups>
-        <description>Finds the most recent active MessagingSession with a Contact to resolve the customer identity when contactId was not provided by the agent</description>
+        <description>Finds the most recent MessagingSession with a Contact to resolve the customer identity when contactId was not provided by the agent</description>
         <name>Get_Messaging_Session</name>
         <label>Get Messaging Session</label>
         <locationX>44</locationX>
@@ -253,13 +260,6 @@
             <operator>IsNull</operator>
             <value>
                 <booleanValue>false</booleanValue>
-            </value>
-        </filters>
-        <filters>
-            <field>Status</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Active</stringValue>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
