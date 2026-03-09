@@ -64,6 +64,12 @@ A collection of guided demo scenarios for Solutions Engineers. Each scenario pre
 |----------|------------|-----------|---------|--------------|
 | [PawPrint Rescue Network](./Nonprofit%20%26%20Rescue/PawPrint%20Rescue%20Network/) | Beginner | ~35 min | Coordinating foster care and adoptions across a network of animal rescue partners | Screen Flows, LWC, Record-Triggered Flows |
 
+### Space & Recreation
+
+| Scenario | Difficulty | Est. Time | Tagline | Key Products |
+|----------|------------|-----------|---------|--------------|
+| [Lunar Basecamp Outfitters](./Space%20%26%20Recreation/Lunar%20Basecamp%20Outfitters/) | Intermediate | ~45 min | Premium lunar hiking gear with expedition booking, certification tracking, and safety compliance | Screen Flows, LWC (lightning-map, Chart.js), Junction Objects |
+
 <!--
 ### Healthcare
 | Scenario | Difficulty | Est. Time | Tagline | Key Products |
