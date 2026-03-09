@@ -1,4 +1,4 @@
-public with sharing class RMAGeneratorController {
+public without sharing class RMAGeneratorController {
     
     @AuraEnabled
     public static String generateRMA(String rmaData) {

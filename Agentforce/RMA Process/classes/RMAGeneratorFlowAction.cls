@@ -178,11 +178,14 @@ public with sharing class RMAGeneratorFlowAction {
                 
                 String rmaDataJson = JSON.serialize(rmaData);
                 
-                // Call the RMA generator (you'll need to create this)
                 String result = RMAGeneratorController.generateRMA(rmaDataJson);
-                
-                // Parse the result to get file information
                 Map<String, Object> resultMap = (Map<String, Object>) JSON.deserializeUntyped(result);
+                
+                Boolean generatorSuccess = resultMap.get('success') != null && (Boolean) resultMap.get('success');
+                if (!generatorSuccess) {
+                    String genError = resultMap.containsKey('error') ? (String) resultMap.get('error') : 'RMA document generation failed';
+                    throw new IllegalArgumentException(genError);
+                }
                 
                 output.isSuccess = true;
                 output.rmaNumber = rmaNumber;
