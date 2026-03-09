@@ -4,13 +4,10 @@
         <description>This will generate an RMA document</description>
         <name>Generate_RMA_Document</name>
         <label>Generate RMA Document</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
+        <locationX>176</locationX>
+        <locationY>518</locationY>
         <actionName>RMAGeneratorFlowAction</actionName>
         <actionType>apex</actionType>
-        <connector>
-            <targetReference>Route_Work_Action_1</targetReference>
-        </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>approvalNotes</name>
@@ -39,7 +36,7 @@
         <inputParameters>
             <name>customerPhone</name>
             <value>
-                <elementReference>Get_Contact.HomePhone</elementReference>
+                <elementReference>Get_Contact.Phone</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -52,12 +49,6 @@
             <name>estimatedResolutionTime</name>
             <value>
                 <stringValue>Return Initiated</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>estimatedShipDate</name>
-            <value>
-                <stringValue>08/09/2025</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
@@ -75,7 +66,7 @@
         <inputParameters>
             <name>problemDescription</name>
             <value>
-                <stringValue>The customer has complained about the item they purchased not working</stringValue>
+                <elementReference>issue</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -88,12 +79,6 @@
             <name>productName</name>
             <value>
                 <elementReference>productName</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>purchaseDate</name>
-            <value>
-                <stringValue>04/12/2025</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
@@ -121,12 +106,6 @@
             </value>
         </inputParameters>
         <inputParameters>
-            <name>shippingAddress</name>
-            <value>
-                <stringValue>415 Mission St, San Francisco, CA 94105</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
             <name>shippingMethod</name>
             <value>
                 <stringValue>Expedited</stringValue>
@@ -151,170 +130,18 @@
             </value>
         </inputParameters>
         <inputParameters>
-            <name>warrantyExpirationDate</name>
-            <value>
-                <stringValue>04/18/2028</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
             <name>warrantyStatus</name>
             <value>
                 <stringValue>Active</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>whenIssueStarted</name>
-            <value>
-                <stringValue>08/02/2025</stringValue>
             </value>
         </inputParameters>
         <nameSegment>RMAGeneratorFlowAction</nameSegment>
         <offset>0</offset>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
-    <actionCalls>
-        <name>Route_Work_Action_1</name>
-        <label>Route Work Action 1</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <actionName>routeWork</actionName>
-        <actionType>routeWork</actionType>
-        <connector>
-            <targetReference>Send_Test_Message</targetReference>
-        </connector>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
-        <inputParameters>
-            <name>recordId</name>
-            <value>
-                <elementReference>Create_Case</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>serviceChannelId</name>
-            <value>
-                <stringValue>0N9Ho000000JYSFKA4</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>serviceChannelLabel</name>
-            <value>
-                <stringValue>Cases</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>serviceChannelDevName</name>
-            <value>
-                <stringValue>Cases</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>routingType</name>
-            <value>
-                <stringValue>Agent</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>routingConfigId</name>
-            <value>
-                <stringValue>0K9Ho000000Ie36KAC</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>routingConfigLabel</name>
-            <value>
-                <stringValue>Cases Routing Configuration</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>queueId</name>
-            <value>
-                <stringValue>00GHo00000555dNMAQ</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>agentId</name>
-            <value>
-                <stringValue>005Ho00000LWeu7IAD</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>agentLabel</name>
-            <value>
-                <stringValue>Jenna Rose</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>isAgentRequired</name>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>queueLabel</name>
-            <value>
-                <stringValue>General</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>skillOption</name>
-        </inputParameters>
-        <inputParameters>
-            <name>skillRequirementsResourceItem</name>
-        </inputParameters>
-        <inputParameters>
-            <name>botId</name>
-        </inputParameters>
-        <inputParameters>
-            <name>botLabel</name>
-        </inputParameters>
-        <inputParameters>
-            <name>externalConversationBotId</name>
-        </inputParameters>
-        <inputParameters>
-            <name>externalConversationBotLabel</name>
-        </inputParameters>
-        <inputParameters>
-            <name>copilotId</name>
-        </inputParameters>
-        <inputParameters>
-            <name>copilotLabel</name>
-        </inputParameters>
-        <inputParameters>
-            <name>agentforceEmployeeAgentId</name>
-        </inputParameters>
-        <inputParameters>
-            <name>agentforceEmployeeAgentLabel</name>
-        </inputParameters>
-        <nameSegment>routeWork</nameSegment>
-        <offset>0</offset>
-    </actionCalls>
-    <actionCalls>
-        <name>Send_Test_Message</name>
-        <label>Send Test Message</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <actionName>SendMessageToSlackChannel</actionName>
-        <actionType>slackFlow</actionType>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
-        <inputParameters>
-            <name>channelId</name>
-            <value>
-                <stringValue>C0A78J86CHZ</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>message</name>
-            <value>
-                <elementReference>exchangeMessage</elementReference>
-            </value>
-        </inputParameters>
-        <nameSegment>SendMessageToSlackChannel</nameSegment>
-        <offset>0</offset>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </actionCalls>
-    <apiVersion>64.0</apiVersion>
+    <apiVersion>65.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
-    <description>This will add documentation to a case</description>
+    <description>Creates a Case from Agentforce input, generates an RMA PDF document, and attaches it to the Case. Portable across orgs with no hardcoded IDs.</description>
     <environments>Default</environments>
     <interviewLabel>Create Case and add Documentation {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Create Case and add Documentation</label>
@@ -338,36 +165,24 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordCreates>
-        <description>This will create a case on behalf of the customer</description>
+        <description>Creates a Case using the contact and issue details provided by the agent</description>
         <name>Create_Case</name>
         <label>Create Case</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
+        <locationX>176</locationX>
+        <locationY>158</locationY>
         <connector>
-            <targetReference>Get_Case</targetReference>
+            <targetReference>Get_Contact</targetReference>
         </connector>
-        <inputAssignments>
-            <field>AssetId</field>
-            <value>
-                <stringValue>02iHo000005fh92IAA</stringValue>
-            </value>
-        </inputAssignments>
         <inputAssignments>
             <field>ContactId</field>
             <value>
-                <stringValue>003Ho00002ArIYAIA3</stringValue>
+                <elementReference>contactId</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
             <field>Description</field>
             <value>
-                <stringValue>A customer contacted support to report accidental damage to their Toast Go 3 handheld device after inadvertently leaving it inside an oven during restaurant cleanup. Upon inspection, the device screen is cracked and the unit is non-functional due to heat exposure. The customer has an active Toast Care protection plan which covers accidental damage, making them eligible for a device exchange under the coverage terms.</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>RecordTypeId</field>
-            <value>
-                <stringValue>012Ho000001iScjIAE</stringValue>
+                <elementReference>issue</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -380,44 +195,11 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordLookups>
-        <name>Get_Case</name>
-        <label>Get Case</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Get_Contact</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>Create_Case</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>Case</object>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>ContactEmail</queriedFields>
-        <queriedFields>ContactId</queriedFields>
-        <queriedFields>ContactPhone</queriedFields>
-        <relatedRecords>
-            <getFirstRecordOnly>true</getFirstRecordOnly>
-            <queriedFields>Id</queriedFields>
-            <queriedFields>Email</queriedFields>
-            <queriedFields>HomePhone</queriedFields>
-            <queriedFields>MailingAddress</queriedFields>
-            <relatedObject>Contact</relatedObject>
-            <relationshipField>Contact</relationshipField>
-        </relatedRecords>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
+        <description>Retrieves the Contact record to populate customer details on the RMA document</description>
         <name>Get_Contact</name>
         <label>Get Contact</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
+        <locationX>176</locationX>
+        <locationY>338</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Generate_RMA_Document</targetReference>
@@ -427,7 +209,7 @@
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>Get_Case.ContactId</elementReference>
+                <elementReference>contactId</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
@@ -436,21 +218,13 @@
     </recordLookups>
     <runInMode>SystemModeWithoutSharing</runInMode>
     <start>
-        <locationX>0</locationX>
+        <locationX>50</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Create_Case</targetReference>
         </connector>
     </start>
     <status>Active</status>
-    <textTemplates>
-        <name>exchangeMessage</name>
-        <isViewedAsPlainText>true</isViewedAsPlainText>
-        <text>&lt;p&gt;&lt;strong&gt;Customer:&lt;/strong&gt; {!Get_Contact.Name}&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Product:&lt;/strong&gt; {!productName}&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Issue: &lt;/strong&gt;{!issue}&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;RMA File ID: &lt;/strong&gt;{!Generate_RMA_Document.fileId}&lt;/p&gt;</text>
-    </textTemplates>
     <variables>
         <description>Additional details that matter to this case</description>
         <name>additionalNotes</name>
@@ -460,8 +234,16 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
-        <description>A brief case subject from the customer&apos;s issue</description>
+        <description>A brief case subject from the customer's issue</description>
         <name>caseSubject</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>The Salesforce Contact ID for the customer requesting the RMA. Provided by the Agentforce agent from session context.</description>
+        <name>contactId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
@@ -484,7 +266,7 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
-        <description>disregard</description>
+        <description>Output message with RMA processing results</description>
         <name>output</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>

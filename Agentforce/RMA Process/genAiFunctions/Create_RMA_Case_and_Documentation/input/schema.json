@@ -1,7 +1,14 @@
 {
-  "required" : [ "caseSubject", "issue", "productName", "serialNumber" ],
+  "required" : [ "caseSubject", "issue", "productName", "serialNumber", "contactId" ],
   "unevaluatedProperties" : false,
   "properties" : {
+    "contactId" : {
+      "title" : "contactId",
+      "description" : "The Contact ID of the customer requesting the RMA. This should be extracted from the current Contact record context when the user is on a Contact record page, or from the authenticated user's contact record in a messaging session.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
     "caseSubject" : {
       "title" : "caseSubject",
       "description" : "A brief subject line describing the customer's return reason, such as 'Defective Toast Go 3 - Screen Cracked' or 'Product Not Working - Requesting Replacement'. Extract from the customer's description of their issue.",

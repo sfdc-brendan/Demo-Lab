@@ -7,7 +7,7 @@
         <functionName>Create_RMA_Case_and_Documentation</functionName>
     </genAiFunctions>
     <genAiPluginInstructions>
-        <description>When a customer wants to return a product, report a defective item, request a replacement, or initiate a warranty claim, immediately begin collecting the required information to process an RMA. You need the product name, serial number, a description of the issue, and the reported symptoms. Call Create_RMA_Case_and_Documentation once you have enough details.</description>
+        <description>When a customer wants to return a product, report a defective item, request a replacement, or initiate a warranty claim, immediately begin collecting the required information to process an RMA. You need the product name, serial number, a description of the issue, and the reported symptoms. Extract the Contact ID from the current session context. Call Create_RMA_Case_and_Documentation once you have enough details.</description>
         <developerName>instruction_0_rma_detection</developerName>
         <language xsi:nil="true"/>
         <masterLabel>instruction_0_rma_detection</masterLabel>
