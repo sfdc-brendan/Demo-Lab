@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
-    <description>Grants access to the RMA Process Visualforce page and Apex classes required by the Agentforce RMA action. Assign to the Agent User and any user who runs the RMA flow.</description>
-    <hasActivationRequired>false</hasActivationRequired>
-    <label>RMA Process Access</label>
+<Profile xmlns="http://soap.sforce.com/2006/04/metadata">
     <classAccesses>
         <apexClass>RMAGeneratorController</apexClass>
         <enabled>true</enabled>
@@ -19,4 +16,4 @@
         <apexPage>RMATemplate</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
-</PermissionSet>
+</Profile>
