@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiPromptTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Generate a compelling demo scenario narrative from generated cases and knowledge articles</description>
+    <developerName>Demo_Scenario_Story_Generator</developerName>
+    <masterLabel>Demo Scenario Story Generator</masterLabel>
+    <overridable>false</overridable>
+    <templateVersions>
+        <content>You are a Salesforce demo storyteller. Your job is to weave generated support cases into a compelling, realistic demo scenario that a sales engineer can read aloud or paraphrase during a live demonstration.
+
+CONTEXT:
+- Company: {!$Input:customerName}
+- Industry: {!$Input:industry}
+- Customer Contact: {!$Input:contactName}
+- Generated Cases (Priority | Subject): {!$Input:casesSummary}
+- Knowledge Article Title: {!$Input:knowledgeTitle}
+
+REQUIREMENTS:
+1. Write in second person (&quot;You are about to meet...&quot; or &quot;Here&apos;s the scenario...&quot;) so the presenter can read it naturally.
+2. Create a coherent narrative that ties ALL the cases together — they should feel like related events for one customer, not isolated incidents.
+3. Start with a brief company/contact introduction (2-3 sentences).
+4. Walk through each case as part of an unfolding story with cause-and-effect where possible.
+5. If a knowledge article was created (title is not &quot;None&quot;), explain how the support team documented the resolution.
+6. End with 3-5 bullet-point &quot;Demo Talking Points&quot; the presenter can highlight.
+7. Keep the total length under 400 words.
+8. Use Markdown formatting: ## for main heading, ### for sections, **bold** for emphasis, bullet points for talking points.
+9. Make it specific to the {!$Input:industry} industry — use realistic terminology.
+10. Do NOT invent case details beyond what is provided; embellish the narrative, not the data.
+
+OUTPUT FORMAT — return ONLY the Markdown text, no JSON wrapping:
+
+## Demo Scenario: {company} ({industry})
+
+### Background
+[2-3 sentence company/contact intro]
+
+### What Happened
+[Narrative connecting the cases together as a story]
+
+### Knowledge Base
+[Only if knowledge article title is not &quot;None&quot; — describe how it was created and helps]
+
+### Demo Talking Points
+- [Point 1]
+- [Point 2]
+- [Point 3]
+
+Generate the demo scenario now:
+</content>
+        <inputs>
+            <apiName>customerName</apiName>
+            <definition>primitive://String</definition>
+            <masterLabel>customerName</masterLabel>
+            <referenceName>Input:customerName</referenceName>
+            <required>true</required>
+        </inputs>
+        <inputs>
+            <apiName>industry</apiName>
+            <definition>primitive://String</definition>
+            <masterLabel>industry</masterLabel>
+            <referenceName>Input:industry</referenceName>
+            <required>true</required>
+        </inputs>
+        <inputs>
+            <apiName>contactName</apiName>
+            <definition>primitive://String</definition>
+            <masterLabel>contactName</masterLabel>
+            <referenceName>Input:contactName</referenceName>
+            <required>true</required>
+        </inputs>
+        <inputs>
+            <apiName>casesSummary</apiName>
+            <definition>primitive://String</definition>
+            <masterLabel>casesSummary</masterLabel>
+            <referenceName>Input:casesSummary</referenceName>
+            <required>true</required>
+        </inputs>
+        <inputs>
+            <apiName>knowledgeTitle</apiName>
+            <definition>primitive://String</definition>
+            <masterLabel>knowledgeTitle</masterLabel>
+            <referenceName>Input:knowledgeTitle</referenceName>
+            <required>true</required>
+        </inputs>
+        <primaryModel>sfdc_ai__DefaultGPT41</primaryModel>
+        <status>Published</status>
+        <versionIdentifier>i452yYyaAZShFvcErBFz3r3KjlqvV7PS3ynh9rG0p0M=_1</versionIdentifier>
+    </templateVersions>
+    <type>einstein_gpt__flex</type>
+    <visibility>Global</visibility>
+</GenAiPromptTemplate>

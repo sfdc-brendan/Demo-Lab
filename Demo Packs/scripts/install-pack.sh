@@ -31,54 +31,61 @@ echo ""
 echo "Which pack do you want to deploy?"
 echo "  1) Pack 1 – LWC Cards & Dashboard (Incident Dashboard, Modern Account Card, Modern Contact Card)"
 echo "  2) Service Cloud Pack (full Service Cloud + Sentiment and Coaching)"
-echo "  3) Both packs"
+echo "  3) AI Case Generator Pack (Einstein-powered case, knowledge, and demo scenario generation)"
+echo "  4) All packs"
 echo ""
-read -r -p "Enter 1, 2, or 3: " choice
+read -r -p "Enter 1, 2, 3, or 4: " choice
 
-cd "$REPO_ROOT"
+deploy_pack1() {
+  echo "Deploying Pack 1..."
+  cd "$REPO_ROOT"
+  sf project deploy start \
+    --source-dir "LWCs/Incident Dashboard" \
+    --source-dir "LWCs/Modern Account Card" \
+    --source-dir "LWCs/Modern Contact Card" \
+    --wait 15
+}
+
+deploy_service_cloud() {
+  echo ""
+  echo "*** DISCLAIMER: Salesforce Voice must be installed in your org before installing this pack. ***"
+  echo "*** If Salesforce Voice is not installed, deployment of the Service Cloud Pack will fail.   ***"
+  echo ""
+  echo "Deploying Service Cloud Pack..."
+  cd "$REPO_ROOT"
+  sf project deploy start \
+    --source-dir "Service Cloud/Incident Detection" \
+    --source-dir "Service Cloud/Email OTP" \
+    --source-dir "Service Cloud/Case Tagging" \
+    --source-dir "Service Cloud/Similar Cases" \
+    --source-dir "LWCs/Sentiment and Coaching" \
+    --wait 15
+}
+
+deploy_ai_case_generator() {
+  echo "Deploying AI Case Generator Pack..."
+  cd "$DEMO_PACKS_DIR/AI Case Generator Pack"
+  sf project deploy start \
+    --source-dir force-app \
+    --wait 15
+}
 
 case "$choice" in
   1)
-    echo "Deploying Pack 1..."
-    sf project deploy start \
-      --source-dir "LWCs/Incident Dashboard" \
-      --source-dir "LWCs/Modern Account Card" \
-      --source-dir "LWCs/Modern Contact Card" \
-      --wait 15
+    deploy_pack1
     ;;
   2)
-    echo ""
-    echo "*** DISCLAIMER: Salesforce Voice must be installed in your org before installing this pack. ***"
-    echo "*** If Salesforce Voice is not installed, deployment of the Service Cloud Pack will fail.   ***"
-    echo ""
-    echo "Deploying Service Cloud Pack..."
-    sf project deploy start \
-      --source-dir "Service Cloud/Incident Detection" \
-      --source-dir "Service Cloud/Email OTP" \
-      --source-dir "Service Cloud/Case Tagging" \
-      --source-dir "Service Cloud/Similar Cases" \
-      --source-dir "LWCs/Sentiment and Coaching" \
-      --wait 15
+    deploy_service_cloud
     ;;
   3)
-    echo "Deploying Pack 1..."
-    sf project deploy start \
-      --source-dir "LWCs/Incident Dashboard" \
-      --source-dir "LWCs/Modern Account Card" \
-      --source-dir "LWCs/Modern Contact Card" \
-      --wait 15
+    deploy_ai_case_generator
+    ;;
+  4)
+    deploy_pack1
     echo ""
-    echo "*** DISCLAIMER: Salesforce Voice must be installed in your org before installing this pack. ***"
-    echo "*** If Salesforce Voice is not installed, deployment of the Service Cloud Pack will fail.   ***"
+    deploy_service_cloud
     echo ""
-    echo "Deploying Service Cloud Pack..."
-    sf project deploy start \
-      --source-dir "Service Cloud/Incident Detection" \
-      --source-dir "Service Cloud/Email OTP" \
-      --source-dir "Service Cloud/Case Tagging" \
-      --source-dir "Service Cloud/Similar Cases" \
-      --source-dir "LWCs/Sentiment and Coaching" \
-      --wait 15
+    deploy_ai_case_generator
     ;;
   *)
     echo "Invalid choice. Exiting."

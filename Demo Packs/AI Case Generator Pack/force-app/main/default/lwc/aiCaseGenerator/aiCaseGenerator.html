@@ -1,0 +1,358 @@
+<template>
+    <!-- Main Container Card -->
+    <lightning-card title="AI Case Generator" icon-name="standard:case">
+        <div class="slds-p-around_medium">
+            
+            <!-- Error Message Display -->
+            <template if:true={errorMessage}>
+                <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error" role="alert">
+                    <span class="slds-assistive-text">Error</span>
+                    <lightning-icon icon-name="utility:error" alternative-text="Error" size="x-small" class="slds-m-right_x-small"></lightning-icon>
+                    <h2>{errorMessage}</h2>
+                </div>
+            </template>
+
+            <!-- Form Section -->
+            <template if:false={showResults}>
+                <div class="form-section slds-box slds-theme_shade slds-m-bottom_medium">
+                    <h3 class="slds-text-heading_small slds-m-bottom_medium">Case Generation Details</h3>
+                    
+                    <!-- Industry Selection (Required) -->
+                    <div class="slds-form-element slds-m-bottom_medium">
+                        <lightning-combobox
+                            data-field="industry"
+                            label="Industry"
+                            placeholder="Select an industry"
+                            options={industryOptions}
+                            value={industry}
+                            onchange={handleIndustryChange}
+                            required>
+                        </lightning-combobox>
+                    </div>
+
+                                <!-- Company Name Input -->
+            <div class="slds-form-element slds-m-bottom_medium">
+                <lightning-input
+                    data-field="customerName"
+                    type="text"
+                    label="Company Name"
+                    placeholder="Enter the company you are demoing to"
+                    value={customerName}
+                    onchange={handleCustomerNameChange}
+                    required
+                    maxlength="100">
+                </lightning-input>
+            </div>
+
+                    <!-- Additional Details -->
+                    <div class="slds-form-element slds-m-bottom_medium">
+                        <lightning-textarea
+                            data-field="additionalDetails"
+                            label="Additional Context Details"
+                            placeholder="Enter any additional context about the company or specific scenarios you'd like the AI to consider..."
+                            value={additionalDetails}
+                            onchange={handleAdditionalDetailsChange}
+                            maxlength="1000"
+                            rows="6">
+                        </lightning-textarea>
+                    </div>
+
+                    <!-- Case Count Slider -->
+                    <div class="slds-form-element slds-m-bottom_medium">
+                        <div class="case-count-container">
+                            <label class="slds-form-element__label">
+                                Number of Cases to Generate: <strong>{caseCountDisplay}</strong>
+                            </label>
+                            <lightning-slider
+                                label=""
+                                min="1"
+                                max="10"
+                                step="1"
+                                value={caseCount}
+                                onchange={handleCaseCountChange}
+                                size="medium">
+                            </lightning-slider>
+                        </div>
+                    </div>
+
+                    <!-- Knowledge Article Option - Only show if Knowledge is available -->
+                    <template if:true={isKnowledgeAvailable}>
+                        <div class="slds-form-element slds-m-bottom_medium">
+                            <lightning-input
+                                type="checkbox"
+                                label="Do you want to create an associated knowledge article?"
+                                checked={createKnowledgeArticle}
+                                onchange={handleCreateKnowledgeArticleChange}>
+                            </lightning-input>
+                        </div>
+                    </template>
+
+                    <!-- Action Buttons -->
+                    <div class="slds-grid slds-gutters slds-m-top_medium">
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-button
+                                variant="brand"
+                                label="Generate Cases"
+                                title="Generate AI-powered cases"
+                                onclick={handleGenerateCases}
+                                disabled={generateButtonDisabled}
+                                class="slds-m-right_small full-width-button">
+                            </lightning-button>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-button
+                                variant="neutral"
+                                label="Reset Form"
+                                title="Reset all form fields"
+                                onclick={handleReset}
+                                disabled={isLoading}
+                                class="full-width-button">
+                            </lightning-button>
+                        </div>
+                    </div>
+                </div>
+            </template>
+
+            <!-- Loading Spinner -->
+            <template if:true={isLoading}>
+                <div class="loading-container slds-text-align_center slds-p-around_large">
+                    <lightning-spinner
+                        alternative-text="Generating cases"
+                        size="medium"
+                        class="slds-m-bottom_medium">
+                    </lightning-spinner>
+                    <p class="slds-text-body_regular slds-text-color_weak">
+                        <lightning-icon icon-name="utility:einstein" size="x-small" class="slds-m-right_x-small"></lightning-icon>
+                        {loadingMessage}
+                    </p>
+                    <p class="slds-text-body_small slds-text-color_weak slds-m-top_small">
+                        Please wait while AI creates your cases and assigns them to the appropriate contact...
+                    </p>
+                </div>
+            </template>
+
+            <!-- Results Section -->
+            <template if:true={showResults}>
+                <div class="results-section">
+                    
+                    <!-- Contact Assignment Information -->
+                    <template if:true={assignedContact}>
+                        <div class="contact-info slds-box slds-theme_success slds-m-bottom_medium">
+                            <div class="slds-grid slds-wrap">
+                                <div class="slds-col slds-size_1-of-1 slds-m-bottom_small">
+                                    <h3 class="slds-text-heading_small">
+                                        <lightning-icon icon-name="standard:add_contact" size="small" class="slds-m-right_x-small contact-icon-white"></lightning-icon>
+                                        Cases Assigned to Contact
+                                    </h3>
+                                </div>
+                                <div class="slds-col slds-size_1-of-1 contact-details">
+                                    <div class="slds-grid slds-wrap slds-gutters_small">
+                                        <div class="slds-col slds-size_1-of-2 slds-size_1-of-1_small">
+                                            <dl class="slds-dl_horizontal">
+                                                <dt class="slds-dl_horizontal__label">Name:</dt>
+                                                <dd class="slds-dl_horizontal__detail">
+                                                    <lightning-button
+                                                        variant="base"
+                                                        label={contactDisplayName}
+                                                        onclick={handleViewContact}
+                                                        class="contact-link">
+                                                    </lightning-button>
+                                                </dd>
+                                                <dt class="slds-dl_horizontal__label">Email:</dt>
+                                                <dd class="slds-dl_horizontal__detail">{contactEmail}</dd>
+                                            </dl>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-size_1-of-1_small">
+                                            <dl class="slds-dl_horizontal">
+                                                <dt class="slds-dl_horizontal__label">Phone:</dt>
+                                                <dd class="slds-dl_horizontal__detail">{contactPhone}</dd>
+                                                <dt class="slds-dl_horizontal__label">Account:</dt>
+                                                <dd class="slds-dl_horizontal__detail">{contactAccountName}</dd>
+                                            </dl>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+
+                    <!-- Knowledge Article Information -->
+                    <template if:true={knowledgeArticle}>
+                        <div class="contact-info slds-box slds-theme_info slds-m-bottom_medium">
+                            <div class="slds-grid slds-wrap">
+                                <div class="slds-col slds-size_1-of-1 slds-m-bottom_small">
+                                    <h3 class="slds-text-heading_small">
+                                        <lightning-icon icon-name="standard:article" size="small" class="slds-m-right_x-small contact-icon-white"></lightning-icon>
+                                        Created Knowledge Article
+                                    </h3>
+                                </div>
+                                <div class="slds-col slds-size_1-of-1 contact-details">
+                                    <div class="slds-grid slds-wrap slds-gutters_small">
+                                        <div class="slds-col slds-size_1-of-2 slds-size_1-of-1_small">
+                                            <dl class="slds-dl_horizontal">
+                                                <dt class="slds-dl_horizontal__label">Title:</dt>
+                                                <dd class="slds-dl_horizontal__detail">
+                                                    <lightning-button
+                                                        variant="base"
+                                                        label={knowledgeArticle.Title}
+                                                        onclick={handleViewKnowledgeArticle}
+                                                        class="contact-link">
+                                                    </lightning-button>
+                                                </dd>
+                                                <dt class="slds-dl_horizontal__label">Article #:</dt>
+                                                <dd class="slds-dl_horizontal__detail">{knowledgeArticle.ArticleNumber}</dd>
+                                            </dl>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-size_1-of-1_small">
+                                            <dl class="slds-dl_horizontal">
+                                                <dt class="slds-dl_horizontal__label">Version:</dt>
+                                                <dd class="slds-dl_horizontal__detail">{knowledgeArticle.VersionNumber}</dd>
+                                                <dt class="slds-dl_horizontal__label">Summary:</dt>
+                                                <dd class="slds-dl_horizontal__detail">{knowledgeArticle.Summary}</dd>
+                                            </dl>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+
+                    <!-- Demo Scenario Section -->
+                    <template if:true={hasScenario}>
+                        <div class="scenario-card slds-m-bottom_medium">
+                            <div class="scenario-header">
+                                <div class="scenario-header-left" onclick={handleToggleScenario}>
+                                    <lightning-icon icon-name={scenarioToggleIcon} size="xx-small" class="scenario-toggle-icon"></lightning-icon>
+                                    <lightning-icon icon-name="utility:einstein" size="small" class="scenario-einstein-icon"></lightning-icon>
+                                    <h3 class="scenario-title">Demo Scenario Script</h3>
+                                </div>
+                                <div class="scenario-header-right">
+                                    <lightning-button
+                                        variant={copyButtonVariant}
+                                        label={copyButtonLabel}
+                                        icon-name="utility:copy"
+                                        onclick={handleCopyScenario}
+                                        size="small">
+                                    </lightning-button>
+                                </div>
+                            </div>
+                            <template if:true={isScenarioExpanded}>
+                                <div class="scenario-body">
+                                    <div class="scenario-content" lwc:dom="manual"></div>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+
+                    <!-- Generated Cases Header -->
+                    <div class="slds-grid slds-gutters slds-m-bottom_medium">
+                        <div class="slds-col slds-size_1-of-1">
+                            <h3 class="slds-text-heading_medium">
+                                <lightning-icon icon-name="standard:case" size="small" class="slds-m-right_x-small"></lightning-icon>
+                                Generated Cases ({generatedCases.length})
+                            </h3>
+                        </div>
+                    </div>
+
+                    <!-- Cases Grid -->
+                    <template if:true={generatedCases}>
+                        <div class="cases-grid">
+                            <template for:each={generatedCases} for:item="caseItem">
+                                <div key={caseItem.Id} class="case-wrapper">
+                                    <div class="case-card slds-card slds-card_boundary">
+                                        <div class="slds-card__header slds-grid">
+                                            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                                <div class="slds-media__figure">
+                                                    <lightning-icon icon-name="standard:case" size="small"></lightning-icon>
+                                                </div>
+                                                <div class="slds-media__body">
+                                                    <h2 class="slds-card__header-title">
+                                                        <span class="slds-text-heading_small case-subject">{caseItem.Subject}</span>
+                                                    </h2>
+                                                </div>
+                                            </header>
+                                            <div class="slds-no-flex">
+                                                <lightning-button
+                                                    variant="neutral"
+                                                    label="View Case"
+                                                    title="View case details"
+                                                    data-case-id={caseItem.Id}
+                                                    onclick={handleViewCase}
+                                                    size="small">
+                                                </lightning-button>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="slds-card__body slds-card__body_inner">
+                                            <!-- Case Badges -->
+                                            <div class="slds-m-bottom_small">
+                                                <template if:true={caseItem.Priority}>
+                                                    <lightning-badge
+                                                        label={caseItem.Priority}
+                                                        variant={caseItem.priorityVariant}
+                                                        class="slds-m-right_x-small">
+                                                    </lightning-badge>
+                                                </template>
+                                                <template if:true={caseItem.Type}>
+                                                    <lightning-badge
+                                                        label={caseItem.Type}
+                                                        variant={caseItem.typeVariant}
+                                                        class="slds-m-right_x-small">
+                                                    </lightning-badge>
+                                                </template>
+                                                <template if:true={caseItem.Origin}>
+                                                    <lightning-badge
+                                                        label={caseItem.Origin}
+                                                        variant="neutral">
+                                                    </lightning-badge>
+                                                </template>
+                                            </div>
+                                            
+                                            <!-- Case Description -->
+                                            <div class="case-description">
+                                                <p class="slds-text-body_regular">{caseItem.formattedDescription}</p>
+                                            </div>
+
+                                            <!-- Case Number -->
+                                            <template if:true={caseItem.CaseNumber}>
+                                                <div class="slds-m-top_small">
+                                                    <span class="slds-text-body_small slds-text-color_weak">
+                                                        Case Number: {caseItem.CaseNumber}
+                                                    </span>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+
+                    <!-- No Cases Message -->
+                    <template if:false={generatedCases.length}>
+                        <div class="slds-text-align_center slds-p-around_large">
+                            <lightning-icon icon-name="utility:info" size="small" class="slds-m-bottom_small"></lightning-icon>
+                            <p class="slds-text-body_regular">No cases were generated. Please try again.</p>
+                        </div>
+                    </template>
+
+                    <!-- Back to Form Button -->
+                    <div class="slds-text-align_center slds-m-top_large">
+                        <lightning-button
+                            variant="brand"
+                            label="Generate More Cases"
+                            title="Go back to form to generate more cases"
+                            onclick={handleReset}
+                            class="slds-m-right_small">
+                        </lightning-button>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+    
+    <!-- Footer -->
+    <div class="footer-container">
+        <p class="footer-text">Made by Sheridan Labs - 2025</p>
+    </div>
+</template>

@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiPromptTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <activeVersionIdentifier>nBlTXtVyN4aeVsckYqR0O/VZM3Br2T0Yk2ECkTqGkk8=_2</activeVersionIdentifier>
+    <description>Generate realistic customer service cases using AI</description>
+    <developerName>Case_Generator</developerName>
+    <masterLabel>Case_Generator</masterLabel>
+    <overridable>false</overridable>
+    <templateVersions>
+        <content>You are an expert customer service case generator. Generate realistic customer service cases for customers experiencing issues with {!$Input:customerName} services.
+
+CRITICAL: You MUST use ONLY the provided context below. Do NOT use any external examples or training data.
+
+CONTEXT:
+- Company: {!$Input:customerName}
+- Industry: {!$Input:industry}
+- Number of cases: {!$Input:caseCount}
+- Additional context: {!$Input:additionalDetails}
+
+STRICT REQUIREMENTS:
+1. Cases MUST be from CUSTOMERS of {!$Input:customerName} experiencing issues with their services
+2. Create realistic scenarios ONLY for the {!$Input:industry} industry
+3. If additional context mentions keywords (login, performance, billing, mobile, security), prioritize those case types
+4. Make cases authentic with business impact details
+5. Vary priority levels: Low, Medium, High, Critical
+6. Use realistic origins: Email, Phone, Web, Chat
+7. NEVER use examples from other companies (no Netflix, Mixpanel, etc.)
+8. All descriptions MUST relate directly to {!$Input:customerName} and {!$Input:industry}
+
+CASE TYPES BY INDUSTRY:
+- Technology: Technical, Account Access, Performance, Integration
+- Media: Technical, Content, Billing, Streaming
+- Financial Services: Account Access, Security, Transaction
+- Retail: Order Management, Payment, Product, Shipping
+- Healthcare: Appointment, Billing, Technical
+- Other: Technical, Account Access, Billing, General
+
+OUTPUT FORMAT:
+Return ONLY a valid JSON array with exactly {!$Input:caseCount}objects:
+
+[
+ {
+  &quot;subject&quot;: &quot;Clear case title (max 255 chars)&quot;,
+  &quot;description&quot;: &quot;Detailed customer problem (2-4 sentences)&quot;,
+  &quot;priority&quot;: &quot;Low|Medium|High|Critical&quot;,
+  &quot;type&quot;: &quot;Appropriate case type&quot;,
+  &quot;origin&quot;: &quot;Email|Phone|Web|Chat&quot;
+ }
+]
+
+EXAMPLE:
+[
+ {
+  &quot;subject&quot;: &quot;Cannot access Netflix account after password reset&quot;,
+  &quot;description&quot;: &quot;Customer unable to log into Netflix account despite resetting password twice. Receives invalid credentials error and cannot stream content. Family cannot access paid subscription.&quot;,
+  &quot;priority&quot;: &quot;High&quot;,
+  &quot;type&quot;: &quot;Technical&quot;,
+  &quot;origin&quot;: &quot;Email&quot;
+ }
+]
+
+Generate {!$Input:caseCount} realistic cases for {!$Input:customerName} customers in the {!$Input:industry} industry:
+</content>
+        <inputs>
+            <apiName>customerName</apiName>
+            <definition>primitive://String</definition>
+            <masterLabel>customerName</masterLabel>
+            <referenceName>Input:customerName</referenceName>
+            <required>true</required>
+        </inputs>
+        <inputs>
+            <apiName>company</apiName>
+            <definition>primitive://String</definition>
+            <masterLabel>company</masterLabel>
+            <referenceName>Input:company</referenceName>
+            <required>true</required>
+        </inputs>
+        <inputs>
+            <apiName>industry</apiName>
+            <definition>primitive://String</definition>
+            <masterLabel>industry</masterLabel>
+            <referenceName>Input:industry</referenceName>
+            <required>true</required>
+        </inputs>
+        <inputs>
+            <apiName>caseCount</apiName>
+            <definition>primitive://String</definition>
+            <masterLabel>caseCount</masterLabel>
+            <referenceName>Input:caseCount</referenceName>
+            <required>true</required>
+        </inputs>
+        <inputs>
+            <apiName>additionalDetails</apiName>
+            <definition>primitive://String</definition>
+            <masterLabel>additionalDetails</masterLabel>
+            <referenceName>Input:additionalDetails</referenceName>
+            <required>true</required>
+        </inputs>
+        <primaryModel>sfdc_ai__DefaultGPT41</primaryModel>
+        <status>Published</status>
+        <versionIdentifier>nBlTXtVyN4aeVsckYqR0O/VZM3Br2T0Yk2ECkTqGkk8=_1</versionIdentifier>
+    </templateVersions>
+    <templateVersions>
+        <content>You are an expert customer service case generator. Generate realistic customer service cases for customers experiencing issues with {!$Input:customerName} services.
+
+CRITICAL: You MUST use ONLY the provided context below. Do NOT use any external examples or training data.
+
+CONTEXT:
+- Company: {!$Input:customerName}
+- Industry: {!$Input:industry}
+- Number of cases: {!$Input:caseCount}
+- Additional context: {!$Input:additionalDetails}
+
+STRICT REQUIREMENTS:
+1. Cases MUST be from CUSTOMERS of {!$Input:customerName} experiencing issues with their services
+2. Create realistic scenarios ONLY for the {!$Input:industry} industry
+3. If additional context mentions keywords (login, performance, billing, mobile, security), prioritize those case types
+4. Make cases authentic with business impact details
+5. Vary priority levels: Low, Medium, High, Critical
+6. Use realistic origins: Email, Phone, Web, Chat
+7. NEVER use examples from other companies (no Netflix, Mixpanel, etc.)
+8. All descriptions MUST relate directly to {!$Input:customerName} and {!$Input:industry}
+
+CASE TYPES BY INDUSTRY:
+- Technology: Technical, Account Access, Performance, Integration
+- Media: Technical, Content, Billing, Streaming
+- Financial Services: Account Access, Security, Transaction
+- Retail: Order Management, Payment, Product, Shipping
+- Healthcare: Appointment, Billing, Technical
+- Other: Technical, Account Access, Billing, General
+
+OUTPUT FORMAT:
+Return ONLY a valid JSON array with exactly {!$Input:caseCount}objects:
+
+[
+ {
+  &quot;subject&quot;: &quot;Clear case title (max 255 chars)&quot;,
+  &quot;description&quot;: &quot;Detailed customer problem (2-4 sentences)&quot;,
+  &quot;priority&quot;: &quot;Low|Medium|High|Critical&quot;,
+  &quot;type&quot;: &quot;Appropriate case type&quot;,
+  &quot;origin&quot;: &quot;Email|Phone|Web|Chat&quot;
+ }
+]
+
+EXAMPLE:
+[
+ {
+  &quot;subject&quot;: &quot;Cannot access Netflix account after password reset&quot;,
+  &quot;description&quot;: &quot;Customer unable to log into Netflix account despite resetting password twice. Receives invalid credentials error and cannot stream content. Family cannot access paid subscription.&quot;,
+  &quot;priority&quot;: &quot;High&quot;,
+  &quot;type&quot;: &quot;Technical&quot;,
+  &quot;origin&quot;: &quot;Email&quot;
+ }
+]
+
+Generate {!$Input:caseCount} realistic cases for {!$Input:customerName} customers in the {!$Input:industry} industry:
+</content>
+        <inputs>
+            <apiName>customerName</apiName>
+            <definition>primitive://String</definition>
+            <masterLabel>customerName</masterLabel>
+            <referenceName>Input:customerName</referenceName>
+            <required>true</required>
+        </inputs>
+        <inputs>
+            <apiName>company</apiName>
+            <definition>primitive://String</definition>
+            <masterLabel>company</masterLabel>
+            <referenceName>Input:company</referenceName>
+            <required>true</required>
+        </inputs>
+        <inputs>
+            <apiName>industry</apiName>
+            <definition>primitive://String</definition>
+            <masterLabel>industry</masterLabel>
+            <referenceName>Input:industry</referenceName>
+            <required>true</required>
+        </inputs>
+        <inputs>
+            <apiName>caseCount</apiName>
+            <definition>primitive://String</definition>
+            <masterLabel>caseCount</masterLabel>
+            <referenceName>Input:caseCount</referenceName>
+            <required>true</required>
+        </inputs>
+        <inputs>
+            <apiName>additionalDetails</apiName>
+            <definition>primitive://String</definition>
+            <masterLabel>additionalDetails</masterLabel>
+            <referenceName>Input:additionalDetails</referenceName>
+            <required>true</required>
+        </inputs>
+        <primaryModel>sfdc_ai__DefaultGPT41</primaryModel>
+        <status>Published</status>
+        <versionIdentifier>nBlTXtVyN4aeVsckYqR0O/VZM3Br2T0Yk2ECkTqGkk8=_2</versionIdentifier>
+    </templateVersions>
+    <type>einstein_gpt__flex</type>
+    <visibility>Global</visibility>
+</GenAiPromptTemplate>

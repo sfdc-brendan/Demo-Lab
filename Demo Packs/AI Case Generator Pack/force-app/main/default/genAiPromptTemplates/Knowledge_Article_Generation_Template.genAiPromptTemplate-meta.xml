@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiPromptTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <activeVersionIdentifier>nBlTXtVyN4aeVsckYqR0O/VZM3Br2T0Yk2ECkTqGkk8=_1</activeVersionIdentifier>
+    <description>Generate comprehensive knowledge articles using AI</description>
+    <developerName>Knowledge_Article_Generation_Template</developerName>
+    <masterLabel>Knowledge Article Generation Template</masterLabel>
+    <overridable>false</overridable>
+    <templateVersions>
+        <content>You are an expert technical writer creating a comprehensive knowledge article for {!$Input:customerName} in the {!$Input:industry} industry.
+
+CONTEXT:
+- Company: {!$Input:customerName}
+- Industry: {!$Input:industry}
+- Additional Context: {!$Input:additionalDetails}
+- Cases Summary: {!$Input:casesSummary}
+
+REQUIREMENTS:
+1. Create a comprehensive troubleshooting guide addressing common support issues
+2. Focus on practical, step-by-step solutions
+3. Include prevention tips and best practices
+4. Use professional HTML formatting with inline CSS
+5. Structure: Overview, Common Issues, Solutions, Prevention, Contact Info
+6. Keep content customer-friendly but detailed
+7. Include specific references to {!$Input:customerName} services
+8. Make it specific to {!$Input:industry} industry needs
+
+INDUSTRY-SPECIFIC FOCUS:
+- Technology: API issues, integration problems, performance optimization
+- Media: Streaming issues, content delivery, account access
+- Financial Services: Account security, transaction problems, compliance
+- Retail: Order processing, payment issues, inventory management
+- Healthcare: System access, patient data, appointment scheduling
+- Manufacturing: Equipment integration, process optimization, safety protocols
+- Other: General technical support, account management, service delivery
+
+OUTPUT FORMAT:
+Return a JSON object with three fields:
+
+{
+  &quot;title&quot;: &quot;Concise article title (5-8 words, professional and searchable)&quot;,
+  &quot;summary&quot;: &quot;Brief 1-2 sentence summary describing what the article covers&quot;,
+  &quot;content&quot;: &quot;Complete HTML content with inline CSS styling&quot;
+}
+
+HTML REQUIREMENTS:
+- Use inline CSS for all styling (no external stylesheets)
+- Include proper heading structure (h1, h2, h3)
+- Use professional color scheme and typography
+- Include lists, step-by-step instructions
+- Make it visually appealing and easy to read
+- Add specific troubleshooting steps
+- Include contact information section
+
+EXAMPLE OUTPUT:
+{
+  &quot;title&quot;: &quot;VoIP Connectivity Issues Resolution&quot;,
+  &quot;summary&quot;: &quot;Comprehensive troubleshooting steps for VoIP connectivity issues affecting business communications.&quot;,
+  &quot;content&quot;: &quot;&lt;div style=&quot;font-family: Arial, sans-serif; line-height: 1.6; color: #333;&quot;&gt;&lt;h1 style=&quot;color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px;&quot;&gt;VoIP Connectivity Troubleshooting Guide&lt;/h1&gt;&lt;div style=&quot;background-color: #f8f9fa; padding: 15px; border-left: 4px solid #3498db; margin-bottom: 20px;&quot;&gt;&lt;p&gt;&lt;strong&gt;This guide addresses common VoIP connectivity issues.&lt;/strong&gt;&lt;/p&gt;&lt;/div&gt;&lt;h2 style=&quot;color: #e67e22;&quot;&gt;Common Issues&lt;/h2&gt;&lt;ul&gt;&lt;li&gt;Connection timeouts&lt;/li&gt;&lt;li&gt;Audio quality problems&lt;/li&gt;&lt;/ul&gt;&lt;h2 style=&quot;color: #27ae60;&quot;&gt;Solutions&lt;/h2&gt;&lt;ol&gt;&lt;li&gt;Check network connectivity&lt;/li&gt;&lt;li&gt;Verify firewall settings&lt;/li&gt;&lt;/ol&gt;&lt;/div&gt;&quot;
+}
+
+Generate a comprehensive knowledge article for {!$Input:customerName} in the {!$Input:industry} industry:
+</content>
+        <inputs>
+            <apiName>customerName</apiName>
+            <definition>primitive://String</definition>
+            <masterLabel>customerName</masterLabel>
+            <referenceName>Input:customerName</referenceName>
+            <required>true</required>
+        </inputs>
+        <inputs>
+            <apiName>industry</apiName>
+            <definition>primitive://String</definition>
+            <masterLabel>industry</masterLabel>
+            <referenceName>Input:industry</referenceName>
+            <required>true</required>
+        </inputs>
+        <inputs>
+            <apiName>additionalDetails</apiName>
+            <definition>primitive://String</definition>
+            <masterLabel>additionalDetails</masterLabel>
+            <referenceName>Input:additionalDetails</referenceName>
+            <required>true</required>
+        </inputs>
+        <inputs>
+            <apiName>casesSummary</apiName>
+            <definition>primitive://String</definition>
+            <masterLabel>casesSummary</masterLabel>
+            <referenceName>Input:casesSummary</referenceName>
+            <required>true</required>
+        </inputs>
+        <primaryModel>sfdc_ai__DefaultGPT41</primaryModel>
+        <status>Published</status>
+        <versionIdentifier>nBlTXtVyN4aeVsckYqR0O/VZM3Br2T0Yk2ECkTqGkk8=_1</versionIdentifier>
+    </templateVersions>
+    <type>einstein_gpt__flex</type>
+    <visibility>Global</visibility>
+</GenAiPromptTemplate>

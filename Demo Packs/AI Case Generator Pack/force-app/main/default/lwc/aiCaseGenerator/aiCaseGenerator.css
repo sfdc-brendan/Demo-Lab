@@ -1,0 +1,722 @@
+/* AI Case Generator Component Styles */
+
+/* Main container styling with white background and dark text */
+.slds-card {
+    height: 100%;
+    max-height: 400px;
+    overflow-y: auto;
+    background-color: #ffffff !important;
+    color: #181818 !important;
+}
+
+/* Ensure all text is dark but exclude icons */
+*:not(lightning-icon):not(lightning-primitive-icon):not(svg):not(use) {
+    color: #181818 !important;
+}
+
+/* Form section styling with white background */
+.form-section {
+    background-color: #ffffff !important;
+    border: none !important;
+    border-radius: var(--slds-border-radius-medium);
+    padding: var(--slds-spacing-medium);
+    width: 100% !important;
+}
+
+.form-section h3 {
+    color: #181818 !important;
+    font-weight: var(--slds-font-weight-bold);
+}
+
+/* Ensure all form elements take full width */
+.form-section .slds-form-element {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+/* Case count container styling */
+.case-count-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--slds-spacing-small);
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.case-count-container label {
+    font-size: var(--slds-font-size-2);
+    color: #181818 !important;
+}
+
+/* Make slider take full width - more aggressive styling */
+.case-count-container lightning-slider {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: 1 !important;
+}
+
+/* Target the internal slider element more specifically */
+.case-count-container lightning-slider .slds-slider {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+/* Ensure the slider container takes full width */
+.case-count-container lightning-slider .slds-form-element {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+/* Force the slider track to extend full width */
+.case-count-container lightning-slider .slds-slider__range {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+/* Button styling */
+.full-width-button {
+    width: 100%;
+}
+
+/* Loading container */
+.loading-container {
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff !important;
+    border-radius: var(--slds-border-radius-medium);
+    border: 1px dashed #d8dde6 !important;
+}
+
+/* Contact information styling */
+.contact-info {
+    background-color: #f8f9fa !important;
+    border: 1px solid #e5e5e5 !important;
+    border-radius: 12px !important;
+    padding: 16px !important;
+    margin: 12px 0 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+    transition: box-shadow 0.2s ease !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.contact-info::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #4f46e5 0%, #7c3aed 50%, #ec4899 100%);
+}
+
+.contact-info:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.12) !important;
+}
+
+.contact-info h3 {
+    color: #1f2937 !important;
+    display: flex;
+    align-items: center;
+    font-weight: 600 !important;
+    font-size: 1.125rem !important;
+    margin-bottom: 12px !important;
+    margin-top: 0 !important;
+    letter-spacing: -0.025em !important;
+    line-height: 1.2 !important;
+}
+
+.contact-info lightning-icon,
+.contact-icon-white {
+    --slds-c-icon-color-foreground: #ffffff !important;
+    --slds-c-icon-color-foreground-default: #ffffff !important;
+    --slds-c-icon-color-background: #5c6b73 !important;
+    background-color: #5c6b73 !important;
+    border-radius: 50% !important;
+    padding: 4px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 28px !important;
+    height: 28px !important;
+    flex-shrink: 0 !important;
+    margin-right: 10px !important;
+}
+
+/* AGGRESSIVE ICON COLOR TARGETING - MUST BE WHITE */
+.contact-info lightning-icon,
+.contact-icon-white,
+lightning-icon.contact-icon-white {
+    /* Force icon color using SLDS design tokens */
+    --slds-c-icon-color-foreground: #ffffff !important;
+    --slds-c-icon-color-foreground-default: #ffffff !important;
+    --slds-c-icon-color-background: #5c6b73 !important;
+    /* Override any inherited colors */
+    color: #ffffff !important;
+}
+
+/* Target all possible SVG and icon elements */
+.contact-info lightning-icon svg,
+.contact-info lightning-icon lightning-primitive-icon,
+.contact-info lightning-icon use,
+.contact-info lightning-icon path,
+.contact-icon-white svg,
+.contact-icon-white lightning-primitive-icon,
+.contact-icon-white use,
+.contact-icon-white path,
+lightning-icon.contact-icon-white svg,
+lightning-icon.contact-icon-white lightning-primitive-icon,
+lightning-icon.contact-icon-white use,
+lightning-icon.contact-icon-white path {
+    fill: #ffffff !important;
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+}
+
+/* Target data attributes for specific icons */
+.contact-info lightning-icon [data-key],
+.contact-icon-white [data-key],
+lightning-icon.contact-icon-white [data-key] {
+    fill: #ffffff !important;
+    color: #ffffff !important;
+}
+
+/* Target by icon name attributes */
+.contact-info lightning-icon[icon-name],
+.contact-icon-white[icon-name],
+lightning-icon.contact-icon-white[icon-name] {
+    --slds-c-icon-color-foreground: #ffffff !important;
+    color: #ffffff !important;
+}
+
+/* NUCLEAR OPTION - Force white on any nested elements using ::ng-deep equivalent */
+.contact-info lightning-icon *,
+.contact-icon-white *,
+lightning-icon.contact-icon-white *,
+.contact-info lightning-icon lightning-primitive-icon,
+.contact-info lightning-icon svg,
+.contact-info lightning-icon svg *,
+.contact-info lightning-icon use,
+.contact-info lightning-icon g,
+.contact-info lightning-icon path,
+.contact-info lightning-icon circle,
+.contact-info lightning-icon rect,
+.contact-info lightning-icon polygon {
+    fill: #ffffff !important;
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+}
+
+/* Use CSS custom properties to override SLDS tokens */
+.contact-info lightning-icon {
+    --slds-c-icon-radius-border: 50% !important;
+    --slds-c-icon-color-background: #5c6b73 !important;
+    --slds-c-icon-color-foreground: #ffffff !important;
+    --slds-c-icon-color-foreground-default: #ffffff !important;
+    background: #5c6b73 !important;
+}
+
+/* Target specific SLDS classes if they exist */
+.contact-info .slds-icon_container,
+.contact-info .slds-icon,
+.contact-info .slds-icon_small {
+    background-color: #5c6b73 !important;
+    fill: #ffffff !important;
+}
+
+.contact-info .slds-icon_container svg,
+.contact-info .slds-icon svg,
+.contact-info .slds-icon_small svg {
+    fill: #ffffff !important;
+}
+
+.contact-details {
+    margin-top: 8px !important;
+    padding: 12px !important;
+    background-color: #ffffff !important;
+    border-radius: 8px !important;
+    border: 1px solid #f3f4f6 !important;
+}
+
+.contact-details .slds-dl_horizontal__label {
+    color: #6b7280 !important;
+    font-weight: 500 !important;
+    font-size: 0.875rem !important;
+    min-width: 90px !important;
+    margin-bottom: 4px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+}
+
+.contact-details .slds-dl_horizontal__detail {
+    color: #1f2937 !important;
+    font-weight: 500 !important;
+    font-size: 0.95rem !important;
+    margin-bottom: 8px !important;
+    line-height: 1.3 !important;
+}
+
+.contact-details .slds-dl_horizontal {
+    margin-bottom: 0 !important;
+}
+
+.contact-details .slds-dl_horizontal:not(:last-child) {
+    margin-bottom: 10px !important;
+}
+
+.contact-link {
+    color: #0176d3 !important;
+    text-decoration: underline;
+    padding: 0;
+    background: none;
+    border: none;
+}
+
+.contact-link:hover {
+    color: #014486 !important;
+}
+
+/* ─── Demo Scenario Card ─────────────────────────────────────────────── */
+
+.scenario-card {
+    background-color: #ffffff !important;
+    border: 1px solid #e5e5e5 !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+    overflow: hidden !important;
+    position: relative !important;
+}
+
+.scenario-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #032d60 0%, #0176d3 40%, #1b96ff 70%, #57cbff 100%);
+}
+
+.scenario-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px 10px 16px;
+    background-color: #fafbfc !important;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.scenario-header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    flex: 1;
+}
+
+.scenario-header-right {
+    flex-shrink: 0;
+}
+
+.scenario-toggle-icon {
+    --slds-c-icon-color-foreground: #706e6b !important;
+}
+
+.scenario-einstein-icon {
+    --slds-c-icon-color-foreground: #0176d3 !important;
+}
+
+.scenario-title {
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    color: #181818 !important;
+    margin: 0 !important;
+    letter-spacing: -0.01em !important;
+}
+
+.scenario-body {
+    padding: 16px 20px 20px 20px;
+    animation: fadeInUp 0.2s ease-out;
+}
+
+.scenario-content {
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: #3e3e3c !important;
+}
+
+/* Scenario Markdown-rendered elements */
+
+.scenario-content .scenario-h2 {
+    font-size: 1.1rem !important;
+    font-weight: 700 !important;
+    color: #032d60 !important;
+    margin: 0 0 12px 0 !important;
+    padding-bottom: 8px !important;
+    border-bottom: 2px solid #e5e5e5;
+}
+
+.scenario-content .scenario-h3 {
+    font-size: 0.95rem !important;
+    font-weight: 600 !important;
+    color: #0176d3 !important;
+    margin: 16px 0 6px 0 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.04em !important;
+}
+
+.scenario-content .scenario-p {
+    margin: 0 0 10px 0 !important;
+    color: #3e3e3c !important;
+}
+
+.scenario-content .scenario-list {
+    margin: 4px 0 12px 0 !important;
+    padding-left: 20px !important;
+    list-style: disc !important;
+}
+
+.scenario-content .scenario-list li {
+    margin-bottom: 4px !important;
+    color: #3e3e3c !important;
+}
+
+.scenario-content strong {
+    color: #181818 !important;
+    font-weight: 600 !important;
+}
+
+/* Cases grid styling */
+.cases-grid {
+    margin-top: var(--slds-spacing-medium);
+    display: flex;
+    flex-direction: column;
+    gap: var(--slds-spacing-large);
+}
+
+.case-wrapper {
+    width: 100%;
+}
+
+.case-card {
+    height: 100%;
+    transition: all 0.2s ease-in-out;
+    border: 1px solid #d8dde6 !important;
+    background-color: #ffffff !important;
+    margin-bottom: var(--slds-spacing-large) !important;
+}
+
+.case-card:hover {
+    box-shadow: var(--slds-shadow-raised);
+    transform: translateY(-2px);
+    border-color: #0176d3 !important;
+}
+
+.case-subject {
+    font-weight: var(--slds-font-weight-bold);
+    color: #181818 !important;
+    line-height: 1.3;
+    word-break: break-word;
+}
+
+.case-description {
+    min-height: 60px;
+    display: flex;
+    align-items: flex-start;
+}
+
+.case-description p {
+    line-height: 1.4;
+    color: #3e3e3c !important;
+}
+
+/* Badge styling */
+lightning-badge {
+    margin-bottom: var(--slds-spacing-xx-small);
+}
+
+/* Error message styling */
+.slds-notify_alert {
+    margin-bottom: var(--slds-spacing-medium);
+    border-radius: var(--slds-border-radius-medium);
+}
+
+/* Results section styling */
+.results-section {
+    animation: fadeInUp 0.3s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive design for mobile devices */
+@media screen and (max-width: 768px) {
+    /* Stack form elements vertically */
+    .slds-grid.slds-gutters {
+        flex-direction: column;
+    }
+    
+    .slds-col.slds-size_1-of-2 {
+        width: 100%;
+        margin-bottom: var(--slds-spacing-small);
+    }
+    
+    /* Adjust case grid for mobile */
+    .cases-grid {
+        gap: var(--slds-spacing-medium);
+    }
+    
+    /* Reduce padding on mobile */
+    .slds-p-around_medium {
+        padding: var(--slds-spacing-small);
+    }
+    
+    .form-section {
+        padding: var(--slds-spacing-small);
+    }
+    
+    /* Smaller card headers on mobile */
+    .slds-card__header-title {
+        font-size: var(--slds-font-size-3);
+    }
+    
+    /* Contact details stack vertically on mobile */
+    .contact-details .slds-col.slds-size_1-of-2 {
+        width: 100%;
+        margin-bottom: var(--slds-spacing-small);
+    }
+    
+    /* Adjust button sizes for touch */
+    .full-width-button,
+    lightning-button {
+        min-height: 44px; /* Minimum touch target size */
+    }
+}
+
+/* Utility bar specific optimizations */
+@media screen and (max-width: 350px) {
+    /* Very narrow utility bar adjustments */
+    .slds-card {
+        max-height: 380px;
+    }
+    
+    .form-section {
+        padding: var(--slds-spacing-x-small);
+    }
+    
+    .slds-p-around_medium {
+        padding: var(--slds-spacing-x-small);
+    }
+    
+    /* Smaller text on very narrow screens */
+    .slds-text-heading_small {
+        font-size: var(--slds-font-size-2);
+    }
+    
+    /* Compact case cards */
+    .case-card .slds-card__body {
+        padding: var(--slds-spacing-small);
+    }
+    
+    .case-description {
+        min-height: 40px;
+    }
+}
+
+/* Remove focus outlines on form fields */
+lightning-combobox,
+lightning-input,
+lightning-textarea,
+lightning-slider {
+    --slds-c-input-shadow-focus: none !important;
+    --slds-c-textarea-shadow-focus: none !important;
+    --slds-c-combobox-shadow-focus: none !important;
+}
+
+/* Remove focus outline on form elements */
+.form-section lightning-combobox:focus-within,
+.form-section lightning-input:focus-within,
+.form-section lightning-textarea:focus-within,
+.form-section lightning-slider:focus-within {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Remove focus outline on internal input elements */
+.form-section input:focus,
+.form-section textarea:focus,
+.form-section select:focus {
+    outline: none !important;
+    border-color: #d8dde6 !important;
+    box-shadow: none !important;
+}
+
+/* Add subtle focus indicator for accessibility */
+.form-section lightning-combobox:focus-within,
+.form-section lightning-input:focus-within,
+.form-section lightning-textarea:focus-within {
+    background-color: #fafafa !important;
+    border-color: #d8dde6 !important;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .case-card {
+        border-width: 2px;
+    }
+    
+    .case-card:hover {
+        border-width: 3px;
+    }
+    
+    .contact-info {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        border: 1px solid #3e3e3c !important;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .case-card {
+        transition: none;
+    }
+    
+    .case-card:hover {
+        transform: none;
+    }
+    
+    .results-section {
+        animation: none;
+    }
+}
+
+/* Force white background and dark text even in dark mode */
+@media (prefers-color-scheme: dark) {
+    .slds-card,
+    .form-section,
+    .loading-container,
+    .case-card {
+        background-color: #ffffff !important;
+        color: #181818 !important;
+    }
+    
+    .contact-info {
+        background-color: #f3f3f3 !important;
+        color: #181818 !important;
+    }
+    
+    .form-section {
+        border: none !important;
+    }
+    
+    .loading-container {
+        border-color: #d8dde6 !important;
+    }
+    
+    .case-card {
+        border-color: #d8dde6 !important;
+    }
+    
+    /* Ensure text is dark but preserve white icons */
+    *:not(lightning-icon):not(lightning-primitive-icon):not(svg):not(use):not(path) {
+        color: #181818 !important;
+    }
+    
+    /* Force icons to remain white in dark mode */
+    .contact-info lightning-icon,
+    .contact-icon-white,
+    lightning-icon.contact-icon-white {
+        --slds-c-icon-color-foreground: #ffffff !important;
+        color: #ffffff !important;
+    }
+    
+    .contact-info lightning-icon *,
+    .contact-icon-white *,
+    lightning-icon.contact-icon-white * {
+        fill: #ffffff !important;
+        color: #ffffff !important;
+    }
+}
+
+/* Print styles (if needed) */
+@media print {
+    .case-card:hover {
+        transform: none;
+        box-shadow: none;
+    }
+    
+    .results-section {
+        animation: none;
+    }
+    
+    .full-width-button {
+        display: none; /* Hide interactive elements when printing */
+    }
+}
+
+/* Custom scrollbar for webkit browsers */
+.slds-card::-webkit-scrollbar {
+    width: 6px;
+}
+
+.slds-card::-webkit-scrollbar-track {
+    background: var(--slds-g-color-neutral-base-95);
+}
+
+.slds-card::-webkit-scrollbar-thumb {
+    background: var(--slds-g-color-neutral-base-80);
+    border-radius: 3px;
+}
+
+.slds-card::-webkit-scrollbar-thumb:hover {
+    background: var(--slds-g-color-neutral-base-70);
+}
+
+/* Loading spinner styling */
+.loading-container lightning-spinner {
+    margin-bottom: var(--slds-spacing-medium);
+}
+
+/* Ensure proper spacing for badges */
+.case-card lightning-badge:not(:last-child) {
+    margin-right: var(--slds-spacing-xx-small);
+}
+
+/* Case number styling */
+.case-card .slds-text-body_small {
+    font-style: italic;
+    color: #706e6b !important;
+}
+
+/* Header icons */
+.contact-info lightning-icon,
+.case-card lightning-icon {
+    flex-shrink: 0;
+}
+
+/* Footer styling */
+.footer-container {
+    padding: 16px 0 8px 0 !important;
+    margin-top: 24px !important;
+    text-align: center !important;
+    border-top: 1px solid #e5e5e5 !important;
+}
+
+.footer-text {
+    font-size: 12px !important;
+    color: #706e6b !important;
+    margin: 0 !important;
+    font-style: italic !important;
+    opacity: 0.8 !important;
+}
