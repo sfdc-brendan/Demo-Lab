@@ -4,7 +4,6 @@
     <description>Generate comprehensive knowledge articles using AI</description>
     <developerName>Knowledge_Article_Generation_Template</developerName>
     <masterLabel>Knowledge Article Generation Template</masterLabel>
-    <overridable>false</overridable>
     <templateVersions>
         <content>You are an expert technical writer creating a comprehensive knowledge article for {!$Input:customerName} in the {!$Input:industry} industry.
 

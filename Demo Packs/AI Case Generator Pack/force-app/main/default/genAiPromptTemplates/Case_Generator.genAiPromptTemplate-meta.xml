@@ -4,7 +4,6 @@
     <description>Generate realistic customer service cases using AI</description>
     <developerName>Case_Generator</developerName>
     <masterLabel>Case_Generator</masterLabel>
-    <overridable>false</overridable>
     <templateVersions>
         <content>You are an expert customer service case generator. Generate realistic customer service cases for customers experiencing issues with {!$Input:customerName} services.
 

@@ -3,7 +3,6 @@
     <description>Generate a compelling demo scenario narrative from generated cases and knowledge articles</description>
     <developerName>Demo_Scenario_Story_Generator</developerName>
     <masterLabel>Demo Scenario Story Generator</masterLabel>
-    <overridable>false</overridable>
     <templateVersions>
         <content>You are a Salesforce demo storyteller. Your job is to weave generated support cases into a compelling, realistic demo scenario that a sales engineer can read aloud or paraphrase during a live demonstration.
 
