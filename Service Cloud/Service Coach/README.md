@@ -1,17 +1,117 @@
 # Service Coach
 
-A Service Cloud Lightning Web Component that provides **real-time AI-powered coaching** for customer service representatives during voice calls and messaging sessions. Uses **Einstein Prompt Templates** (via `ConnectApi.EinsteinLLM`) and the **Service Cloud Voice Toolkit API** to deliver contextual coaching tips, suggested responses, sentiment analysis, and escalation risk assessment — all embedded directly on the record page.
+A Service Cloud Lightning Web Component that acts as a **real-time AI coaching assistant** for customer service representatives. During a phone call or messaging conversation, Service Coach analyzes the live transcript alongside case, contact, and account context, then uses Salesforce on-platform generative AI to surface coaching tips, suggested responses, sentiment signals, and escalation risk — all in a panel embedded directly on the record page.
+
+The component serves a dual purpose: it is both a **next best action** engine (recommending specific things the rep should say or do) and a **service coach** (guiding the rep through the conversation with contextual advice). It works across voice calls via the **Service Cloud Voice Toolkit API** and messaging sessions via **ConversationEntry** polling, providing a single coaching experience regardless of channel.
 
 **Do not use in production.** For demos and evaluation only.
 
-## Features
+## What the Rep Sees
 
-- **Real-Time Coaching Tips**: AI-generated, contextual guidance based on the live conversation transcript and case details. Tips are categorized by type (empathy, resolution, process, upsell) and severity (info, warning, opportunity).
-- **Suggested Responses**: Ready-to-use phrases the rep can say during the interaction, with accept/dismiss actions.
-- **Conversation Signals**: Detected customer sentiment (positive/negative/neutral), intent detection, and escalation risk assessment (Low/Medium/High) displayed as signal cards.
-- **Hybrid Trigger Model**: Auto-refreshes coaching on Voice Toolkit events (call started, call ended) with a configurable polling interval, plus a manual "Refresh Coaching" button for on-demand advice.
-- **Multi-Channel Support**: Works on **VoiceCall**, **MessagingSession**, and **Case** record pages. Voice calls use the Toolkit API events; messaging sessions poll ConversationEntry records via Apex.
-- **Configurable via Custom Metadata**: Runtime settings (refresh interval, max transcript length, prompt template name, sentiment toggle) stored in `Service_Coach_Config__mdt` — no code changes needed to tune behavior.
+When a service representative opens a VoiceCall, MessagingSession, or Case record page, the Service Coach component appears in a card with three sections:
+
+- **Conversation Signals** — a three-column summary showing detected customer sentiment (positive / negative / neutral), the customer's intent, and escalation risk (Low / Medium / High). Color-coded for quick scanning.
+- **Coaching Tips** — a list of expandable insight cards, each with a category badge (empathy, resolution, process, upsell, coaching) and severity indicator (info, warning, opportunity). These are tactical pieces of advice for how to handle the conversation.
+- **Suggested Responses** — recommended phrases the rep can say next, with "Accept" and "Dismiss" buttons. Accepting a response removes it from the list and shows a confirmation toast. Categories indicate the conversation stage (opening, empathy, resolution, closing).
+
+A pulsing "Live" badge appears during active voice calls. The footer shows the channel type (Voice Call, Messaging Session, or Case) and a spinning sync icon when auto-refresh is active. A manual refresh button is always available in the card header.
+
+---
+
+## What Happens Technically — Chronological Walkthrough
+
+### 1. Component initialization
+
+When the `serviceCoach` LWC renders on a record page, it receives `recordId` and `objectApiName` from the Lightning page context. In `connectedCallback`, it makes an imperative Apex call to `ServiceCoachController.getServiceCoachConfig()`, which queries the `Service_Coach_Config__mdt` custom metadata type for the `Default` record. This returns four settings: the Prompt Template API name, the auto-refresh interval in seconds, the maximum transcript length, and whether sentiment detection is enabled. If no custom metadata record exists, hardcoded defaults are used (template: `Service_Call_Coach`, interval: 45s, transcript: 2000 chars, sentiment: on).
+
+The component starts in the **idle** state and shows a "Ready to Coach" message with a "Get Coaching Advice" button.
+
+### 2. Coaching is triggered
+
+How coaching starts depends on the channel:
+
+- **Voice call** (`objectApiName === 'VoiceCall'`): The component renders the `<lightning-service-cloud-voice-toolkit-api>` element, which is the Service Cloud Voice Toolkit API. When the telephony system signals a call has begun, the toolkit fires a `callstarted` event. The component's `handleCallStarted` handler sets the call-active flag, clears any accumulated transcript, calls `fetchCoaching()`, and starts the auto-refresh timer via `setInterval`.
+
+- **Messaging session** (`objectApiName === 'MessagingSession'`): The Voice Toolkit is not rendered. The rep clicks "Get Coaching Advice" to trigger the first `fetchCoaching()` call. After the first successful response, the component starts the auto-refresh timer so that coaching updates as new messages arrive.
+
+- **Case** (`objectApiName === 'Case'`): The rep clicks the manual refresh button. No auto-refresh is started since there is no live conversation.
+
+### 3. LWC calls Apex (`fetchCoaching`)
+
+The `fetchCoaching` method in `serviceCoach.js` guards against concurrent requests (if already loading, it returns immediately), sets the state to `loading`, and makes an imperative call to `ServiceCoachController.getCoachingAdvice()` with three parameters: the `recordId`, the `objectApiName`, and any accumulated transcript from the client side.
+
+### 4. Apex builds conversation context (`ServiceCoachController` → `ServiceCoachService`)
+
+`ServiceCoachController.getCoachingAdvice()` delegates to `ServiceCoachService.buildConversationContext()`. This method inspects the `objectApiName` to determine which path to take:
+
+- **VoiceCall path**: Queries the `VoiceCall` record to get its `RelatedRecordId`. If the related record is a Case, it queries the Case along with the parent Contact and Account (Subject, Description, Contact.Name, Account.Name, Account.Rating, Priority, Status, Origin). Then it queries `ConversationEntry` records: it reads the VoiceCall's `ConversationId`, queries up to 50 `ConversationEntry` records ordered by `EntryTime ASC`, and formats them into a transcript string with lines like `"Agent: ..."` and `"Customer: ..."` based on the `ActorType` field.
+
+- **MessagingSession path**: Queries the `MessagingSession` record for its `CaseId`. If a Case is linked, loads the same Case/Contact/Account context. Then queries `ConversationEntry` records using the MessagingSession's `ConversationId`, building the same formatted transcript.
+
+- **Case path**: Directly queries the Case, Contact, and Account fields. No transcript is queried since Cases don't have a `ConversationId`.
+
+All SOQL queries use `WITH USER_MODE` for CRUD/FLS enforcement.
+
+The result is a `ConversationContext` wrapper containing: `transcript`, `caseSubject`, `caseDescription`, `customerName`, `accountTier`, `channelType`, and `caseId`.
+
+### 5. Apex invokes the Einstein Prompt Template (`ServiceCoachService.getCoachingFromAI`)
+
+With the context built, the service reads the prompt template API name and max transcript length from `Service_Coach_Config__mdt`. It combines the server-side transcript (from ConversationEntry) with any additional client-side transcript, truncating from the front if the combined string exceeds the max length (keeping the most recent conversation).
+
+It then constructs a `ConnectApi.EinsteinPromptTemplateGenerationsInput` with three input parameters wrapped in `ConnectApi.WrappedValue` objects:
+- `Input:Case` — a map with the Case record ID (so the prompt template can resolve merge fields like `{!$Input:Case.Subject}`)
+- `Input:conversationSnippet` — the transcript string
+- `Input:channelType` — `"VoiceCall"`, `"MessagingSession"`, or `"Case"`
+
+The `isPreview` flag is set to `false` so the model returns a real AI-generated response rather than preview/test data. The `applicationName` is set to `"ServiceCoach"` for tracking.
+
+The service calls `ConnectApi.EinsteinLLM.generateMessagesForPromptTemplate()` with the template API name and the input object. This sends the prompt through the **Einstein Trust Layer**, which handles toxicity detection, PII masking, and audit logging before routing to the foundation model.
+
+### 6. AI generates structured coaching advice
+
+The Einstein Prompt Template (created in Prompt Builder, not deployed as code) resolves the merge fields against the Case record and injects the conversation transcript. The system prompt instructs the model to respond with a JSON object containing:
+
+```json
+{
+  "coachingTips": [{ "text": "...", "category": "empathy|resolution|process|upsell|coaching", "severity": "info|warning|opportunity" }],
+  "suggestedResponses": [{ "text": "...", "context": "opening|empathy|resolution|closing" }],
+  "detectedIntent": "What the customer wants",
+  "sentiment": "positive|negative|neutral",
+  "escalationRisk": "Low|Medium|High"
+}
+```
+
+### 7. Apex parses the response
+
+`ServiceCoachService.parseCoachingResponse()` receives the raw text from `output.generations[0].text`. It attempts to deserialize it as JSON using `JSON.deserializeUntyped()`. If successful, it maps the parsed arrays into `CoachingTip` and `SuggestedResponse` wrapper objects (each assigned a unique client-side ID) and extracts the scalar fields (intent, sentiment, escalation risk).
+
+If the AI returns non-JSON text (malformed or plain-text advice), the catch block wraps the entire raw string as a single coaching tip with category `"coaching"` and severity `"info"`, so the rep always sees something useful.
+
+If the `ConnectApi` call itself fails (model unavailable, token limits, etc.), the service returns a fallback response with a warning tip advising the rep to use standard procedures.
+
+### 8. Response travels back to the LWC
+
+The `CoachingResponse` wrapper (with `@AuraEnabled` properties) is serialized and returned through the Apex controller to the LWC. The `fetchCoaching` method receives the result, sets `coachingResponse`, transitions the state to `active`, records the last refresh timestamp, and — for messaging sessions — starts the auto-refresh timer if it's not already running.
+
+### 9. Panel renders the coaching content
+
+The parent `serviceCoach` component passes `coachingResponse` and `enableSentiment` down to `c-service-coach-panel`. The panel component renders three collapsible sections:
+
+- **Conversation Signals**: A 3-column CSS grid showing sentiment, intent, and escalation risk with color-coded badges (green for positive/low, yellow for medium/warning, red for negative/high).
+- **Coaching Tips**: Iterates over `coachingResponse.coachingTips` rendering a `c-service-coach-insight` card for each. Each card shows a category badge, the tip text, and an expandable detail section with the severity label.
+- **Suggested Responses**: Iterates over `coachingResponse.suggestedResponses` rendering a `c-service-coach-recommendation` card for each. Each card shows a category badge, the response text, and Accept/Dismiss buttons.
+
+### 10. Auto-refresh cycle continues
+
+If a voice call is active or a messaging session has been activated, the `setInterval` timer fires every N seconds (default 45). Each tick calls `fetchCoaching()` again, which re-queries the latest `ConversationEntry` records (capturing new messages since the last refresh), re-invokes the prompt template with updated transcript context, and re-renders the panel with fresh coaching.
+
+For voice calls, the `callended` event from the Voice Toolkit stops the timer and triggers one final coaching fetch (which may now reflect the full conversation). The "Live" badge disappears and the auto-refresh sync icon stops.
+
+### 11. Rep interacts with recommendations
+
+When the rep clicks "Accept" on a suggested response, the `serviceCoachRecommendation` component dispatches a bubbling `accept` custom event. The parent `serviceCoach` component handles it by showing a success toast ("Recommendation Accepted") and filtering that response out of the `suggestedResponses` array via immutable state update (spread + filter). Clicking "Dismiss" removes the card without a toast. The coaching tips section's insight cards can be expanded/collapsed via click or keyboard (Enter/Space), with `aria-expanded` tracking for accessibility.
+
+---
 
 ## What It Uses
 
@@ -22,30 +122,6 @@ A Service Cloud Lightning Web Component that provides **real-time AI-powered coa
 | Messaging integration | SOQL on `ConversationEntry` via `MessagingSession.ConversationId` |
 | Conversation context | Case, Contact, Account data merged into prompt grounding |
 | Configuration | `Service_Coach_Config__mdt` custom metadata for runtime tuning |
-
----
-
-## How It Works
-
-1. **Component loads on a record page**
-   The rep opens a VoiceCall, MessagingSession, or Case record. The component detects the context via `objectApiName` and shows a "Ready to Coach" idle state.
-
-2. **Coaching is triggered**
-   - **Voice calls**: The Voice Toolkit fires a `callstarted` event, which automatically triggers the first coaching fetch and starts the auto-refresh timer.
-   - **Messaging sessions**: The rep clicks "Get Coaching Advice" to start, then coaching auto-refreshes on a configurable interval (default 45 seconds).
-   - **Cases**: The rep clicks the manual refresh button to get on-demand coaching for the case context.
-
-3. **Apex fetches conversation context**
-   `ServiceCoachController` calls `ServiceCoachService.buildConversationContext()`, which queries `ConversationEntry` records for the conversation transcript and loads related Case, Contact, and Account data.
-
-4. **Einstein AI generates coaching**
-   The service invokes `ConnectApi.EinsteinLLM.generateMessagesForPromptTemplate()` with the prompt template API name (from custom metadata), the Case record, the conversation transcript, and the channel type. The AI responds with structured JSON.
-
-5. **Response is parsed and rendered**
-   The structured response is parsed into coaching tips, suggested responses, sentiment, intent, and escalation risk — and rendered in the `serviceCoachPanel` with collapsible sections.
-
-6. **Auto-refresh continues**
-   During an active voice call, coaching refreshes every N seconds (configurable). When the call ends, the timer stops. The rep can always click the refresh button for fresh advice.
 
 ---
 
