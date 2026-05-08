@@ -1,6 +1,6 @@
 # Service Cloud Development Skills for Agentic Coding Tools
 
-A suite of 10 Agent Skills focused on Service Cloud implementation patterns, case operations, omni-channel routing, digital engagement, and support operations quality.
+A suite of 11 Agent Skills focused on Service Cloud implementation patterns, case operations, omni-channel routing, digital engagement, messaging APIs, and support operations quality.
 
 Compatible with Cursor and Claude Code skill folders.
 
@@ -9,7 +9,7 @@ Compatible with Cursor and Claude Code skill folders.
 ## Quick Install
 
 ```bash
-bash skills/service-cloud/install.sh
+bash "Service Cloud/skills/install.sh"
 ```
 
 The installer copies all `sf-service-*` skills into `~/.cursor/skills/`.
@@ -24,6 +24,7 @@ The installer copies all `sf-service-*` skills into `~/.cursor/skills/`.
 - `sf-service-knowledge`: Knowledge article model, channel strategy, search relevance, deflection flow.
 - `sf-service-entitlements`: Entitlements, milestones, SLA design, violation handling, business hours strategy.
 - `sf-service-voice-digital`: Voice/chat/messaging channel patterns and agent workflow harmonization.
+- `sf-service-messaging-conversation-toolkit`: Messaging API and Conversation Toolkit API design, implementation, and guardrails.
 - `sf-service-field-service-handoff`: Service Cloud to Field Service handoff patterns and feedback loops.
 - `sf-service-email-to-case`: Email-to-Case threading, auto-response, assignment, and triage hardening.
 - `sf-service-incident-management`: Major incident intake, comms rhythm, swarm operations, closure workflow.
@@ -39,6 +40,7 @@ Ask naturally, for example:
 - "Create SLA milestone patterns for premium and standard support plans."
 - "Review this Service Cloud setup for operational risk."
 - "Plan a case-to-field-service dispatch handoff model."
+- "Design a Messaging API + Conversation Toolkit integration for agent handoff."
 
 ---
 
