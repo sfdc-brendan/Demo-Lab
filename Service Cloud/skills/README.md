@@ -2,17 +2,31 @@
 
 A suite of 11 Agent Skills focused on Service Cloud implementation patterns, case operations, omni-channel routing, digital engagement, messaging APIs, and support operations quality.
 
-Compatible with Cursor and Claude Code skill folders.
+Compatible with Cursor, Claude Code, Windsurf, and any AI coding agent with a skills directory.
 
 ---
 
 ## Quick Install
 
+Copy and paste into your terminal:
+
 ```bash
-bash "Service Cloud/skills/install.sh"
+curl -sSL https://raw.githubusercontent.com/sfdc-brendan/Demo-Lab/main/Service%20Cloud/skills/install.sh | bash
 ```
 
-The installer copies all `sf-service-*` skills into `~/.cursor/skills/`.
+Or with `wget`:
+
+```bash
+wget -qO- https://raw.githubusercontent.com/sfdc-brendan/Demo-Lab/main/Service%20Cloud/skills/install.sh | bash
+```
+
+The unified installer auto-detects your IDE and installs all `sf-service-*` skills.
+
+- Cursor: `~/.cursor/skills/`
+- Claude Code: `~/.claude/skills/`
+- Windsurf: `~/.windsurf/skills/`
+
+Restart your IDE after installing.
 
 ---
 
