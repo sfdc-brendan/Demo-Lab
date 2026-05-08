@@ -1,6 +1,6 @@
 # Service Cloud Development Skills for Agentic Coding Tools
 
-A suite of 11 Agent Skills focused on Service Cloud implementation patterns, case operations, omni-channel routing, digital engagement, messaging APIs, and support operations quality.
+A suite of 14 Agent Skills focused on Service Cloud implementation patterns, case operations, omni-channel routing, digital engagement, messaging APIs, voice transcript integration, AI-assisted intake, and support operations quality.
 
 Compatible with Cursor and Claude Code skill folders.
 
@@ -28,6 +28,9 @@ The installer copies all `sf-service-*` skills into `~/.cursor/skills/`.
 - `sf-service-field-service-handoff`: Service Cloud to Field Service handoff patterns and feedback loops.
 - `sf-service-email-to-case`: Email-to-Case threading, auto-response, assignment, and triage hardening.
 - `sf-service-incident-management`: Major incident intake, comms rhythm, swarm operations, closure workflow.
+- `sf-service-voice-toolkit`: Real-time transcript integration patterns — Voice Toolkit API, ConversationEntry fallback, transcript contracts, debounce strategy.
+- `sf-service-models-api`: Trust Layer GenAI integration via `aiplatform.ModelsAPI` — model selection, prompt contracts, structured output, operational controls.
+- `sf-service-ai-intake`: Live-call AI form-fill experiences — configurable intake templates, non-destructive merge, agent override, dynamic SObject dispatch.
 - `sf-service-review`: Review rubric for Service Cloud architecture, data, routing, and adoption risks.
 
 ---
@@ -41,6 +44,9 @@ Ask naturally, for example:
 - "Review this Service Cloud setup for operational risk."
 - "Plan a case-to-field-service dispatch handoff model."
 - "Design a Messaging API + Conversation Toolkit integration for agent handoff."
+- "Design a real-time transcript contract for an LWC on the VoiceCall page."
+- "Plan a Trust Layer GenAI prompt contract for case classification."
+- "Design a configurable AI-assisted intake template for roadside assistance calls."
 
 ---
 
