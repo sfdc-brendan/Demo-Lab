@@ -1,6 +1,6 @@
 # Service Cloud Development Skills for Agentic Coding Tools
 
-A suite of 11 Agent Skills focused on Service Cloud implementation patterns, case operations, omni-channel routing, digital engagement, messaging APIs, and support operations quality.
+A suite of 14 Agent Skills focused on Service Cloud implementation patterns, case operations, omni-channel routing, digital engagement, messaging APIs, voice transcript integration, AI-assisted intake, and support operations quality.
 
 Compatible with Cursor, Claude Code, Windsurf, and any AI coding agent with a skills directory.
 
@@ -42,6 +42,9 @@ Restart your IDE after installing.
 - `sf-service-field-service-handoff`: Service Cloud to Field Service handoff patterns and feedback loops.
 - `sf-service-email-to-case`: Email-to-Case threading, auto-response, assignment, and triage hardening.
 - `sf-service-incident-management`: Major incident intake, comms rhythm, swarm operations, closure workflow.
+- `sf-service-voice-toolkit` *(hybrid — code + planning)*: Real-time transcript integration — Voice Toolkit API subscribe/teardown, ConversationEntry SOQL with sequence water mark, polling fallback, debounce. Quick Start in SKILL.md, full event payloads + edge cases in reference.md.
+- `sf-service-models-api` *(hybrid — code + planning)*: Trust Layer GenAI via `aiplatform.ModelsAPI` — Apex service skeleton, JSON-mode prompting, response cleanup, test mock pattern. Quick Start in SKILL.md, full model catalog + retry + embeddings in reference.md.
+- `sf-service-ai-intake` *(hybrid — code + planning)*: Live-call AI form-fill — one-shot template bundle query, non-destructive merge JS, dynamic SObject dispatch, visibility rule evaluator. Quick Start in SKILL.md, full data model + prompt construction + dispatch paths in reference.md.
 - `sf-service-review`: Review rubric for Service Cloud architecture, data, routing, and adoption risks.
 
 ---
@@ -55,10 +58,13 @@ Ask naturally, for example:
 - "Review this Service Cloud setup for operational risk."
 - "Plan a case-to-field-service dispatch handoff model."
 - "Design a Messaging API + Conversation Toolkit integration for agent handoff."
+- "Design a real-time transcript contract for an LWC on the VoiceCall page."
+- "Plan a Trust Layer GenAI prompt contract for case classification."
+- "Design a configurable AI-assisted intake template for roadside assistance calls."
 
 ---
 
 ## Notes
 
-- These skills are designed for design/review/planning and implementation guidance.
-- Use your existing `sf-apex`, `sf-lwc`, `sf-flow`, and `sf-deploy` skills for code and deployment execution.
+- Most of these skills are planning altitude (frameworks, no code) — pair them with `sf-apex`, `sf-lwc`, `sf-flow`, and `sf-deploy` for execution.
+- Three skills are **hybrid altitude** (Quick Start code patterns in SKILL.md + deep reference in reference.md): `sf-service-voice-toolkit`, `sf-service-models-api`, `sf-service-ai-intake`. Use these directly for implementation — they contain copy-paste-ready Apex and LWC patterns proven in [sfdc-brendan/voice-intake-builder](https://github.com/sfdc-brendan/voice-intake-builder).
