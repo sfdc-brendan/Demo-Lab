@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Grants field-level security on the Long-Text fields used by Einstein Knowledge Creation drafting.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Knowledge AI Drafting FLS</label>
+    <license>Salesforce</license>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Knowledge__kav.Chat_Answer_Detailed__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+</PermissionSet>
