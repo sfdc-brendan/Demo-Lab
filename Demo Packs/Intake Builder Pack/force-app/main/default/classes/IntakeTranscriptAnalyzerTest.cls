@@ -45,4 +45,31 @@ private class IntakeTranscriptAnalyzerTest {
         );
         System.assertEquals(0, result.size());
     }
+
+    @IsTest
+    static void analyze_usesTranscriptFallbackWhenModelUnavailable() {
+        IntakeTranscriptAnalyzer.mockResponse = null;
+        String qJson =
+            '[' +
+            '{"developerName":"Customer_Name","questionText":"What is the requester\'s full name?","answerType":"text"},' +
+            '{"developerName":"Callback","questionText":"What is the best contact phone number or email?","answerType":"phone"},' +
+            '{"developerName":"Need_By","questionText":"When is this needed by?","answerType":"date"},' +
+            '{"developerName":"Priority","questionText":"What is the priority level?","answerType":"picklist","picklistValuesStr":"High;Medium;Low"}' +
+            ']';
+        String transcript =
+            'Agent: What is the requester\'s full name?\n' +
+            'Customer: Jane Martinez\n' +
+            'Agent: What is the best contact phone number or email?\n' +
+            'Customer: 555-867-5309\n' +
+            'Agent: When is this needed by?\n' +
+            'Customer: 6/10/2026\n' +
+            'Agent: What is the priority level?\n' +
+            'Customer: High';
+
+        Map<String, String> result = IntakeTranscriptAnalyzer.analyzeTranscript(null, qJson, transcript);
+        System.assertEquals('Jane Martinez', result.get('Customer_Name'));
+        System.assertEquals('555-867-5309', result.get('Callback'));
+        System.assertEquals('2026-06-10', result.get('Need_By'));
+        System.assertEquals('High', result.get('Priority'));
+    }
 }
