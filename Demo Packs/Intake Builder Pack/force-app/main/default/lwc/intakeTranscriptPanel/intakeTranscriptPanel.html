@@ -1,0 +1,50 @@
+<template>
+    <div class="transcript-panel slds-box slds-box_xx-small slds-theme_shade slds-m-top_small">
+        <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center slds-m-bottom_x-small">
+            <h4 class="slds-text-title_caps">
+                <lightning-icon icon-name="utility:call" size="xx-small" class="slds-m-right_xx-small"></lightning-icon>
+                Live Transcript
+            </h4>
+            <lightning-button-icon icon-name={toggleIcon} alternative-text={toggleLabel}
+                variant="bare" size="small" onclick={handleToggle}></lightning-button-icon>
+        </div>
+
+        <template lwc:if={isExpanded}>
+            <div class="slds-m-bottom_small">
+                <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-end slds-m-bottom_xx-small">
+                    <label class="slds-form-element__label slds-text-body_small" for="transcript-paste">
+                        Copy the transcript from the Conversations panel, then paste or capture below
+                    </label>
+                    <lightning-button label="Capture from Clipboard" variant="brand-outline"
+                        icon-name="utility:paste" class="slds-shrink-none"
+                        onclick={handleCaptureClipboard}></lightning-button>
+                </div>
+                <textarea id="transcript-paste" class="slds-textarea transcript-paste-area"
+                    placeholder="Paste the transcript from the Conversations panel here..."
+                    onpaste={handlePaste} rows="3"></textarea>
+                <template lwc:if={showClipboardError}>
+                    <p class="slds-text-color_error slds-text-body_small slds-m-top_xx-small">{clipboardError}</p>
+                </template>
+            </div>
+
+            <template lwc:if={hasEntries}>
+                <ul class="slds-has-dividers_bottom-space" role="list" aria-label="Transcript entries">
+                    <template for:each={customerEntries} for:item="entry">
+                        <li key={entry.seq} class="slds-item transcript-entry">
+                            <div class="slds-grid slds-grid_vertical-align-start">
+                                <div class="slds-grow">
+                                    <span class="slds-badge slds-badge_lightest slds-m-bottom_xx-small">{entry.actorName}</span>
+                                    <p class="slds-text-body_regular slds-m-top_xx-small">{entry.message}</p>
+                                </div>
+                                <lightning-button label="Use" variant="brand-outline"
+                                    class="slds-m-left_x-small slds-shrink-none"
+                                    data-seq={entry.seq} data-message={entry.message}
+                                    onclick={handleUseAnswer}></lightning-button>
+                            </div>
+                        </li>
+                    </template>
+                </ul>
+            </template>
+        </template>
+    </div>
+</template>

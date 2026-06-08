@@ -1,0 +1,17 @@
+<template>
+    <div class="slds-m-bottom_medium">
+        <div class="slds-grid slds-grid_align-spread slds-m-bottom_x-small">
+            <span class="slds-text-body_small slds-text-color_weak">{categoryLabel}</span>
+            <span class="slds-text-body_small slds-text-color_weak">{progressLabel}</span>
+        </div>
+        <lightning-progress-bar value={percentComplete} size="small" variant={progressVariant}></lightning-progress-bar>
+        <div class="slds-grid slds-grid_align-spread slds-m-top_xx-small">
+            <div class="progress-dots">
+                <template for:each={dots} for:item="dot">
+                    <span key={dot.index} class={dot.cssClass} title={dot.title}
+                        role="img" aria-label={dot.ariaLabel}></span>
+                </template>
+            </div>
+        </div>
+    </div>
+</template>

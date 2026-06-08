@@ -1,0 +1,285 @@
+<template>
+    <template lwc:if={previewMode}></template>
+    <template lwc:else>
+        <lightning-service-cloud-voice-toolkit-api></lightning-service-cloud-voice-toolkit-api>
+    </template>
+
+    <template lwc:if={isLoading}>
+        <article class="ix-shell ix-shell--state">
+            <div class="ix-state">
+                <lightning-spinner alternative-text="Loading intake" size="small"></lightning-spinner>
+                <p class="ix-text--muted ix-mt-3">Loading intake template...</p>
+            </div>
+        </article>
+    </template>
+
+    <template lwc:if={hasError}>
+        <article class="ix-shell ix-shell--state">
+            <div class="ix-state">
+                <lightning-icon icon-name="utility:error" variant="error" size="medium"></lightning-icon>
+                <h3 class="ix-text--heading ix-mt-2">Something went wrong</h3>
+                <p class="ix-text--muted ix-mt-1">{errorMessage}</p>
+                <div class="ix-mt-3">
+                    <lightning-button label="Try Again" variant="brand"
+                        icon-name="utility:refresh" onclick={handleRetry}></lightning-button>
+                </div>
+            </div>
+        </article>
+    </template>
+
+    <template lwc:if={isSubmitted}>
+        <article class="ix-shell ix-shell--state">
+            <div class="ix-state">
+                <span class="ix-success-mark" aria-hidden="true">
+                    <lightning-icon icon-name="utility:check" size="small" variant="inverse"></lightning-icon>
+                </span>
+                <h3 class="ix-text--heading ix-mt-2">Intake submitted</h3>
+                <p class="ix-text--muted ix-mt-1">{confirmSummary}</p>
+                <div class="ix-mt-3">
+                    <lightning-button label="View Intake Record" variant="brand"
+                        onclick={handleViewIntake} icon-name="utility:new_window" icon-position="right"></lightning-button>
+                </div>
+            </div>
+        </article>
+    </template>
+
+    <template lwc:if={showTemplatePickerState}>
+        <article class="ix-shell ix-shell--state">
+            <div class="ix-state ix-picker">
+                <span class="ix-header__icon" aria-hidden="true">
+                    <lightning-icon icon-name="standard:form" size="small"></lightning-icon>
+                </span>
+                <h3 class="ix-text--heading ix-mt-2">Choose an intake</h3>
+                <p class="ix-text--muted ix-mt-1">Pick the intake template to run for this call.</p>
+                <div class="ix-mt-3 ix-picker__select">
+                    <lightning-combobox
+                        label="Intake Template"
+                        variant="label-hidden"
+                        placeholder="Select a template..."
+                        options={templateOptions}
+                        value={selectedTemplateValue}
+                        onchange={handleTemplatePicked}>
+                    </lightning-combobox>
+                </div>
+            </div>
+        </article>
+    </template>
+
+    <template lwc:if={showIntakeFlow}>
+        <article class="ix-shell">
+            <header class="ix-header">
+                <div class="ix-header__title">
+                    <span class="ix-header__icon" aria-hidden="true">
+                        <lightning-icon icon-name="standard:form" size="small"></lightning-icon>
+                    </span>
+                    <div class="ix-stack--xs">
+                        <h2 class="ix-text--heading">{bundle.name}</h2>
+                        <p class="ix-text--muted ix-text--sm">{progressLabel}</p>
+                        <template lwc:if={voiceCallContext}>
+                            <div class="ix-header__caller" aria-label="Caller">
+                                <template lwc:if={voiceCallContext.contactName}>
+                                    <span class="ix-pill ix-pill--neutral">
+                                        <lightning-icon icon-name="standard:contact" size="xx-small"></lightning-icon>
+                                        {voiceCallContext.contactName}
+                                    </span>
+                                </template>
+                                <template lwc:if={voiceCallContext.callbackPhone}>
+                                    <span class="ix-pill ix-pill--neutral">
+                                        <lightning-icon icon-name="utility:call" size="xx-small"></lightning-icon>
+                                        {voiceCallContext.callbackPhone}
+                                    </span>
+                                </template>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+
+                <div class="ix-header__meta">
+                    <template lwc:if={previewMode}>
+                        <span class="ix-pill ix-pill--neutral">
+                            <lightning-icon icon-name="utility:preview" size="xx-small"></lightning-icon>
+                            Preview mode
+                        </span>
+                    </template>
+                    <template lwc:if={_liveTranscriptActive}>
+                        <span class="ix-pill ix-pill--success">
+                            <span class="ix-dot ix-dot--pulse" aria-hidden="true"></span>
+                            Live transcript
+                        </span>
+                    </template>
+                    <template lwc:if={isAnalyzing}>
+                        <span class="ix-pill ix-pill--info">
+                            <lightning-icon icon-name="utility:einstein" size="xx-small"></lightning-icon>
+                            Analyzing
+                        </span>
+                    </template>
+                    <template lwc:if={hasTranscript}>
+                        <template lwc:if={isAnalyzing}></template>
+                        <template lwc:else>
+                            <span class="ix-pill ix-pill--neutral">
+                                <lightning-icon icon-name="utility:einstein" size="xx-small"></lightning-icon>
+                                {transcriptUtteranceLabel}
+                            </span>
+                        </template>
+                    </template>
+                    <template lwc:if={showAnalyzeButton}>
+                        <button type="button" class="ix-btn ix-btn--ghost" onclick={handleAnalyzeTranscript}>
+                            <lightning-icon icon-name="utility:einstein" size="xx-small"></lightning-icon>
+                            Re-analyze
+                        </button>
+                    </template>
+                </div>
+            </header>
+
+            <div class="ix-progress" role="progressbar" aria-valuemin="0"
+                aria-valuemax="100" aria-valuenow={progressPercent}>
+                <div class="ix-progress__fill" style={progressBarStyle}></div>
+            </div>
+
+            <template lwc:if={hasSuggestions}>
+                <div class="ix-banner ix-banner--info" role="status">
+                    <div class="ix-banner__lead">
+                        <lightning-icon icon-name="utility:einstein" size="small"></lightning-icon>
+                        <span>{suggestionsLabel}</span>
+                    </div>
+                    <button type="button" class="ix-btn ix-btn--primary ix-btn--sm"
+                        onclick={handleAcceptAllSuggestions}>
+                        Accept all
+                    </button>
+                </div>
+            </template>
+
+            <div class={gridClass}>
+                <section class="ix-questions" aria-label="Intake questions">
+                    <template for:each={questionItems} for:item="item">
+                        <div key={item.developerName} class={item.rowClass}>
+                            <button type="button" class="ix-row__header"
+                                data-name={item.developerName}
+                                aria-expanded={item.isExpandedString}
+                                onclick={handleToggleSection}>
+
+                                <span class="ix-row__status" aria-hidden="true">
+                                    <template lwc:if={item.isAnswered}>
+                                        <span class="ix-mark ix-mark--success" title="Answered">
+                                            <lightning-icon icon-name="utility:check" size="xx-small" variant="inverse"></lightning-icon>
+                                        </span>
+                                    </template>
+                                    <template lwc:if={item.showAiMark}>
+                                        <span class="ix-mark ix-mark--ai" title="AI suggestion ready">
+                                            <lightning-icon icon-name="utility:einstein" size="xx-small" variant="inverse"></lightning-icon>
+                                        </span>
+                                    </template>
+                                    <template lwc:if={item.showEmptyMark}>
+                                        <span class="ix-mark ix-mark--empty" title="Unanswered"></span>
+                                    </template>
+                                </span>
+
+                                <span class="ix-row__main">
+                                    <span class="ix-row__q">
+                                        <span class="ix-row__step">{item.stepLabel}</span>
+                                        <span class="ix-row__text">{item.questionText}</span>
+                                        <template lwc:if={item.required}>
+                                            <span class="ix-required" aria-label="Required">*</span>
+                                        </template>
+                                    </span>
+                                    <template lwc:if={item.answerPreview}>
+                                        <span class="ix-row__preview" title={item.answerPreview}>{item.answerPreview}</span>
+                                    </template>
+                                </span>
+
+                                <lightning-icon class={item.chevronClass}
+                                    icon-name="utility:chevronright" size="xx-small"
+                                    alternative-text={item.chevronAlt}></lightning-icon>
+                            </button>
+
+                            <template lwc:if={item.isExpanded}>
+                                <div class="ix-row__body">
+                                    <c-intake-question question={item.question} value={item.answer}
+                                        locale={locale} onanswerchange={handleAnswerChange}></c-intake-question>
+
+                                    <template lwc:if={item.suggestion}>
+                                        <div class="ix-suggestion" role="status">
+                                            <div class="ix-suggestion__lead">
+                                                <lightning-icon icon-name="utility:einstein" size="x-small"></lightning-icon>
+                                                <div class="ix-stack--xs">
+                                                    <span class="ix-text--caption">AI suggestion</span>
+                                                    <span class="ix-text--strong">{item.suggestion.value}</span>
+                                                </div>
+                                            </div>
+                                            <div class="ix-cluster">
+                                                <button type="button" class="ix-btn ix-btn--primary ix-btn--sm"
+                                                    data-name={item.developerName}
+                                                    onclick={handleAcceptQuestionSuggestion}>Accept</button>
+                                                <button type="button" class="ix-btn ix-btn--ghost ix-btn--sm"
+                                                    data-name={item.developerName}
+                                                    onclick={handleDismissQuestionSuggestion}>Dismiss</button>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                </section>
+
+                <template lwc:if={hasSidePanel}>
+                    <aside class="ix-side" aria-label="Call activity">
+                        <template lwc:if={_liveTranscriptActive}>
+                            <div class="ix-panel">
+                                <h4 class="ix-panel__title">
+                                    <span class="ix-dot ix-dot--pulse" aria-hidden="true"></span>
+                                    {transcriptStatusLabel}
+                                </h4>
+                                <p class="ix-text--muted ix-text--sm">
+                                    Native Voice transcript is streaming. AI auto-fill runs in the background.
+                                </p>
+                            </div>
+                        </template>
+                    </aside>
+                </template>
+            </div>
+
+            <template lwc:if={previewMode}></template>
+            <template lwc:else>
+                <footer class="ix-footer">
+                    <p class="ix-text--muted ix-text--sm">{progressLabel}</p>
+                    <lightning-button label="Submit Intake" variant="brand"
+                        icon-name="utility:check" onclick={handleSubmit}
+                        disabled={isSubmitting}></lightning-button>
+                </footer>
+            </template>
+        </article>
+
+        <template lwc:if={showConfirmModal}>
+            <section role="dialog" tabindex="-1" aria-modal="true"
+                aria-label="Confirm submission" class="slds-modal slds-fade-in-open"
+                data-id="confirm-modal">
+                <div class="slds-modal__container">
+                    <div class="slds-modal__header">
+                        <lightning-button-icon icon-name="utility:close"
+                            alternative-text="Close" variant="bare-inverse"
+                            class="slds-modal__close" onclick={handleCancelSubmit}></lightning-button-icon>
+                        <h2 class="slds-modal__title slds-hyphenate">Confirm Submission</h2>
+                    </div>
+                    <div class="slds-modal__content slds-p-around_medium">
+                        <p class="slds-text-body_regular slds-m-bottom_small">{confirmSummary}</p>
+                        <template lwc:if={hasUnansweredRequired}>
+                            <div class="slds-notify slds-notify_alert slds-alert_warning slds-m-bottom_small" role="alert">
+                                <lightning-icon icon-name="utility:warning" variant="warning" size="x-small" class="slds-m-right_x-small"></lightning-icon>
+                                <span>Some required questions are still unanswered.</span>
+                            </div>
+                        </template>
+                        <p class="slds-text-body_regular">Are you sure you want to submit this intake?</p>
+                    </div>
+                    <div class="slds-modal__footer">
+                        <lightning-button label="Go Back" variant="neutral" onclick={handleCancelSubmit}></lightning-button>
+                        <lightning-button label="Submit" variant="brand" icon-name="utility:check"
+                            class="slds-m-left_x-small" onclick={handleConfirmSubmit}
+                            disabled={isSubmitting}></lightning-button>
+                    </div>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open" onclick={handleCancelSubmit}></div>
+        </template>
+    </template>
+</template>

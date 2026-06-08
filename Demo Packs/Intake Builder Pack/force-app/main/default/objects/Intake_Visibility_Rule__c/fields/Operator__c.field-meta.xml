@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Operator__c</fullName>
+    <label>Operator</label>
+    <type>Picklist</type>
+    <required>true</required>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value><fullName>equals</fullName><default>true</default><label>equals</label></value>
+            <value><fullName>not_equals</fullName><default>false</default><label>not equals</label></value>
+            <value><fullName>contains</fullName><default>false</default><label>contains</label></value>
+            <value><fullName>in</fullName><default>false</default><label>in (semicolon list)</label></value>
+            <value><fullName>is_blank</fullName><default>false</default><label>is blank</label></value>
+            <value><fullName>is_not_blank</fullName><default>false</default><label>is not blank</label></value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,67 @@
+<template>
+    <template lwc:if={isListView}>
+        <lightning-card icon-name="standard:form">
+            <span slot="title" class="slds-text-heading_small">Intake Templates</span>
+            <div slot="actions" class="slds-grid slds-gutters_xx-small slds-grid_vertical-align-center">
+                <lightning-combobox label="Status" variant="label-hidden"
+                    options={statusFilters} value={statusFilter}
+                    onchange={handleStatusFilterChange}></lightning-combobox>
+                <lightning-button label="New Template" variant="brand"
+                    icon-name="utility:add" onclick={handleNew}
+                    class="slds-m-left_x-small"></lightning-button>
+            </div>
+
+            <template lwc:if={isLoading}>
+                <div class="slds-align_absolute-center slds-p-around_large">
+                    <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+                </div>
+            </template>
+
+            <template lwc:else>
+                <template lwc:if={error}>
+                    <div class="slds-p-around_medium slds-text-color_error">{error}</div>
+                </template>
+                <template lwc:if={displayTemplates.length}>
+                    <ul class="slds-has-dividers_bottom-space slds-p-around_small">
+                        <template for:each={displayTemplates} for:item="t">
+                            <li key={t.id} class="slds-item slds-p-vertical_x-small template-list-item">
+                                <div class="template-row">
+                                    <div class="template-meta">
+                                        <strong>{t.name}</strong>
+                                        <span class="slds-badge slds-m-left_x-small">v{t.version}</span>
+                                        <p class="slds-text-body_small slds-text-color_weak">
+                                            <template lwc:if={t.targetObject}>Target: {t.targetObject} · </template>
+                                            Status: {t.status}
+                                        </p>
+                                    </div>
+                                    <div class="template-actions">
+                                        <div class="template-action-group">
+                                            <lightning-button label="Open" variant="neutral"
+                                                data-id={t.id} onclick={handleOpen}></lightning-button>
+                                            <lightning-button label="Clone" variant="neutral"
+                                                data-id={t.id} onclick={handleClone}
+                                                class="slds-m-left_xx-small"></lightning-button>
+                                            <lightning-button label="Delete" variant="destructive-text"
+                                                data-id={t.id} onclick={handleDelete}
+                                                class="slds-m-left_xx-small"></lightning-button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </template>
+                    </ul>
+                </template>
+                <template lwc:else>
+                    <div class="slds-p-around_medium slds-text-align_center slds-text-color_weak">
+                        No templates yet. Click "New Template" to create one.
+                    </div>
+                </template>
+            </template>
+        </lightning-card>
+    </template>
+
+    <template lwc:if={isEditorView}>
+        <c-intake-builder-editor template-id={selectedTemplateId}
+            onback={handleBack}></c-intake-builder-editor>
+    </template>
+</template>

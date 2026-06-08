@@ -1,0 +1,24 @@
+.progress-dots {
+    display: flex;
+    gap: 0.35rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.progress-dot {
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background-color: var(--slds-g-color-neutral-base-80, #c9c9c9);
+    transition: all 0.2s ease;
+}
+
+.progress-dot_current {
+    background-color: var(--slds-g-color-brand-base-50, #0176d3);
+    transform: scale(1.4);
+}
+
+.progress-dot_completed {
+    background-color: var(--slds-g-color-success-base-50, #2e844a);
+}

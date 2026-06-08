@@ -1,0 +1,42 @@
+<template>
+    <div class="slds-m-bottom_medium">
+        <h3 class="slds-text-heading_small slds-m-bottom_small">Review Your Answers</h3>
+        <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_medium">
+            Please confirm the information below before submitting.
+        </p>
+
+        <template for:each={groupedSections} for:item="section">
+            <div key={section.category} class="slds-m-bottom_small">
+                <h4 class="slds-text-title_caps slds-m-bottom_xx-small">{section.category}</h4>
+                <dl class="slds-dl_horizontal">
+                    <template for:each={section.items} for:item="item">
+                        <div key={item.developerName} class="slds-grid slds-m-bottom_xx-small">
+                            <dt class="slds-dl_horizontal__label slds-text-color_weak slds-truncate" title={item.label}>
+                                {item.label}
+                            </dt>
+                            <dd class="slds-dl_horizontal__detail">
+                                <template lwc:if={item.hasAnswer}>
+                                    <span>{item.answer}</span>
+                                </template>
+                                <template lwc:else>
+                                    <span class="slds-text-color_weak">—</span>
+                                </template>
+                                <lightning-button-icon icon-name="utility:edit"
+                                    alternative-text={item.editLabel} variant="bare" size="small"
+                                    class="slds-m-left_x-small" data-index={item.index}
+                                    onclick={handleEdit}></lightning-button-icon>
+                            </dd>
+                        </div>
+                    </template>
+                </dl>
+            </div>
+        </template>
+
+        <template lwc:if={hasMissingRequired}>
+            <div class="slds-notify slds-notify_alert slds-alert_warning slds-m-top_small" role="alert">
+                <lightning-icon icon-name="utility:warning" variant="warning" size="x-small" class="slds-m-right_x-small"></lightning-icon>
+                <span>Some required questions are unanswered. You can still submit, but consider completing them first.</span>
+            </div>
+        </template>
+    </div>
+</template>

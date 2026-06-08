@@ -1,0 +1,35 @@
+<template>
+    <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_x-small">
+        Add translated copy per locale. The runtime auto-resolves the agent's locale, falling back to the template default.
+    </p>
+
+    <template for:each={displayTranslations} for:item="t">
+        <div key={t.uiKey} class="slds-box slds-box_x-small slds-m-bottom_x-small">
+            <div class="slds-grid slds-gutters_xx-small slds-grid_vertical-align-end">
+                <div class="slds-col slds-size_3-of-12">
+                    <lightning-combobox label="Locale" options={localeOptions}
+                        value={t.locale} data-index={t.index} data-field="locale"
+                        onchange={handleField}></lightning-combobox>
+                </div>
+                <div class="slds-col slds-size_4-of-12">
+                    <lightning-input type="text" label="Question text" value={t.questionText}
+                        data-index={t.index} data-field="questionText"
+                        onchange={handleField}></lightning-input>
+                </div>
+                <div class="slds-col slds-size_4-of-12">
+                    <lightning-input type="text" label="Help text" value={t.helpText}
+                        data-index={t.index} data-field="helpText"
+                        onchange={handleField}></lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-12 slds-text-align_right">
+                    <lightning-button-icon icon-name="utility:delete"
+                        alternative-text="Delete translation" variant="bare"
+                        data-index={t.index} onclick={handleDelete}></lightning-button-icon>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <lightning-button label="Add translation" variant="neutral" icon-name="utility:add"
+        onclick={handleAdd}></lightning-button>
+</template>

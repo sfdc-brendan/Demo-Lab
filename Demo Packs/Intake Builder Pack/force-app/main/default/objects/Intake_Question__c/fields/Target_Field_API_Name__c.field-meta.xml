@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Target_Field_API_Name__c</fullName>
+    <label>Target Field API Name</label>
+    <type>Text</type>
+    <length>120</length>
+    <required>false</required>
+    <inlineHelpText>Field on the template's Target Object that this answer writes to.</inlineHelpText>
+</CustomField>

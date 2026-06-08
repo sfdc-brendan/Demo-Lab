@@ -1,0 +1,92 @@
+<apex:page controller="IntakePDFController" renderAs="pdf"
+           applyBodyTag="false" applyHtmlTag="false" showHeader="false">
+<html>
+<head>
+    <style type="text/css">
+        @page { size: letter; margin: 0.75in; }
+        body { font-family: Arial, Helvetica, sans-serif; font-size: 11px; color: #333; }
+        .header { padding: 15px 20px; }
+        .header-table { width: 100%; }
+        .header-table .logo-cell { vertical-align: middle; padding-right: 16px; width: 90px; }
+        .header-table .logo-cell img { max-height: 56px; max-width: 90px; }
+        .header-table .title-cell { vertical-align: middle; }
+        .header h1 { font-size: 18px; margin: 0 0 2px 0; line-height: 1.2; }
+        .header .subtitle { font-size: 11px; opacity: 0.85; margin: 0; }
+        .meta-bar { background-color: #f4f6f9; padding: 10px 20px; border-bottom: 1px solid #d8dde6; }
+        .meta-bar table { width: 100%; }
+        .meta-bar td { padding: 2px 8px; font-size: 10px; }
+        .meta-bar .label { color: #706e6b; font-weight: bold; }
+        .body { padding: 20px; }
+        .section { margin-bottom: 18px; page-break-inside: avoid; }
+        .section h2 { font-size: 13px; border-bottom: 2px solid; padding-bottom: 4px; margin: 0 0 8px 0; }
+        .qa-row { padding: 4px 0; border-bottom: 1px dotted #e0e0e0; }
+        .qa-question { color: #706e6b; font-size: 10px; margin-bottom: 2px; }
+        .qa-answer { font-weight: bold; font-size: 12px; }
+        .qa-answer.empty { color: #c9c9c9; font-style: italic; font-weight: normal; }
+        .footer { margin-top: 30px; padding-top: 8px; border-top: 1px solid #d8dde6;
+            font-size: 9px; color: #706e6b; text-align: center; }
+        .pdf-header-html { padding: 14px 20px; border-bottom: 1px solid #d8dde6; }
+        .error { padding: 30px; color: #ea001e; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <apex:outputPanel rendered="{!NOT(ISBLANK(errorMessage))}">
+        <div class="error">{!errorMessage}</div>
+    </apex:outputPanel>
+
+    <apex:outputPanel rendered="{!ISBLANK(errorMessage)}">
+        <div class="header" style="background-color: {!brandColor}; color: {!brandTextColor};">
+            <table class="header-table" cellpadding="0" cellspacing="0">
+                <tr>
+                    <apex:outputPanel rendered="{!hasLogo}" layout="none">
+                        <td class="logo-cell">
+                            <img src="{!logoSrc}" alt="logo"/>
+                        </td>
+                    </apex:outputPanel>
+                    <td class="title-cell">
+                        <h1>{!templateName}</h1>
+                        <p class="subtitle">Intake Record: {!recordName}</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <apex:outputPanel rendered="{!NOT(ISBLANK(pdfHeader))}" layout="block" styleClass="pdf-header-html">
+            <apex:outputText value="{!pdfHeader}" escape="false"/>
+        </apex:outputPanel>
+
+        <div class="meta-bar">
+            <table>
+                <tr>
+                    <td><span class="label">Generated:</span> {!todayString}</td>
+                    <td><span class="label">Template Version:</span> {!templateVersion}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="body">
+            <apex:repeat value="{!sections}" var="sec">
+                <div class="section">
+                    <h2 style="color: {!brandColor}; border-bottom-color: {!brandColor};">{!sec.category}</h2>
+                    <apex:repeat value="{!sec.items}" var="item">
+                        <div class="qa-row">
+                            <div class="qa-question">{!item.questionText}</div>
+                            <apex:outputPanel rendered="{!NOT(ISBLANK(item.answer))}">
+                                <div class="qa-answer">{!item.answer}</div>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!ISBLANK(item.answer)}">
+                                <div class="qa-answer empty">— not provided —</div>
+                            </apex:outputPanel>
+                        </div>
+                    </apex:repeat>
+                </div>
+            </apex:repeat>
+        </div>
+
+        <div class="footer">
+            <apex:outputText value="{!pdfFooter}" escape="false"/>
+        </div>
+    </apex:outputPanel>
+</body>
+</html>
+</apex:page>

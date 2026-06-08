@@ -1,0 +1,28 @@
+<template>
+    <div class="slds-grid slds-gutters_xx-small">
+        <template lwc:if={allowObjectChange}>
+            <div class="slds-col slds-size_1-of-2">
+                <lightning-combobox label="Object" placeholder="Choose an object"
+                    options={objectOptions} value={objectApiName}
+                    onchange={handleObjectChange}></lightning-combobox>
+            </div>
+            <div class="slds-col slds-size_1-of-2">
+                <lightning-combobox label={label} placeholder="Choose a field"
+                    options={fieldOptions} value={fieldApiName}
+                    disabled={isLoadingFields}
+                    onchange={handleFieldChange}></lightning-combobox>
+            </div>
+        </template>
+        <template lwc:else>
+            <div class="slds-col">
+                <lightning-combobox label={label} placeholder="Choose a field"
+                    options={fieldOptions} value={fieldApiName}
+                    disabled={isLoadingFields}
+                    onchange={handleFieldChange}></lightning-combobox>
+            </div>
+        </template>
+    </div>
+    <template lwc:if={error}>
+        <p class="slds-text-color_error slds-text-body_small">{error}</p>
+    </template>
+</template>

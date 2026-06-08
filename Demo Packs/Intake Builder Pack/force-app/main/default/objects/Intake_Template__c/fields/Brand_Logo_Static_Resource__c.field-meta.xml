@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Brand_Logo_Static_Resource__c</fullName>
+    <label>Brand Logo Static Resource</label>
+    <type>Text</type>
+    <length>80</length>
+    <required>false</required>
+    <unique>false</unique>
+    <inlineHelpText>API name of a Static Resource holding the logo image (e.g. CompanyLogo). Used when Brand Logo File Id is blank.</inlineHelpText>
+</CustomField>

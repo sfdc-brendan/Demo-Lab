@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Lookup_Object__c</fullName>
+    <label>Lookup Object</label>
+    <type>Text</type>
+    <length>120</length>
+    <required>false</required>
+    <inlineHelpText>For Lookup answer types: SObject API name to search.</inlineHelpText>
+</CustomField>

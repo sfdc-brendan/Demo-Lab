@@ -1,0 +1,90 @@
+<template>
+    <div class="slds-m-bottom_medium" role="group" aria-labelledby="question-heading">
+        <h3 id="question-heading" class="slds-text-heading_small slds-m-bottom_xx-small">
+            {displayQuestionText}
+            <template lwc:if={question.isRequired}>
+                <abbr class="slds-required" title="required">*</abbr>
+            </template>
+        </h3>
+
+        <template lwc:if={displayHelpText}>
+            <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_small">
+                {displayHelpText}
+            </p>
+        </template>
+
+        <template lwc:if={isText}>
+            <lightning-input type="text" value={value} label={displayQuestionText}
+                variant="label-hidden" required={question.isRequired}
+                onchange={handleChange}></lightning-input>
+        </template>
+
+        <template lwc:if={isPhone}>
+            <lightning-input type="tel" value={value} label={displayQuestionText}
+                variant="label-hidden" required={question.isRequired}
+                pattern="[0-9()\-+\s]*"
+                message-when-pattern-mismatch="Please enter a valid phone number"
+                onchange={handleChange}></lightning-input>
+        </template>
+
+        <template lwc:if={isEmail}>
+            <lightning-input type="email" value={value} label={displayQuestionText}
+                variant="label-hidden" required={question.isRequired}
+                onchange={handleChange}></lightning-input>
+        </template>
+
+        <template lwc:if={isNumber}>
+            <lightning-input type="number" value={value} label={displayQuestionText}
+                variant="label-hidden" required={question.isRequired}
+                onchange={handleChange}></lightning-input>
+        </template>
+
+        <template lwc:if={isDate}>
+            <lightning-input type="date" value={value} label={displayQuestionText}
+                variant="label-hidden" required={question.isRequired}
+                onchange={handleChange}></lightning-input>
+        </template>
+
+        <template lwc:if={isTextarea}>
+            <lightning-textarea value={value} label={displayQuestionText}
+                variant="label-hidden" required={question.isRequired}
+                max-length="5000" onchange={handleChange}></lightning-textarea>
+        </template>
+
+        <template lwc:if={isPicklist}>
+            <lightning-combobox value={value} label={displayQuestionText}
+                variant="label-hidden" placeholder="-- Select --"
+                options={question.picklistOptions} required={question.isRequired}
+                onchange={handleChange}></lightning-combobox>
+        </template>
+
+        <template lwc:if={isMultiPicklist}>
+            <lightning-dual-listbox label={displayQuestionText} variant="label-hidden"
+                source-label="Available" selected-label="Selected"
+                options={question.picklistOptions} value={multiPicklistValue}
+                required={question.isRequired} onchange={handleChange}></lightning-dual-listbox>
+        </template>
+
+        <template lwc:if={isBoolean}>
+            <lightning-input type="checkbox" label={displayQuestionText}
+                checked={booleanChecked} onchange={handleChange}></lightning-input>
+        </template>
+
+        <template lwc:if={isLookup}>
+            <lightning-input type="text" value={value}
+                label={displayQuestionText} variant="label-hidden"
+                placeholder="Enter the record name or Id"
+                required={question.isRequired}
+                onchange={handleChange}></lightning-input>
+            <p class="slds-text-body_small slds-text-color_weak slds-m-top_xx-small">
+                Lookup target object: {question.lookupObject}
+            </p>
+        </template>
+
+        <template lwc:if={hasCustomError}>
+            <p class="slds-text-color_error slds-text-body_small slds-m-top_xx-small">
+                {customError}
+            </p>
+        </template>
+    </div>
+</template>

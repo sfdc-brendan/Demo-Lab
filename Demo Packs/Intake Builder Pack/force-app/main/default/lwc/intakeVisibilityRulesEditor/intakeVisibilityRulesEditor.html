@@ -1,0 +1,41 @@
+<template>
+    <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_x-small">
+        Show this question only if all rules in any logic group pass. Use logic groups to express OR.
+    </p>
+
+    <template for:each={displayRules} for:item="rule">
+        <div key={rule.uiKey} class="slds-box slds-box_x-small slds-m-bottom_x-small">
+            <div class="slds-grid slds-gutters_xx-small slds-grid_vertical-align-end">
+                <div class="slds-col slds-size_3-of-12">
+                    <lightning-combobox label="Source question" placeholder="Pick"
+                        options={sourceOptions} value={rule.sourceQuestionDeveloperName}
+                        data-index={rule.index} data-field="sourceQuestionDeveloperName"
+                        onchange={handleField}></lightning-combobox>
+                </div>
+                <div class="slds-col slds-size_3-of-12">
+                    <lightning-combobox label="Operator" options={operatorOptions}
+                        value={rule.operator} data-index={rule.index} data-field="operator"
+                        onchange={handleField}></lightning-combobox>
+                </div>
+                <div class="slds-col slds-size_3-of-12">
+                    <lightning-input type="text" label="Value" value={rule.value}
+                        disabled={rule.valueDisabled} data-index={rule.index} data-field="value"
+                        onchange={handleField}></lightning-input>
+                </div>
+                <div class="slds-col slds-size_2-of-12">
+                    <lightning-input type="text" label="Logic group" value={rule.logicGroup}
+                        data-index={rule.index} data-field="logicGroup"
+                        onchange={handleField}></lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-12 slds-text-align_right">
+                    <lightning-button-icon icon-name="utility:delete"
+                        alternative-text="Delete rule" variant="bare"
+                        data-index={rule.index} onclick={handleDelete}></lightning-button-icon>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <lightning-button label="Add rule" variant="neutral" icon-name="utility:add"
+        onclick={handleAdd}></lightning-button>
+</template>

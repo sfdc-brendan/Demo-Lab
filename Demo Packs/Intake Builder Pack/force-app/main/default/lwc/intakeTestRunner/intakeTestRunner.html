@@ -1,0 +1,52 @@
+<template>
+    <div class="slds-grid slds-gutters">
+        <div class="slds-col slds-size_1-of-2">
+            <lightning-input
+                type="text"
+                label="Optional script scenario hint"
+                value={scenarioHint}
+                placeholder="Example: customer is applying for first-time homebuyer mortgage"
+                onchange={handleScenarioHintChange}>
+            </lightning-input>
+            <div class="script-action">
+                <lightning-button label="Generate Test Call Script (AI)" variant="neutral"
+                    icon-name="utility:einstein" disabled={isGeneratingScript}
+                    onclick={handleGenerateScript}></lightning-button>
+            </div>
+            <lightning-textarea label="Sample transcript" value={transcriptText}
+                onchange={handleTranscriptChange}
+                class="transcript-area slds-m-top_small"></lightning-textarea>
+            <div class="test-actions">
+                <lightning-button label="Run AI extraction" variant="brand"
+                    icon-name="utility:einstein" disabled={isRunning}
+                    onclick={handleRun}></lightning-button>
+                <lightning-button label="Run AI Extraction + Generate PDF" variant="success"
+                    icon-name="utility:preview" disabled={isRunningFullTest}
+                    onclick={handleRunWithPdf} class="slds-m-left_x-small"></lightning-button>
+            </div>
+        </div>
+        <div class="slds-col slds-size_1-of-2">
+            <h4 class="slds-text-title_caps slds-m-bottom_x-small">Extracted answers</h4>
+            <template lwc:if={isRunning}>
+                <lightning-spinner size="small" alternative-text="Running"></lightning-spinner>
+            </template>
+            <template lwc:if={isGeneratingScript}>
+                <p class="slds-text-color_weak slds-m-bottom_x-small">Generating transcript script...</p>
+            </template>
+            <template lwc:if={isRunningFullTest}>
+                <p class="slds-text-color_weak slds-m-bottom_x-small">Running extraction and creating PDF...</p>
+            </template>
+            <template lwc:if={extractedJson}>
+                <pre class="result-pre slds-box slds-box_xx-small">{extractedJson}</pre>
+            </template>
+            <template lwc:if={latestPdfUrl}>
+                <p class="slds-m-top_small">
+                    <a href={latestPdfUrl} target="_blank">Open latest generated PDF</a>
+                </p>
+            </template>
+            <template lwc:if={error}>
+                <p class="slds-text-color_error">{error}</p>
+            </template>
+        </div>
+    </div>
+</template>

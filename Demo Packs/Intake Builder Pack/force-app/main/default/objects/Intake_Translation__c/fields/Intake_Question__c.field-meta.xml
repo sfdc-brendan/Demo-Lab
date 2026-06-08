@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Intake_Question__c</fullName>
+    <label>Intake Question</label>
+    <type>MasterDetail</type>
+    <referenceTo>Intake_Question__c</referenceTo>
+    <relationshipLabel>Translations</relationshipLabel>
+    <relationshipName>Translations</relationshipName>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

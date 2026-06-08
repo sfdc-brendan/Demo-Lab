@@ -1,0 +1,9 @@
+.slds-modal {
+    position: fixed;
+    z-index: 9001;
+}
+
+.slds-backdrop {
+    position: fixed;
+    z-index: 9000;
+}

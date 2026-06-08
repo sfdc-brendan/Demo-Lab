@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Picklist_Source_Object__c</fullName>
+    <label>Picklist Source Object</label>
+    <type>Text</type>
+    <length>120</length>
+    <required>false</required>
+    <inlineHelpText>SObject API name to pull picklist values from when Picklist Source = From Field.</inlineHelpText>
+</CustomField>

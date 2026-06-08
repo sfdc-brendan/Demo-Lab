@@ -1,0 +1,158 @@
+<template>
+    <section role="dialog" aria-modal="true" aria-label="Edit question"
+        class="slds-modal slds-fade-in-open slds-modal_large">
+        <div class="slds-modal__container">
+            <div class="slds-modal__header">
+                <lightning-button-icon icon-name="utility:close" alternative-text="Close"
+                    variant="bare-inverse" class="slds-modal__close"
+                    onclick={handleClose}></lightning-button-icon>
+                <h2 class="slds-modal__title">Edit Question</h2>
+            </div>
+            <div class="slds-modal__content slds-p-around_medium">
+                <lightning-tabset variant="standard" active-tab-value={activeTab}>
+                    <lightning-tab label="Basics" value="basics">
+                        <div class="slds-grid slds-gutters_small slds-wrap">
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input type="text" label="Developer Name (stable key)"
+                                    value={question.developerName} required
+                                    data-field="developerName" onchange={handleField}></lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input type="text" label="Category" value={question.category}
+                                    data-field="category" onchange={handleField}></lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-textarea label="Question Text" value={question.questionText}
+                                    data-field="questionText" onchange={handleField}></lightning-textarea>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-textarea label="Help Text" value={question.helpText}
+                                    data-field="helpText" onchange={handleField}></lightning-textarea>
+                            </div>
+                            <div class="slds-col slds-size_1-of-3">
+                                <lightning-combobox label="Answer Type" options={answerTypeOptions}
+                                    value={question.answerType} data-field="answerType"
+                                    onchange={handleField}></lightning-combobox>
+                            </div>
+                            <div class="slds-col slds-size_1-of-3">
+                                <lightning-input type="number" label="Order" value={question.orderNum}
+                                    data-field="orderNum" onchange={handleField}></lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-3 slds-align-bottom">
+                                <lightning-input type="checkbox" label="Required"
+                                    checked={question.isRequired} data-field="isRequired"
+                                    onchange={handleField}></lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <c-intake-field-picker label="Target Field"
+                                    object-api-name={targetObjectApiName}
+                                    field-api-name={question.targetField}
+                                    onfieldchange={handleTargetField}></c-intake-field-picker>
+                            </div>
+                            <template lwc:if={isLookup}>
+                                <div class="slds-col slds-size_1-of-1">
+                                    <lightning-input type="text" label="Lookup Object API Name"
+                                        value={question.lookupObject} data-field="lookupObject"
+                                        onchange={handleField}></lightning-input>
+                                </div>
+                            </template>
+                        </div>
+                    </lightning-tab>
+
+                    <lightning-tab label="Picklist Values" value="picklist">
+                        <template lwc:if={isPicklist}>
+                            <lightning-combobox label="Picklist Source"
+                                options={picklistSourceOptions}
+                                value={question.picklistSource}
+                                data-field="picklistSource"
+                                onchange={handleField}></lightning-combobox>
+
+                            <template lwc:if={isFromFieldPicklist}>
+                                <div class="slds-m-top_small">
+                                    <c-intake-field-picker label="Source Field"
+                                        allow-object-change="true"
+                                        object-api-name={question.picklistSourceObject}
+                                        field-api-name={question.picklistSourceField}
+                                        type-filter="picklist"
+                                        onobjectchange={handleSourceObjectChange}
+                                        onfieldchange={handleSourceFieldChange}></c-intake-field-picker>
+                                </div>
+                            </template>
+
+                            <template lwc:if={isStaticPicklist}>
+                                <div class="slds-m-top_small">
+                                    <template for:each={displayPicklistValues} for:item="pv">
+                                        <div key={pv.uiKey} class="slds-grid slds-gutters_xx-small slds-m-bottom_xx-small">
+                                            <div class="slds-col slds-size_5-of-12">
+                                                <lightning-input type="text" label="Label" value={pv.label}
+                                                    data-index={pv.index} data-field="label"
+                                                    variant="label-hidden" placeholder="Label"
+                                                    onchange={handlePicklistValueField}></lightning-input>
+                                            </div>
+                                            <div class="slds-col slds-size_5-of-12">
+                                                <lightning-input type="text" label="Value" value={pv.value}
+                                                    data-index={pv.index} data-field="value"
+                                                    variant="label-hidden" placeholder="Value"
+                                                    onchange={handlePicklistValueField}></lightning-input>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-12">
+                                                <lightning-input type="number" label="Order" value={pv.orderNum}
+                                                    data-index={pv.index} data-field="orderNum"
+                                                    variant="label-hidden"
+                                                    onchange={handlePicklistValueField}></lightning-input>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-12 slds-text-align_right">
+                                                <lightning-button-icon icon-name="utility:delete"
+                                                    alternative-text="Delete" variant="bare"
+                                                    data-index={pv.index}
+                                                    onclick={handleDeletePicklistValue}></lightning-button-icon>
+                                            </div>
+                                        </div>
+                                    </template>
+                                    <lightning-button label="Add value" icon-name="utility:add"
+                                        onclick={handleAddPicklistValue}></lightning-button>
+                                </div>
+                            </template>
+                        </template>
+                        <template lwc:else>
+                            <p class="slds-text-color_weak">
+                                Set Answer Type to Picklist or Multi-Select Picklist to manage values.
+                            </p>
+                        </template>
+                    </lightning-tab>
+
+                    <lightning-tab label="Validation" value="validation">
+                        <lightning-input type="text" label="Validation Regex"
+                            value={question.validationRegex}
+                            data-field="validationRegex" onchange={handleField}></lightning-input>
+                        <lightning-input type="text" label="Validation Error Message"
+                            value={question.validationErrorMessage}
+                            data-field="validationErrorMessage" onchange={handleField}></lightning-input>
+                    </lightning-tab>
+
+                    <lightning-tab label="AI Hint" value="ai">
+                        <lightning-textarea label="AI Extraction Hint"
+                            value={question.aiExtractionHint}
+                            placeholder="Optional guidance for the AI when pulling this answer from a transcript."
+                            data-field="aiExtractionHint" onchange={handleField}></lightning-textarea>
+                    </lightning-tab>
+
+                    <lightning-tab label="Visibility Rules" value="rules">
+                        <c-intake-visibility-rules-editor rules={visibilityRules}
+                            sibling-questions={siblingQuestions}
+                            onruleschange={handleRulesChange}></c-intake-visibility-rules-editor>
+                    </lightning-tab>
+
+                    <lightning-tab label="Translations" value="translations">
+                        <c-intake-translations-editor translations={translations}
+                            ontranslationschange={handleTranslationsChange}></c-intake-translations-editor>
+                    </lightning-tab>
+                </lightning-tabset>
+            </div>
+            <div class="slds-modal__footer">
+                <lightning-button label="Done" variant="brand" onclick={handleClose}></lightning-button>
+            </div>
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open" onclick={handleClose}></div>
+</template>

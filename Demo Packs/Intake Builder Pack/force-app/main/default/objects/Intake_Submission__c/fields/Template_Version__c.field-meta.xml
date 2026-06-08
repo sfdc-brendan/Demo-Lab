@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Template_Version__c</fullName>
+    <label>Template Version</label>
+    <type>Number</type>
+    <precision>4</precision>
+    <scale>0</scale>
+    <required>false</required>
+    <inlineHelpText>Version of the Intake Template captured at submit time. Used so historical PDFs render correctly.</inlineHelpText>
+</CustomField>

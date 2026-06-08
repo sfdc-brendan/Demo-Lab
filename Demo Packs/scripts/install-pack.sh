@@ -32,9 +32,10 @@ echo "Which pack do you want to deploy?"
 echo "  1) Pack 1 – LWC Cards & Dashboard (Incident Dashboard, Modern Account Card, Modern Contact Card)"
 echo "  2) Service Cloud Pack (full Service Cloud + Sentiment and Coaching)"
 echo "  3) AI Case Generator Pack (Einstein-powered case, knowledge, and demo scenario generation)"
-echo "  4) All packs"
+echo "  4) Intake Builder Pack (configurable intake builder + runtime + PDF)"
+echo "  5) All packs"
 echo ""
-read -r -p "Enter 1, 2, 3, or 4: " choice
+read -r -p "Enter 1, 2, 3, 4, or 5: " choice
 
 deploy_pack1() {
   echo "Deploying Pack 1..."
@@ -70,6 +71,14 @@ deploy_ai_case_generator() {
     --wait 15
 }
 
+deploy_intake_builder_pack() {
+  echo "Deploying Intake Builder Pack..."
+  cd "$DEMO_PACKS_DIR/Intake Builder Pack"
+  sf project deploy start \
+    --source-dir force-app \
+    --wait 15
+}
+
 case "$choice" in
   1)
     deploy_pack1
@@ -81,11 +90,16 @@ case "$choice" in
     deploy_ai_case_generator
     ;;
   4)
+    deploy_intake_builder_pack
+    ;;
+  5)
     deploy_pack1
     echo ""
     deploy_service_cloud
     echo ""
     deploy_ai_case_generator
+    echo ""
+    deploy_intake_builder_pack
     ;;
   *)
     echo "Invalid choice. Exiting."

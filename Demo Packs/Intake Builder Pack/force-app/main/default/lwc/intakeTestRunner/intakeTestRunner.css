@@ -1,0 +1,19 @@
+.transcript-area textarea {
+    min-height: 19rem;
+}
+
+.result-pre {
+    max-height: 20rem;
+    overflow: auto;
+    white-space: pre-wrap;
+    font-family: var(--slds-g-font-family-monospace, monospace);
+    font-size: 0.8125rem;
+}
+
+.script-action {
+    margin-top: 0.9rem;
+}
+
+.test-actions {
+    margin-top: 0.9rem;
+}

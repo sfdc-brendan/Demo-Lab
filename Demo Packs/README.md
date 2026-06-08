@@ -42,6 +42,7 @@ The script will:
 | **[Pack 1](Pack%201/README.md)** | Incident Dashboard, Modern Account Card, Modern Contact Card (LWCs) |
 | **[Service Cloud Pack](Service%20Cloud%20Pack/README.md)** | Full Service Cloud set (Incident Detection, Email OTP, Case Tagging, Similar Cases, Unified Phone Controls) plus Sentiment and Coaching |
 | **[AI Case Generator Pack](AI%20Case%20Generator%20Pack/README.md)** | Einstein-powered Utility Bar tool that generates realistic cases, Knowledge articles, and a presenter-ready demo scenario script |
+| **[Intake Builder Pack](Intake%20Builder%20Pack/README.md)** | Configurable intake platform with template builder, runtime intake LWC, AI-assisted extraction, and generic PDF output |
 
 See each pack's README for contents, prerequisites, and post-deploy steps.
 

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Logic_Group__c</fullName>
+    <label>Logic Group</label>
+    <type>Text</type>
+    <length>50</length>
+    <required>false</required>
+    <inlineHelpText>Rules sharing the same group are ANDed; different groups are ORed. Defaults to "default".</inlineHelpText>
+</CustomField>

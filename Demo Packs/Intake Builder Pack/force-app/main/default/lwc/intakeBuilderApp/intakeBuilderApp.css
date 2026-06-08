@@ -1,0 +1,30 @@
+.template-list-item {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+}
+
+.template-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 15rem;
+    align-items: center;
+    column-gap: 0.5rem;
+    min-height: 3.5rem;
+}
+
+.template-meta {
+    min-width: 0;
+}
+
+.template-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    min-width: 15rem;
+}
+
+.template-action-group {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+}

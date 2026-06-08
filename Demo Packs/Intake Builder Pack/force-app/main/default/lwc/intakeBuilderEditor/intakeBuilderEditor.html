@@ -1,0 +1,232 @@
+<template>
+    <lightning-card icon-name="standard:form">
+        <span slot="title" class="slds-text-heading_small">{template.name}</span>
+
+        <div slot="actions" class="slds-grid slds-gutters_xx-small">
+            <lightning-button label="Back" icon-name="utility:back" onclick={handleBack}></lightning-button>
+            <lightning-button label="Validate" icon-name="utility:check" onclick={handleValidate} class="slds-m-left_x-small"></lightning-button>
+            <lightning-button label="New Version" icon-name="utility:copy" onclick={handleNewVersion} class="slds-m-left_x-small"></lightning-button>
+            <lightning-button label="Archive" icon-name="utility:archive" onclick={handleArchive} class="slds-m-left_x-small"></lightning-button>
+            <lightning-button label="Activate" variant="success" icon-name="utility:upload" onclick={handleActivate} class="slds-m-left_x-small"></lightning-button>
+            <lightning-button label="Test Record + PDF" icon-name="utility:preview"
+                onclick={handleTestRecordPdf} disabled={isTestingPdf}
+                class="slds-m-left_x-small"></lightning-button>
+            <lightning-button label="Save" variant="brand" icon-name="utility:save" onclick={handleSave} disabled={isSaving} class="slds-m-left_x-small"></lightning-button>
+        </div>
+
+        <template lwc:if={isLoading}>
+            <div class="slds-align_absolute-center slds-p-around_large">
+                <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+            </div>
+        </template>
+
+        <template lwc:else>
+            <lightning-tabset variant="scoped" active-tab-value={activeView}>
+                <lightning-tab label="Editor" value="editor">
+                    <div class="slds-grid slds-gutters_small slds-p-around_small">
+                        <!-- LEFT: settings -->
+                        <div class="slds-col slds-size_4-of-12">
+                            <h3 class="slds-text-title_caps slds-m-bottom_x-small">Template Settings</h3>
+                            <lightning-input type="text" label="Name" value={template.name}
+                                data-field="name" onchange={handleTemplateField}></lightning-input>
+                            <lightning-combobox label="Status" options={statusOptions}
+                                value={template.status} data-field="status"
+                                onchange={handleTemplateField}></lightning-combobox>
+                            <lightning-textarea label="Description" value={template.description}
+                                data-field="description" onchange={handleTemplateField}></lightning-textarea>
+                            <lightning-input type="text" label="Target Object API Name"
+                                value={template.targetObject} placeholder="e.g. Case or Custom_Intake__c"
+                                onchange={handleTargetObjectChange}></lightning-input>
+                            <lightning-textarea label="AI Persona Description"
+                                value={template.personaDescription}
+                                placeholder="You are a customer service AI assistant analyzing a roadside assistance call transcript."
+                                data-field="personaDescription"
+                                onchange={handleTemplateField}></lightning-textarea>
+                            <lightning-input-rich-text label="PDF Header" value={template.pdfHeader}
+                                data-field="pdfHeader"
+                                onchange={handleTemplateField}></lightning-input-rich-text>
+                            <lightning-combobox label="Default Locale" options={localeOptions}
+                                value={template.defaultLocale} data-field="defaultLocale"
+                                onchange={handleTemplateField}></lightning-combobox>
+
+                            <h3 class="slds-text-title_caps slds-m-top_medium slds-m-bottom_x-small">Branding</h3>
+                            <div class="brand-swatch slds-m-bottom_x-small" style={brandSwatchStyle}>
+                                {template.name}
+                                <span class="brand-swatch-meta">{brandSwatchLabel}</span>
+                            </div>
+                            <lightning-input type="text" label="Brand Color"
+                                value={template.brandColor} placeholder="#032D60"
+                                pattern="^#[0-9A-Fa-f]{6}$"
+                                message-when-pattern-mismatch="Use a 6-digit hex color (e.g. #032D60)."
+                                field-level-help="Hex color for the PDF header background. Text color auto-adjusts."
+                                data-field="brandColor"
+                                onchange={handleTemplateField}></lightning-input>
+                            <lightning-input type="text" label="Brand Logo File Id"
+                                value={template.brandLogoFileId}
+                                placeholder="069XXXXXXXXXXXXXXX"
+                                field-level-help="ContentDocumentId of a logo uploaded to Salesforce Files. Takes priority over the Static Resource fallback."
+                                data-field="brandLogoFileId"
+                                onchange={handleTemplateField}></lightning-input>
+                            <div class="logo-upload slds-m-top_x-small">
+                                <template lwc:if={canUploadBrandLogo}>
+                                    <lightning-file-upload
+                                        label="Upload Brand Logo"
+                                        record-id={template.id}
+                                        accept=".png,.jpg,.jpeg,.gif,.webp,.svg"
+                                        onuploadfinished={handleBrandLogoUploadFinished}>
+                                    </lightning-file-upload>
+                                    <p class="slds-text-body_small slds-text-color_weak">
+                                        Uploaded logos are auto-resized in the PDF header.
+                                        <template lwc:if={uploadedBrandLogoName}>
+                                            Latest upload: {uploadedBrandLogoName}
+                                        </template>
+                                    </p>
+                                </template>
+                                <template lwc:else>
+                                    <p class="slds-text-body_small slds-text-color_weak">
+                                        Save the template first to enable logo upload.
+                                    </p>
+                                </template>
+                            </div>
+                            <lightning-input type="text" label="Brand Logo Static Resource"
+                                value={template.brandLogoStaticResource}
+                                placeholder="CompanyLogo"
+                                field-level-help="API name of a Static Resource holding the logo. Used when File Id is blank."
+                                data-field="brandLogoStaticResource"
+                                onchange={handleTemplateField}></lightning-input>
+                            <lightning-input-rich-text label="PDF Footer"
+                                value={template.pdfFooter}
+                                data-field="pdfFooter"
+                                onchange={handleTemplateField}></lightning-input-rich-text>
+
+                            <p class="slds-text-body_small slds-text-color_weak slds-m-top_medium">
+                                Version {template.version}
+                            </p>
+                        </div>
+
+                        <!-- CENTER: questions list -->
+                        <div class="slds-col slds-size_5-of-12">
+                            <div class="slds-grid slds-grid_align-spread slds-m-bottom_x-small">
+                                <h3 class="slds-text-title_caps">Questions</h3>
+                                <lightning-button label="Add Question" icon-name="utility:add"
+                                    variant="brand" onclick={handleAddQuestion}></lightning-button>
+                            </div>
+                            <div class="ai-generator slds-m-bottom_small">
+                                <lightning-textarea
+                                    label="Describe the intake form"
+                                    value={aiFormDescription}
+                                    placeholder="Example: Mortgage application intake for borrower details, employment and income, property information, loan amount, down payment source, and co-borrower details."
+                                    onchange={handleAiFormDescriptionChange}>
+                                </lightning-textarea>
+                                <lightning-input
+                                    type="checkbox"
+                                    label="Replace existing questions"
+                                    checked={replaceExistingQuestions}
+                                    onchange={handleReplaceExistingQuestionsChange}
+                                    class="slds-m-top_x-small">
+                                </lightning-input>
+                                <div class="slds-m-top_x-small slds-text-align_right">
+                                    <lightning-button
+                                        label="Generate Questions with AI"
+                                        icon-name="utility:einstein"
+                                        variant="neutral"
+                                        onclick={handleGenerateQuestions}
+                                        disabled={isGeneratingQuestions}>
+                                    </lightning-button>
+                                </div>
+                            </div>
+                            <div class="scenario-generator slds-m-bottom_small">
+                                <h4 class="slds-text-title_caps slds-m-bottom_x-small">Roadside Scenario Presets</h4>
+                                <lightning-checkbox-group
+                                    name="roadsideScenarioPresets"
+                                    label="Select scenario packs to generate"
+                                    options={scenarioPresetOptions}
+                                    value={selectedScenarioPresets}
+                                    onchange={handleScenarioPresetChange}>
+                                </lightning-checkbox-group>
+                                <p class="slds-text-body_small slds-text-color_weak slds-m-top_x-small">
+                                    Adds a scenario routing question and auto-creates conditional questions for selected scenarios.
+                                </p>
+                                <div class="slds-m-top_x-small slds-text-align_right">
+                                    <lightning-button
+                                        label="Apply Scenario Preset"
+                                        icon-name="utility:filterList"
+                                        variant="brand-outline"
+                                        onclick={handleApplyScenarioPreset}>
+                                    </lightning-button>
+                                </div>
+                            </div>
+                            <template for:each={displayQuestions} for:item="q">
+                                <div key={q.uiKey} class="question-row slds-box slds-box_x-small slds-m-bottom_xx-small"
+                                    draggable="true" data-index={q.index}
+                                    ondragstart={handleDragStart}
+                                    ondragover={handleDragOver}
+                                    ondrop={handleDrop}>
+                                    <div class="slds-grid slds-grid_vertical-align-center">
+                                        <lightning-icon icon-name="utility:drag_and_drop"
+                                            size="x-small" class="slds-m-right_x-small drag-handle"></lightning-icon>
+                                        <span class="slds-text-body_small slds-m-right_x-small">
+                                            #{q.displayOrder}
+                                        </span>
+                                        <div class="slds-grow">
+                                            <strong>{q.questionText}</strong>
+                                            <p class="slds-text-body_small slds-text-color_weak">
+                                                {q.developerName} · {q.answerType}
+                                                <template lwc:if={q.isRequired}> · required</template>
+                                                <template lwc:if={q.targetField}> · {q.targetField}</template>
+                                            </p>
+                                        </div>
+                                        <lightning-button-icon icon-name="utility:edit"
+                                            alternative-text="Edit" variant="bare" data-index={q.index}
+                                            onclick={handleEditQuestion}></lightning-button-icon>
+                                        <lightning-button-icon icon-name="utility:copy"
+                                            alternative-text="Duplicate" variant="bare"
+                                            class="slds-m-left_xx-small" data-index={q.index}
+                                            onclick={handleDuplicateQuestion}></lightning-button-icon>
+                                        <lightning-button-icon icon-name="utility:delete"
+                                            alternative-text="Delete" variant="bare"
+                                            class="slds-m-left_xx-small" data-index={q.index}
+                                            onclick={handleDeleteQuestion}></lightning-button-icon>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+
+                        <!-- RIGHT: live preview -->
+                        <div class="slds-col slds-size_3-of-12">
+                            <h3 class="slds-text-title_caps slds-m-bottom_x-small">Live Preview</h3>
+                            <div class="preview-pane">
+                                <c-intake-runtime preview-mode={isPreviewModeTrue} preview-bundle={previewBundle}></c-intake-runtime>
+                            </div>
+                        </div>
+                    </div>
+                </lightning-tab>
+
+                <lightning-tab label="Test AI" value="test">
+                    <div class="slds-p-around_medium">
+                        <c-intake-test-runner
+                            template-id={template.id}
+                            persona-description={template.personaDescription}
+                            questions={questions}
+                            picklist-values={previewPicklistFlat}></c-intake-test-runner>
+                    </div>
+                </lightning-tab>
+            </lightning-tabset>
+        </template>
+    </lightning-card>
+
+    <template lwc:if={editingQuestion}>
+        <c-intake-question-editor question={editingQuestion}
+            picklist-values={editingPicklistValues}
+            visibility-rules={editingRules}
+            translations={editingTranslations}
+            sibling-questions={questionsForRules}
+            target-object-api-name={template.targetObject}
+            onquestionchange={handleQuestionChange}
+            onpicklistvalueschange={handlePicklistValuesChange}
+            onruleschange={handleRulesChange}
+            ontranslationschange={handleTranslationsChange}
+
+            onclose={handleCloseEditor}></c-intake-question-editor>
+    </template>
+</template>

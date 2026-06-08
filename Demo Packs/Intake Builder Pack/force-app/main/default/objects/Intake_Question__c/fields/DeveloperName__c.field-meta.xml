@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DeveloperName__c</fullName>
+    <label>Developer Name</label>
+    <type>Text</type>
+    <length>120</length>
+    <required>true</required>
+    <unique>false</unique>
+    <caseSensitive>false</caseSensitive>
+    <inlineHelpText>Stable key used for the AI extraction map and answers JSON. Letters, numbers, underscores only.</inlineHelpText>
+</CustomField>

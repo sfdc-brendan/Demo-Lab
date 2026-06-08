@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Intake Builder</label>
+    <description>Admin app for configuring Intake Templates and previewing the runtime.</description>
+    <navType>Standard</navType>
+    <tabs>Intake_Builder</tabs>
+    <tabs>Intake_Template__c</tabs>
+    <tabs>Intake_Submission__c</tabs>
+    <uiType>Lightning</uiType>
+    <formFactors>Large</formFactors>
+</CustomApplication>

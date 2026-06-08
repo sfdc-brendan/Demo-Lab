@@ -1,0 +1,9 @@
+.transcript-panel {
+    border-radius: 0.375rem;
+    max-height: 16rem;
+    overflow-y: auto;
+}
+
+.transcript-entry p {
+    font-style: italic;
+}
