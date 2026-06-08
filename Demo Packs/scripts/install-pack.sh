@@ -33,9 +33,10 @@ echo "  1) Pack 1 – LWC Cards & Dashboard (Incident Dashboard, Modern Account 
 echo "  2) Service Cloud Pack (full Service Cloud + Sentiment and Coaching)"
 echo "  3) AI Case Generator Pack (Einstein-powered case, knowledge, and demo scenario generation)"
 echo "  4) Intake Builder Pack (configurable intake builder + runtime + PDF)"
-echo "  5) All packs"
+echo "  5) Real-Time Translation Pack (Virtual Customer chat: live translation + Agentforce route with escalation)"
+echo "  6) All packs"
 echo ""
-read -r -p "Enter 1, 2, 3, 4, or 5: " choice
+read -r -p "Enter 1, 2, 3, 4, 5, or 6: " choice
 
 deploy_pack1() {
   echo "Deploying Pack 1..."
@@ -79,6 +80,19 @@ deploy_intake_builder_pack() {
     --wait 15
 }
 
+deploy_rtt_pack() {
+  echo ""
+  echo "*** NOTE: This pack needs Messaging for In-App & Web (an API/Custom Client deployment),       ***"
+  echo "*** and—for the Agentforce route—an Agentforce Service Agent connected to a messaging channel. ***"
+  echo "*** After deploy, edit getRoutes() in sdo_VirtualCustomerCtrl to match your org. See README.   ***"
+  echo ""
+  echo "Deploying Real-Time Translation Pack..."
+  cd "$DEMO_PACKS_DIR/Real-Time Translation Pack"
+  sf project deploy start \
+    --source-dir force-app \
+    --wait 15
+}
+
 case "$choice" in
   1)
     deploy_pack1
@@ -93,6 +107,9 @@ case "$choice" in
     deploy_intake_builder_pack
     ;;
   5)
+    deploy_rtt_pack
+    ;;
+  6)
     deploy_pack1
     echo ""
     deploy_service_cloud
@@ -100,6 +117,8 @@ case "$choice" in
     deploy_ai_case_generator
     echo ""
     deploy_intake_builder_pack
+    echo ""
+    deploy_rtt_pack
     ;;
   *)
     echo "Invalid choice. Exiting."

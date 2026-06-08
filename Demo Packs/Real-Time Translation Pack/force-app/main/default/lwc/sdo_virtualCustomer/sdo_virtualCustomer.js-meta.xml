@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>64.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Virtual Customer (Translation Demo)</masterLabel>
+    <description>Sends real foreign-language inbound messages into a live MIAW Messaging Session so Real-Time Conversation Translation engages, and auto-responds after the agent replies.</description>
+    <targets>
+        <target>lightning__AppPage</target>
+        <target>lightning__HomePage</target>
+        <target>lightning__RecordPage</target>
+        <target>lightning__UtilityBar</target>
+    </targets>
+</LightningComponentBundle>
