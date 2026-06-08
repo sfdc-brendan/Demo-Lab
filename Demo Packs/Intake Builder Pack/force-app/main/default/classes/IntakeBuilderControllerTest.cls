@@ -359,6 +359,33 @@ private class IntakeBuilderControllerTest {
     }
 
     @IsTest
+    static void generateTestCallScript_fallsBackWhenModelUnavailable() {
+        Intake_Template__c tpl = new Intake_Template__c(
+            Name = 'Script Fallback Test',
+            Status__c = 'Draft',
+            Version__c = 1,
+            Default_Locale__c = 'en_US'
+        );
+        insert tpl;
+        insert new Intake_Question__c(
+            Intake_Template__c = tpl.Id,
+            DeveloperName__c = 'Preferred_Callback',
+            Question_Text__c = 'What is the best callback number?',
+            Answer_Type__c = 'phone',
+            Order__c = 1
+        );
+
+        Test.startTest();
+        String transcript = IntakeBuilderController.generateTestCallScript(tpl.Id, 'battery issue on highway');
+        Test.stopTest();
+
+        System.assert(String.isNotBlank(transcript));
+        System.assert(transcript.contains('battery issue on highway'));
+        System.assert(transcript.contains('Agent:'));
+        System.assert(transcript.contains('Customer:'));
+    }
+
+    @IsTest
     static void runTestExtractionAndCreatePdf_createsPdfFromExtractedAnswers() {
         Intake_Template__c tpl = new Intake_Template__c(
             Name = 'Extraction to PDF Test',

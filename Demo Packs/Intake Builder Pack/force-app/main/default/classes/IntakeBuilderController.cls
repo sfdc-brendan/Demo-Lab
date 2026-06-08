@@ -568,7 +568,7 @@ public with sharing class IntakeBuilderController {
 
         String generated = callQuestionGenerationModel(prompt);
         if (String.isBlank(generated)) {
-            throw new AuraHandledException('AI did not return a transcript. Please try again.');
+            return buildFallbackTestCallScript(qInputs, scenarioHint);
         }
         return cleanupModelText(generated);
     }
@@ -664,6 +664,50 @@ public with sharing class IntakeBuilderController {
             cleaned = cleaned.replaceAll('```[a-zA-Z]*\\n?', '').replaceAll('```', '').trim();
         }
         return cleaned;
+    }
+
+    private static String buildFallbackTestCallScript(
+        List<IntakeTranscriptAnalyzer.QuestionInput> qInputs,
+        String scenarioHint
+    ) {
+        String scenario = String.isNotBlank(scenarioHint)
+            ? scenarioHint.trim()
+            : 'general service request';
+        List<String> lines = new List<String>{
+            'Agent: Thanks for calling support. How can I help you today?',
+            'Customer: Hi, I am calling about ' + scenario + '.'
+        };
+        Integer maxQuestions = Math.min(qInputs.size(), 6);
+        for (Integer i = 0; i < maxQuestions; i++) {
+            IntakeTranscriptAnalyzer.QuestionInput q = qInputs[i];
+            String questionText = String.isBlank(q.questionText)
+                ? 'Can you share more details?'
+                : q.questionText.trim();
+            String answerType = String.isBlank(q.answerType) ? 'text' : q.answerType.toLowerCase();
+            lines.add('Agent: ' + questionText);
+            lines.add('Customer: ' + buildFallbackCustomerAnswer(answerType, q.picklistValuesStr));
+        }
+        lines.add('Agent: Thank you. I have what I need to continue.');
+        return String.join(lines, '\n');
+    }
+
+    private static String buildFallbackCustomerAnswer(String answerType, String picklistValuesStr) {
+        if (answerType == 'boolean') return 'Yes, that is correct.';
+        if (answerType == 'number') return 'The amount is 1200.';
+        if (answerType == 'date') return Date.today().addDays(2).format();
+        if (answerType == 'email') return 'customer@example.com';
+        if (answerType == 'phone') return '555-867-5309';
+        if (answerType == 'picklist' || answerType == 'multipicklist') {
+            if (String.isNotBlank(picklistValuesStr)) {
+                List<String> options = picklistValuesStr.split(';');
+                if (!options.isEmpty()) {
+                    return options[0];
+                }
+            }
+            return 'Sample Option';
+        }
+        if (answerType == 'textarea') return 'Here are the details and context you requested.';
+        return 'Sample response.';
     }
 
     private static Object buildSampleAnswer(

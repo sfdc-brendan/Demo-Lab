@@ -135,27 +135,6 @@
                                     </lightning-button>
                                 </div>
                             </div>
-                            <div class="scenario-generator slds-m-bottom_small">
-                                <h4 class="slds-text-title_caps slds-m-bottom_x-small">Roadside Scenario Presets</h4>
-                                <lightning-checkbox-group
-                                    name="roadsideScenarioPresets"
-                                    label="Select scenario packs to generate"
-                                    options={scenarioPresetOptions}
-                                    value={selectedScenarioPresets}
-                                    onchange={handleScenarioPresetChange}>
-                                </lightning-checkbox-group>
-                                <p class="slds-text-body_small slds-text-color_weak slds-m-top_x-small">
-                                    Adds a scenario routing question and auto-creates conditional questions for selected scenarios.
-                                </p>
-                                <div class="slds-m-top_x-small slds-text-align_right">
-                                    <lightning-button
-                                        label="Apply Scenario Preset"
-                                        icon-name="utility:filterList"
-                                        variant="brand-outline"
-                                        onclick={handleApplyScenarioPreset}>
-                                    </lightning-button>
-                                </div>
-                            </div>
                             <template for:each={displayQuestions} for:item="q">
                                 <div key={q.uiKey} class="question-row slds-box slds-box_x-small slds-m-bottom_xx-small"
                                     draggable="true" data-index={q.index}

@@ -49,13 +49,6 @@
     background: var(--slds-g-color-neutral-base-100, #ffffff);
 }
 
-.scenario-generator {
-    border: 1px solid var(--slds-g-color-border-base-4, #dddbda);
-    border-radius: 0.25rem;
-    padding: 0.75rem;
-    background: var(--slds-g-color-neutral-base-95, #f3f3f3);
-}
-
 .logo-upload {
     border: 1px dashed var(--slds-g-color-border-base-4, #dddbda);
     border-radius: 0.25rem;
