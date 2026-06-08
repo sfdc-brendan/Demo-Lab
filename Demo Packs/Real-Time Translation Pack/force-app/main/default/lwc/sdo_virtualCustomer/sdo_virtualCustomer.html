@@ -1,0 +1,119 @@
+<template>
+    <lightning-card title="Virtual Customer (Real-Time Translation Demo)" icon-name="standard:messaging_user">
+        <lightning-button
+            slot="actions"
+            label="Reset"
+            icon-name="utility:refresh"
+            onclick={handleReset}
+            disabled={busy}
+        ></lightning-button>
+
+        <div class="slds-p-horizontal_medium">
+            <lightning-combobox
+                name="route"
+                label="Conversation route"
+                value={selectedRouteValue}
+                options={routeOptions}
+                onchange={handleRouteChange}
+                disabled={routeSelectDisabled}
+                field-level-help={routeHelp}
+                class="slds-m-bottom_x-small"
+            ></lightning-combobox>
+
+            <lightning-combobox
+                name="scenario"
+                label="Scenario"
+                value={selectedLabel}
+                options={scenarioOptions}
+                onchange={handleScenarioChange}
+                disabled={scenarioSelectDisabled}
+                field-level-help="The simulated customer speaks the scenario's language; your org's Real-Time Conversation Translation converts it for the agent."
+            ></lightning-combobox>
+
+            <div class="slds-m-top_x-small slds-text-body_small slds-text-color_weak">
+                <lightning-icon icon-name="standard:contact" size="xx-small" class="slds-m-right_xx-small"></lightning-icon>
+                {contactDisplay}
+            </div>
+
+            <div class="slds-m-top_small slds-m-bottom_x-small">
+                <lightning-input
+                    type="toggle"
+                    label="Dynamic AI follow-ups (Models API)"
+                    checked={aiMode}
+                    onchange={handleAiToggle}
+                    disabled={started}
+                    message-toggle-active="On"
+                    message-toggle-inactive="Off"
+                    field-level-help="On: opens with the scenario's scripted line, then the Models API generates each follow-up live from the persona, reacting to the agent. Off: uses the scenario's scripted lines throughout."
+                ></lightning-input>
+                <lightning-input
+                    type="toggle"
+                    label="Auto-respond after the agent replies"
+                    checked={autoRespond}
+                    onchange={handleAutoToggle}
+                    message-toggle-active="On"
+                    message-toggle-inactive="Off"
+                    class="slds-m-top_xx-small"
+                ></lightning-input>
+                <template lwc:if={showEscalationToggle}>
+                    <lightning-input
+                        type="toggle"
+                        label="Escalate to a human after a few turns"
+                        checked={escalateToHuman}
+                        onchange={handleEscalateToggle}
+                        disabled={started}
+                        message-toggle-active="On"
+                        message-toggle-inactive="Off"
+                        class="slds-m-top_xx-small"
+                        field-level-help="On the Agentforce route, the customer asks to speak with a human after the third turn, triggering the agent's transfer-to-human action."
+                    ></lightning-input>
+                </template>
+            </div>
+
+            <div class="slds-grid slds-gutters slds-m-top_small">
+                <div class="slds-col">
+                    <lightning-button
+                        variant="brand"
+                        label="Start conversation"
+                        icon-name="utility:chat"
+                        onclick={handleStart}
+                        disabled={startDisabled}
+                        class="slds-m-right_x-small"
+                    ></lightning-button>
+                    <lightning-button
+                        label={sendNextLabel}
+                        icon-name="utility:send"
+                        onclick={handleSendNext}
+                        disabled={sendNextDisabled}
+                    ></lightning-button>
+                </div>
+            </div>
+
+            <div class="slds-box slds-box_xx-small slds-m-top_small slds-text-body_small slds-theme_shade">
+                <lightning-icon icon-name="utility:info" size="xx-small" class="slds-m-right_xx-small"></lightning-icon>
+                <span class="slds-text-color_weak">{status}</span>
+            </div>
+        </div>
+
+        <template lwc:if={hasTranscript}>
+            <div class="slds-p-horizontal_medium slds-p-bottom_medium slds-m-top_small">
+                <div class="transcript slds-scrollable_y">
+                    <ul class="slds-chat-list">
+                        <template for:each={transcript} for:item="m">
+                            <li key={m.id} class={m.rowClass}>
+                                <div class="slds-chat-message">
+                                    <div class="slds-chat-message__body">
+                                        <div class="slds-chat-message__text slds-chat-message__text_inbound">
+                                            <span class="slds-text-title_caps slds-text-color_weak msg-author">{m.name}</span>
+                                            <p>{m.text}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </template>
+                    </ul>
+                </div>
+            </div>
+        </template>
+    </lightning-card>
+</template>
