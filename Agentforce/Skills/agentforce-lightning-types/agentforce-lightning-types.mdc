@@ -1,0 +1,137 @@
+---
+description: Build Apex-based custom Lightning Types (CLTs) that render rich UI inside an Agentforce chat window — Service Agent (Enhanced Chat v2), Employee Agent (LEX), Mobile.
+globs:
+  - "**/lightningTypes/**"
+  - "**/lightningTypes/**/schema.json"
+  - "**/lightningTypes/**/renderer.json"
+  - "**/lightningTypes/**/editor.json"
+  - "**/lwc/**/*.js-meta.xml"
+alwaysApply: false
+---
+
+# Agentforce Lightning Types (Cursor Rule)
+
+When the user is building, customizing, or debugging a custom Lightning Type intended for an Agentforce chat surface, follow this contract exactly. This is the **Apex-based** CLT pattern — required for Service Agent (Chat V2), Employee Agent (LEX assist panel), and Mobile.
+
+## When to apply
+- User mentions: "Lightning Type", "CLT", "agent chat UI", "Agentforce render", "custom output rendering".
+- Files in `lightningTypes/**` or LWC `js-meta.xml` with target `lightning__AgentforceInput` / `lightning__AgentforceOutput`.
+
+## When NOT to apply
+- Object-based CLTs for Experience Builder / Prompt Builder / generic Einstein Agent actions (different schema rules).
+- MIAW (non–Chat V2) deployments — CLTs are not supported there.
+- Plain LWCs on record/app/home pages.
+
+## File structure (must match)
+```
+lightningTypes/<typeName>/
+  schema.json
+  enhancedWebChat/         # Service Agent / Chat V2
+    renderer.json
+    editor.json            # only if collecting input
+  lightningDesktopGenAi/   # Employee Agent in LEX
+    renderer.json
+  lightningMobileGenAi/    # Mobile
+    renderer.json
+```
+
+API version: **64.0 or later**.
+
+## Apex contract
+- Top-level class only. **No inner classes.** Inner classes break schema introspection.
+- Every class: `global` (not `public`/`private`).
+- Every exposed field: `@AuraEnabled`.
+- Every class: `@JsonAccess(serializable='always' deserializable='always')`.
+- Supported types: primitives, sObjects, lists, `Map<String, ...>`, other user-defined `global` classes following the same rules.
+
+```apex
+@JsonAccess(serializable='always' deserializable='always')
+global class MyTypeData {
+    @AuraEnabled global String title;
+    @AuraEnabled global List<String> tags;
+}
+```
+
+## schema.json
+```json
+{
+  "title": "My Type",
+  "description": "...",
+  "lightning:type": "@apexClass/c__MyTypeData"
+}
+```
+- Always use the `c__` prefix for local org / new managed-package metadata. Use the package namespace prefix only when referencing existing managed metadata.
+
+## renderer.json / editor.json
+```json
+{
+  "componentOverrides": {
+    "$": { "definition": "c/myComponent" }
+  }
+}
+```
+- `$` = top-level override (one LWC for the whole shape — typical for chat).
+- For property-level overrides, use the property name as key and bind with `{!$attrs.PropertyName}`.
+
+## LWC view contract
+- `js-meta.xml` target: `lightning__AgentforceOutput` (renderer) or `lightning__AgentforceInput` (editor). `isExposed=true`.
+- Receive data via `@api value` (shape mirrors the Apex class).
+- Receive `@api readOnly` (Boolean).
+- Send input back via `dispatchEvent(new CustomEvent('valuechange', { detail: { value: <newShape> } }))`.
+
+```js
+import { api, LightningElement } from 'lwc';
+export default class MyComponent extends LightningElement {
+    _value;
+    @api get value() { return this._value; }
+    set value(v) { this._value = v || {}; }
+    @api readOnly = false;
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>64.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets><target>lightning__AgentforceOutput</target></targets>
+</LightningComponentBundle>
+```
+
+## Wire-up checklist (org-side)
+1. Agent action returns the Apex class (or Flow with output var typed `c__MyTypeData`). For input CLTs, the input variable's data type is `@apexClassType/c__MyFilterData` at the action-variable level.
+2. Action settings:
+   - **Show in conversation = ON**
+   - **Output Rendering** parameter on the relevant output variable → select your CLT
+   - **Input Rendering** parameter on the relevant input variable → select your input CLT (input only fires on Inquire/Confirm steps)
+   - "Map to Variable" may show **"Unsupported Data Type"** when a CLT is selected — per docs, this is benign and can be ignored.
+3. Permission set granting agent user access to the Apex class.
+4. Service Agent only: ESD site CORS configured to my-domain.
+5. Reload the agent page before retesting after changes.
+
+## Multi-CLT pattern
+A single agent action can wire two CLTs — one filter CLT on the input (with `editor.json` + input LWC, target `lightning__AgentforceInput`) and one response CLT on the output (with `renderer.json` + output LWC, target `lightning__AgentforceOutput`). Each is a separate `lightningTypes/` bundle.
+
+When an input CLT exists but the planner asks for fields inline as text instead, tune the topic/subagent instructions to prefer the rendered form ("present the filter form rather than asking field by field").
+
+## Testing
+- Agent Builder preview does **not** render CLTs — don't rely on it.
+- Test Service Agent via **Setup → Embedded Service Deployments → \[deployment\] → Test Enhanced Web Chat**.
+- After any Apex shape change, **delete and recreate the agent action** — references go stale silently.
+
+## Top gotchas (in order)
+1. Missing `lightning__AgentforceInput`/`Output` target → component never renders, silent.
+2. Apex class is `public` instead of `global` → fails in managed/namespaced contexts.
+3. Missing `@JsonAccess` → silent serialization failure.
+4. Input LWC ignored, agent goes straight to output → that action is an Inform step. Inputs only fire on **Inquire** or **Confirm** steps. Enable "Require user confirmation" or restructure the action.
+5. Input form exists but agent asks fields as text → planner choosing text over form. Tune topic/subagent instructions to prefer the rendered form.
+6. Apex shape changed after action was built → reload the agent page; if still stale, delete & recreate the action.
+7. "Unsupported Data Type" on Map to Variable → benign per docs, ignore.
+8. Service Agent silent load failure → ESD site missing CORS to my-domain.
+9. Local class referenced as `MyTypeData` instead of `c__MyTypeData` in `schema.json`.
+
+## Reference patterns
+
+For 8 known-good shapes (carousel, item selector, add-to-cart, embedded form with conditional fields, file upload v1/v2, formatted URL, article cards, embedded screen flow), follow the catalog at `~/.claude/skills/agentforce-lightning-types/references/patterns.md` (or the project-level copy if synced). Each is a working unmanaged package — install and adapt rather than rebuilding.
+
+A runnable starter (`HighlightCard` — title + description + image + URL) lives at `~/.claude/skills/agentforce-lightning-types/examples/highlightCard/`.

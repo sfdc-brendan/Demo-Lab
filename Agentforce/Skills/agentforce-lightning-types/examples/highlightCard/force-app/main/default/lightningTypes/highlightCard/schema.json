@@ -1,0 +1,5 @@
+{
+  "title": "Highlight Card",
+  "description": "A card with a title, description, image, and link, surfaced by the agent in chat.",
+  "lightning:type": "@apexClass/c__HighlightCardData"
+}

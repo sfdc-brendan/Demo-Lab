@@ -1,0 +1,18 @@
+<template>
+    <article class="card">
+        <template lwc:if={imageUrl}>
+            <img class="card__image" src={imageUrl} alt={title} />
+        </template>
+        <div class="card__body">
+            <h3 class="card__title">{title}</h3>
+            <template lwc:if={description}>
+                <p class="card__description">{description}</p>
+            </template>
+            <template lwc:if={linkUrl}>
+                <a class="card__link" href={linkUrl} target="_blank" rel="noopener noreferrer">
+                    {resolvedLinkLabel}
+                </a>
+            </template>
+        </div>
+    </article>
+</template>
