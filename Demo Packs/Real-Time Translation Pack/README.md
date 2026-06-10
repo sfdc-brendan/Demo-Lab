@@ -17,61 +17,74 @@ Because the messages are real inbound conversation entries, the agent's replies 
 
 | Component | Type | Description |
 |-----------|------|-------------|
-| `sdo_virtualCustomer` | LWC | Chat UI: pick a conversation route + scenario, start the conversation, auto-respond after the agent replies, and watch the transcript. Exposed to App / Home / Record pages and the Utility Bar. |
-| `sdo_VirtualCustomerCtrl` | Apex | Drives the MIAW inbound REST API (access token, create conversation, send message, read agent entries), links a Contact to the session, generates dynamic customer turns via the Models API, and defines the routes + scenarios. |
+| `sdo_virtualCustomer` | LWC | Chat UI: pick a conversation route + scenario, **Check setup**, start the conversation, auto-respond after the agent replies, and watch the transcript. Exposed to App / Home / Record pages and the Utility Bar. |
+| `sdo_VirtualCustomerCtrl` | Apex | Drives the MIAW inbound REST API, links a Contact to the session, generates dynamic customer turns via the Models API, defines scenarios, reads routes, and runs the preflight check. |
 | `sdo_VirtualCustomerCtrl_Test` | Apex | Test class (mocks the MIAW callouts). |
+| `Virtual_Customer_Route__mdt` | Custom Metadata Type | Lets you point the route picker at your org's deployment/channel **in Setup — no code change**. Built-in defaults are used if no records exist. |
 
 ---
 
 ## Prerequisites
 
-- **Messaging for In-App & Web** with an **API (Custom Client)** deployment that is **Published**. The pack ships with two routes (see *Configure your routes* below); each needs a deployment + messaging channel in your org.
-- **Real-Time Conversation Translation** enabled (for the translation story — customer and agent must speak different languages for it to engage).
-- **An Agentforce Service Agent connected to a messaging channel** (for the Agentforce story), with a transfer-to-human / escalation action enabled.
-- **Einstein Generative AI** (Models API access) — required only for the "Dynamic AI follow-ups" toggle. Scripted scenarios work without it.
-- At least one **Contact with a phone number** (the session is linked to a random demo contact each run).
-- A **Remote Site Setting / Trusted URL** for your org's `*.my.salesforce-scrt.com` host so the MIAW callouts succeed.
+These are org-setup items the component depends on — the same way other packs need Voice or Einstein:
+
+- **Messaging for In-App & Web** with a **Published API (Custom Client)** deployment. This is what the component sends inbound messages through.
+- A **MessagingChannel** (`EmbeddedMessaging`) tied to that deployment.
+- A **routing target** on that channel:
+  - *Translation story* → Omni-Channel routing to a **human queue with an available agent**, plus **Real-Time Conversation Translation** enabled (customer/agent languages must differ).
+  - *Agentforce story* → an **Agentforce Service Agent connected to the channel**, with a transfer-to-human / escalation action.
+- **Einstein Generative AI** (Models API) — only for the "Dynamic AI follow-ups" toggle; scripted scenarios work without it.
+- At least one **Contact with a phone number**.
+
+> Standard SDO Service demo orgs that include an API messaging deployment + an Agentforce Service Agent generally satisfy these out of the box.
 
 ---
 
 ## Deploy this pack
 
-This pack is self-contained with its own `sfdx-project.json`. From the **Demo Packs** directory:
+Self-contained with its own `sfdx-project.json`. From the **Demo Packs** directory:
 
 ```bash
 cd "Real-Time Translation Pack"
 sf project deploy start --source-dir force-app --target-org YOUR_ORG_ALIAS
 ```
 
-Or use the installer script from the Demo Packs root:
+Or use the installer from the Demo Packs root: `./scripts/install-pack.sh` → option 5.
+
+---
+
+## Post-deploy setup (3 steps)
+
+**1. Authorize the messaging endpoint (one command).** Fixes the *"Unauthorized endpoint … salesforce-scrt.com"* error by creating the Remote Site Setting for your org's messaging host:
 
 ```bash
-./scripts/install-pack.sh
+./scripts/setup-remote-site.sh YOUR_ORG_ALIAS
 ```
+
+**2. Point the routes at your org.** The route picker reads `Virtual_Customer_Route__mdt`. Built-in defaults (`RTT_New` / `RTT` and `SDO_Messaging_API` / `Messaging_for_In_App_Web`) are used when no records exist. To use your own deployment, add/edit records in **Setup → Custom Metadata Types → Virtual Customer Route → Manage Records**:
+
+| Field | Meaning |
+|-------|---------|
+| **ES Developer Name** | Your **Published API** deployment's developer name. |
+| **Channel Dev Name** | The `EmbeddedMessaging` MessagingChannel developer name. |
+| **Is Agentforce** | Check if this route is answered by an Agentforce agent (enables escalation after the 3rd turn). |
+| **Is Active / Sort Order / Route Label** | Visibility, ordering, and the label shown in the picker. |
+
+**3. Add the component.** In Lightning App Builder, place **Virtual Customer (Translation Demo)** on a page or the Utility Bar.
+
+Then open it and click **Check setup** — it tells you exactly whether the selected route is reachable and published before you start.
 
 ---
 
-## Configure your routes
+## Troubleshooting (use the "Check setup" button)
 
-The two conversation routes are defined in **one place** — the `getRoutes()` method of `sdo_VirtualCustomerCtrl`. Each route maps to an embedded service deployment (`esDeveloperName`) and the messaging channel its sessions land on (`channelDevName`). Update these to match your org:
-
-```apex
-routes.add(new Route('Human Agent (Real-Time Translation)', 'RTT_New', 'RTT', false));
-routes.add(new Route('Agentforce Service Agent', 'SDO_Messaging_API', 'Messaging_for_In_App_Web', true));
-```
-
-- `esDeveloperName` — the API (Custom Client) deployment developer name.
-- `channelDevName` — the `MessagingChannel` developer name those sessions are created on (used to locate the live session and link the contact).
-- `agentforce = true` — shows the escalation toggle and enables the "ask for a human after the 3rd turn" behavior.
-
----
-
-## Post-deploy setup
-
-1. **Add the component** — In Lightning App Builder, drop **Virtual Customer (Translation Demo)** onto an App/Home/Record page, or add it to the **Utility Bar** of your service app.
-2. **Set your routes** — Edit `getRoutes()` (above) so the deployment + channel names match your org, then redeploy the Apex class.
-3. **Remote Site Setting** — If callouts fail, add a Remote Site / Trusted URL for `https://<your-mydomain>.my.salesforce-scrt.com`.
-4. **Open it side-by-side** — Run the agent console (or Agentforce) in one window and this component in another, then **Start conversation**.
+| Message | Meaning / Fix |
+|---------|---------------|
+| `OK — deployment "…" is published and reachable` | Ready to start. |
+| `Callout blocked: …salesforce-scrt.com` | Run `scripts/setup-remote-site.sh` (step 1). |
+| `Not ready (400): The Embedded Service deployment developer name is invalid` | The route's **ES Developer Name** doesn't exist in this org — fix the Custom Metadata record. |
+| `Not ready (400): …deployment isn't published` | Publish it: **Setup → Embedded Service Deployments → (your deployment) → Publish**. |
+| Conversation starts but no replies | The channel isn't routing to an available human/agent, or (Agentforce) there's no agent connected to that channel. |
 
 ---
 
@@ -79,12 +92,13 @@ routes.add(new Route('Agentforce Service Agent', 'SDO_Messaging_API', 'Messaging
 
 | Feature | Description |
 |---------|-------------|
-| **Conversation route picker** | Switch between the human-agent (translation) deployment and the Agentforce deployment. |
-| **Scenarios** | Built-in Spanish, French, and English scenarios (disputed charge, account lockout, late delivery, service outage, plan upgrade, damaged item return), each with a persona and scripted opening lines. |
-| **Dynamic AI follow-ups** | Opens with the scenario's scripted line, then the Models API generates each follow-up live in the scenario's language, reacting to the agent. |
+| **Conversation route picker** | Configurable via Custom Metadata — switch between human (translation) and Agentforce deployments. |
+| **Check setup** | One-click preflight that verifies the route's deployment is published and reachable, with a precise fix message. |
+| **Scenarios** | Spanish, French, and English scenarios, each with a persona and scripted opening lines. |
+| **Dynamic AI follow-ups** | Opens with the scripted line, then the Models API generates each follow-up live in the scenario's language. |
 | **Auto-respond** | After the agent replies, the customer automatically sends its next turn. |
-| **Auto-escalation (Agentforce route)** | After the 3rd customer turn, the customer sends a localized "I'd like a human representative" message to trigger the agent's transfer-to-human action. |
-| **Live contact linking** | A random demo Contact (with a phone) is linked to the messaging session so the session shows a real customer. |
+| **Auto-escalation (Agentforce route)** | After the 3rd customer turn, the customer asks for a human in the scenario's language to trigger the agent's transfer action. |
+| **Live contact linking** | A random demo Contact (with a phone) is linked to the messaging session. |
 
 ---
 
