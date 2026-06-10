@@ -89,6 +89,17 @@
                 </div>
             </div>
 
+            <div class="slds-m-top_x-small">
+                <lightning-button
+                    variant="base"
+                    label="Check setup"
+                    icon-name="utility:check"
+                    onclick={handleCheckSetup}
+                    disabled={checkDisabled}
+                    title="Verify the selected route's messaging deployment is published and reachable before starting."
+                ></lightning-button>
+            </div>
+
             <div class="slds-box slds-box_xx-small slds-m-top_small slds-text-body_small slds-theme_shade">
                 <lightning-icon icon-name="utility:info" size="xx-small" class="slds-m-right_xx-small"></lightning-icon>
                 <span class="slds-text-color_weak">{status}</span>
