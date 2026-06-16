@@ -14,6 +14,10 @@ SKILLS=(
   sf-service-knowledge
   sf-service-messaging-conversation-toolkit
   sf-service-omnichannel-routing
+  sf-service-config-api-cli
+  sf-service-data-api-operations
+  sf-service-self-service-config
+  sf-service-contact-center-config
   sf-service-review
   sf-service-voice-digital
 )
