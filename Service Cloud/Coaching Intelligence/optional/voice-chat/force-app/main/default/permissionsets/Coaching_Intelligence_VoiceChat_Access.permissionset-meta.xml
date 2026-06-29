@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Coaching Intelligence v2 (Voice/Chat add-on): field access to the v1 Voice Call and Messaging Session coaching fields the engine mirrors into. Requires Service Cloud Voice and Enhanced Messaging.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Coaching Intelligence Voice/Chat Access</label>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>VoiceCall.Agent_Performance_Evaluation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>VoiceCall.Agent_Performance_Rating__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>VoiceCall.Call_Sentiment__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>VoiceCall.Sentiment_Rating__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>VoiceCall.Request_Historical_Analysis__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>MessagingSession.AgentPerformanceEvaluation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>MessagingSession.AgentPerformanceRating__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>MessagingSession.ChatSentiment__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>MessagingSession.SentimentRating__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>MessagingSession.Request_Historical_Analysis__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+</PermissionSet>

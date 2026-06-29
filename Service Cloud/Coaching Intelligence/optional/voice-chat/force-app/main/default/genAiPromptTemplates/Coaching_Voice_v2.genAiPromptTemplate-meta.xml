@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiPromptTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Coaching Intelligence v2: combined agent performance + customer sentiment for a Voice Call, returned as strict JSON for deterministic parsing.</description>
+    <developerName>Coaching_Voice_v2</developerName>
+    <masterLabel>Coaching Voice v2</masterLabel>
+    <templateVersions>
+        <content>You are a Service Supervisor reviewing the transcript of a voice call between a Service Agent and an End User customer. Evaluate both the agent&apos;s performance and the customer&apos;s sentiment.
+
+Transcript:
+&quot;&quot;&quot;
+{!$Flow:conv_sum_vc__GetTscpForVoiceCall.Prompt}
+&quot;&quot;&quot;
+
+In the transcript, lines preceded by &apos;End User:&apos; are the customer, and lines preceded by &apos;Agent:&apos; are the agent.
+
+Assess the agent against these five categories:
+1. Agent Process (greeting, identity verification, issue resolution).
+2. Customer Focus (positive framing, first-contact resolution, enabling self-help).
+3. Soft Skills (using the customer name, empathy, points of connection).
+4. Tone, Language, and Clarity (concise, easy to understand, minimal filler).
+5. Professional Conduct (appropriate, respectful, no interruptions).
+
+Then assess overall customer sentiment as Positive, Neutral, or Negative based primarily on what the End User said.
+
+RESPONSE FORMAT:
+Respond with ONLY a single valid JSON object. Do not include markdown, code fences, or any text before or after the JSON. Use exactly this structure and key names:
+{
+  &quot;performanceRating&quot;: 7,
+  &quot;categories&quot;: {
+    &quot;agentProcess&quot;: &quot;one concise sentence&quot;,
+    &quot;customerFocus&quot;: &quot;one concise sentence&quot;,
+    &quot;softSkills&quot;: &quot;one concise sentence&quot;,
+    &quot;toneLanguageClarity&quot;: &quot;one concise sentence&quot;,
+    &quot;professionalConduct&quot;: &quot;one concise sentence&quot;
+  },
+  &quot;summary&quot;: &quot;two to three sentence overall summary of how the agent performed and how they could improve&quot;,
+  &quot;sentimentRating&quot;: &quot;Positive&quot;,
+  &quot;sentimentNarrative&quot;: &quot;one or two sentences explaining the sentiment rating&quot;
+}
+Rules:
+- performanceRating is a whole number from 0 to 10 (10 = best). Use null if there is no transcript.
+- sentimentRating must be exactly one of: Positive, Neutral, Negative.
+- If the transcript is empty or missing, return performanceRating null, empty strings for each category and summary, sentimentRating &quot;Neutral&quot;, and sentimentNarrative &quot;No transcript available&quot;.
+Now produce the JSON.
+</content>
+        <inputs>
+            <apiName>Voice_Call</apiName>
+            <definition>SOBJECT://VoiceCall</definition>
+            <masterLabel>Voice Call</masterLabel>
+            <referenceName>Input:Voice_Call</referenceName>
+            <required>true</required>
+        </inputs>
+        <isCitationEnabled>false</isCitationEnabled>
+        <primaryModel>sfdc_ai__DefaultGPT41</primaryModel>
+        <status>Published</status>
+        <templateDataProviders>
+            <definition>flow://conv_sum_vc__GetTscpForVoiceCall</definition>
+            <parameters>
+                <definition>SOBJECT://VoiceCall</definition>
+                <isRequired>true</isRequired>
+                <parameterName>convToSummarize</parameterName>
+                <valueExpression>{!$Input:Voice_Call}</valueExpression>
+            </parameters>
+            <referenceName>Flow:conv_sum_vc__GetTscpForVoiceCall</referenceName>
+        </templateDataProviders>
+    </templateVersions>
+    <type>einstein_gpt__flex</type>
+    <visibility>Global</visibility>
+</GenAiPromptTemplate>
