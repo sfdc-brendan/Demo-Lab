@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiPromptTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Coaching Intelligence v2: combined agent performance + customer sentiment for a closed Case, evaluated from an assembled multi-touch transcript. Returns strict JSON.</description>
+    <developerName>Coaching_Case_v2</developerName>
+    <masterLabel>Coaching Case v2</masterLabel>
+    <templateVersions>
+        <content>You are a Service Supervisor reviewing the full history of a closed support Case to evaluate the handling agent&apos;s performance and the customer&apos;s sentiment. A Case is an asynchronous, multi-touch interaction (emails and notes over time) rather than a single live conversation, so judge it accordingly.
+
+Case interaction:
+&quot;&quot;&quot;
+{!$Input:Transcript}
+&quot;&quot;&quot;
+
+Lines preceded by &apos;End User:&apos; are the customer; lines preceded by &apos;Agent:&apos; are the agent (including internal notes and outbound emails).
+
+Assess the agent against these five categories (adapted for written, asynchronous case work):
+1. Agent Process (acknowledgement, understanding the issue, driving to resolution and closure).
+2. Customer Focus (positive framing, proactive updates, setting expectations on timing).
+3. Soft Skills (personalization, empathy, acknowledging impact on the customer).
+4. Tone, Language, and Clarity (clear, professional written communication).
+5. Professional Conduct (respectful, accountable, appropriate follow-through).
+
+Then assess overall customer sentiment as Positive, Neutral, or Negative based primarily on what the End User wrote.
+
+RESPONSE FORMAT:
+Respond with ONLY a single valid JSON object. Do not include markdown, code fences, or any text before or after the JSON. Use exactly this structure and key names:
+{
+  &quot;performanceRating&quot;: 7,
+  &quot;categories&quot;: {
+    &quot;agentProcess&quot;: &quot;one concise sentence&quot;,
+    &quot;customerFocus&quot;: &quot;one concise sentence&quot;,
+    &quot;softSkills&quot;: &quot;one concise sentence&quot;,
+    &quot;toneLanguageClarity&quot;: &quot;one concise sentence&quot;,
+    &quot;professionalConduct&quot;: &quot;one concise sentence&quot;
+  },
+  &quot;summary&quot;: &quot;two to three sentence overall summary of how the agent handled the case and how they could improve&quot;,
+  &quot;sentimentRating&quot;: &quot;Positive&quot;,
+  &quot;sentimentNarrative&quot;: &quot;one or two sentences explaining the sentiment rating&quot;
+}
+Rules:
+- performanceRating is a whole number from 0 to 10 (10 = best). Use null if there is no case content.
+- sentimentRating must be exactly one of: Positive, Neutral, Negative.
+- If the case content is empty or missing, return performanceRating null, empty strings for each category and summary, sentimentRating &quot;Neutral&quot;, and sentimentNarrative &quot;No transcript available&quot;.
+Now produce the JSON.
+</content>
+        <inputs>
+            <apiName>Transcript</apiName>
+            <definition>primitive://String</definition>
+            <masterLabel>Transcript</masterLabel>
+            <referenceName>Input:Transcript</referenceName>
+            <required>true</required>
+        </inputs>
+        <isCitationEnabled>false</isCitationEnabled>
+        <primaryModel>sfdc_ai__DefaultGPT41</primaryModel>
+        <status>Published</status>
+    </templateVersions>
+    <type>einstein_gpt__flex</type>
+    <visibility>Global</visibility>
+</GenAiPromptTemplate>
