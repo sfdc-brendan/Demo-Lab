@@ -7,7 +7,9 @@
 #
 set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# When piped via `curl | bash`, there is no source file, so BASH_SOURCE is unset.
+# Default to /dev/null so `dirname` yields "." without tripping `set -u`.
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-/dev/null}")" 2>/dev/null && pwd || echo "/nonexistent")"
 RAW_BASE_URL="https://raw.githubusercontent.com/sfdc-brendan/Demo-Lab/main/Agentforce/Agent%20API/skills"
 
 # skill-name : optional supporting files fetched alongside SKILL.md
