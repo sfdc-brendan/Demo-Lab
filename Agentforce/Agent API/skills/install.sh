@@ -12,6 +12,29 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-/dev/null}")" 2>/dev/null && pwd || echo "/nonexistent")"
 RAW_BASE_URL="https://raw.githubusercontent.com/sfdc-brendan/Demo-Lab/main/Agentforce/Agent%20API/skills"
 
+# --- banner ------------------------------------------------------------------
+# Colors are enabled only on a TTY and when NO_COLOR is unset.
+if [[ -t 1 && -z "${NO_COLOR:-}" ]]; then
+  C_BLUE=$'\033[38;5;39m'; C_CYAN=$'\033[38;5;51m'; C_DIM=$'\033[2m'; C_RST=$'\033[0m'
+else
+  C_BLUE=""; C_CYAN=""; C_DIM=""; C_RST=""
+fi
+
+print_banner() {
+  printf '\n%s' "${C_BLUE}"
+  cat <<'EOF'
+  ____                          _          _
+ |  _ \  ___  _ __ ___    ___  | |    __ _| |__
+ | | | |/ _ \| '_ ` _ \  / _ \ | |   / _` | '_ \
+ | |_| |  __/| | | | | || (_) || |___| (_| | |_) |
+ |____/ \___||_| |_| |_| \___/ |_____\__,_|_.__/
+EOF
+  printf '%s' "${C_RST}"
+  printf '  %sAgentforce · Agent API Skills%s\n\n' "${C_CYAN}" "${C_RST}"
+}
+
+print_banner
+
 # skill-name : optional supporting files fetched alongside SKILL.md
 SKILLS=(
   sf-agent-api-setup
@@ -96,4 +119,4 @@ else
   done
 fi
 
-echo "Done. Restart your IDE to load updated skills."
+printf '\n%s✓ Done.%s Restart your IDE to load the Agent API skills.\n\n' "${C_CYAN}" "${C_RST}"
