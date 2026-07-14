@@ -1,0 +1,83 @@
+<template>
+    <lightning-card icon-name="standard:knowledge" title={cardTitle}>
+        <lightning-button
+            slot="actions"
+            label={generateLabel}
+            variant="brand"
+            onclick={handleGenerate}
+            disabled={isBusy}>
+        </lightning-button>
+
+        <div class="slds-var-p-horizontal_medium slds-var-p-bottom_medium">
+            <template lwc:if={isGenerating}>
+                <div class="slds-align_absolute-center slds-var-p-vertical_large">
+                    <lightning-spinner alternative-text="Generating article" size="medium"></lightning-spinner>
+                    <span class="slds-var-p-left_small slds-text-body_regular">
+                        Generating knowledge article draft&hellip;
+                    </span>
+                </div>
+            </template>
+
+            <template lwc:if={hasDraft}>
+                <template lwc:if={customerName}>
+                    <p class="slds-text-body_small slds-text-color_weak slds-var-m-bottom_small">
+                        Generated for <strong>{customerName}</strong>
+                        <template lwc:if={industry}> &middot; {industry}</template>
+                    </p>
+                </template>
+
+                <lightning-input
+                    label="Title"
+                    value={title}
+                    max-length="255"
+                    onchange={handleTitleChange}
+                    class="slds-var-m-bottom_small">
+                </lightning-input>
+
+                <lightning-textarea
+                    label="Summary"
+                    value={summary}
+                    max-length="1000"
+                    onchange={handleSummaryChange}
+                    class="slds-var-m-bottom_small">
+                </lightning-textarea>
+
+                <lightning-input-rich-text
+                    label="Article Content"
+                    value={content}
+                    onchange={handleContentChange}
+                    valid
+                    class="slds-var-m-bottom_small">
+                </lightning-input-rich-text>
+
+                <div class="slds-align_absolute-center slds-var-m-top_medium">
+                    <lightning-button
+                        label="Save as Draft Article"
+                        variant="success"
+                        icon-name="utility:save"
+                        onclick={handleSave}
+                        disabled={saveDisabled}>
+                    </lightning-button>
+                    <template lwc:if={isSaving}>
+                        <lightning-spinner
+                            alternative-text="Saving"
+                            size="small"
+                            class="slds-var-m-left_small">
+                        </lightning-spinner>
+                    </template>
+                </div>
+            </template>
+
+            <template lwc:if={showEmptyState}>
+                <div class="slds-illustration slds-illustration_small slds-var-p-vertical_medium">
+                    <div class="slds-text-longform slds-text-align_center">
+                        <p class="slds-text-body_regular slds-text-color_weak">
+                            Click <strong>Generate Draft</strong> to create a knowledge article
+                            from this case and its account history.
+                        </p>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__RecordPage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordPage">
+            <objects>
+                <object>Case</object>
+            </objects>
+            <property
+                name="cardTitle"
+                type="String"
+                label="Card Title"
+                default="Knowledge Article Drafter"
+                description="Heading shown on the component card." />
+            <property
+                name="contentFieldApiName"
+                type="String"
+                label="Knowledge Content Field API Name"
+                default="FAQ_Answer__c"
+                description="Rich-text Knowledge__kav field that receives the generated HTML content." />
+            <property
+                name="articleLanguage"
+                type="String"
+                label="Article Language"
+                default="en_US"
+                description="Language code applied to the new Knowledge draft (e.g. en_US)." />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>
