@@ -8,5 +8,5 @@
   "name": "Knowledge Article Drafter",
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "67.0"
+  "sourceApiVersion": "65.0"
 }
