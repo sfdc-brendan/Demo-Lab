@@ -87,7 +87,6 @@ Generate a comprehensive knowledge article for {!$Input:customerName} in the {!$
             <referenceName>Input:casesSummary</referenceName>
             <required>true</required>
         </inputs>
-        <isCitationEnabled>false</isCitationEnabled>
         <primaryModel>sfdc_ai__DefaultGPT41</primaryModel>
         <status>Published</status>
         <versionIdentifier>nBlTXtVyN4aeVsckYqR0O/VZM3Br2T0Yk2ECkTqGkk8=_1</versionIdentifier>
@@ -95,3 +94,4 @@ Generate a comprehensive knowledge article for {!$Input:customerName} in the {!$
     <type>einstein_gpt__flex</type>
     <visibility>Global</visibility>
 </GenAiPromptTemplate>
+
