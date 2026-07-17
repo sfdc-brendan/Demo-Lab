@@ -35,9 +35,10 @@ echo "  3) AI Case Generator Pack (Einstein-powered case, knowledge, and demo sc
 echo "  4) Intake Builder Pack (configurable intake builder + runtime + PDF)"
 echo "  5) Real-Time Translation Pack (Virtual Customer chat: live translation + Agentforce route with escalation)"
 echo "  6) Knowledge Article Drafter Pack (Case record-page LWC: AI-drafted Knowledge articles)"
-echo "  7) All packs"
+echo "  7) Vision Assist Pack (Case/Messaging Session LWC: analyzes a customer screenshot + grounded steps)"
+echo "  8) All packs"
 echo ""
-read -r -p "Enter 1, 2, 3, 4, 5, 6, or 7: " choice
+read -r -p "Enter 1, 2, 3, 4, 5, 6, 7, or 8: " choice
 
 deploy_pack1() {
   echo "Deploying Pack 1..."
@@ -107,6 +108,19 @@ deploy_knowledge_article_drafter() {
     --wait 15
 }
 
+deploy_vision_assist_pack() {
+  echo ""
+  echo "*** NOTE: Requires Einstein Generative AI (with a vision-capable model) and Lightning Knowledge.  ***"
+  echo "*** The prompt template targets a vision model; if your org rejects it, re-save/activate in       ***"
+  echo "*** Prompt Builder. Add the 'Vision Assist' component to a Case or Messaging Session page. See README. ***"
+  echo ""
+  echo "Deploying Vision Assist Pack..."
+  cd "$DEMO_PACKS_DIR/Vision Assist Pack"
+  sf project deploy start \
+    --source-dir force-app \
+    --wait 15
+}
+
 case "$choice" in
   1)
     deploy_pack1
@@ -127,6 +141,9 @@ case "$choice" in
     deploy_knowledge_article_drafter
     ;;
   7)
+    deploy_vision_assist_pack
+    ;;
+  8)
     deploy_pack1
     echo ""
     deploy_service_cloud
@@ -138,6 +155,8 @@ case "$choice" in
     deploy_rtt_pack
     echo ""
     deploy_knowledge_article_drafter
+    echo ""
+    deploy_vision_assist_pack
     ;;
   *)
     echo "Invalid choice. Exiting."

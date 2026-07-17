@@ -45,6 +45,7 @@ The script will:
 | **[Intake Builder Pack](Intake%20Builder%20Pack/README.md)** | Configurable intake platform with template builder, runtime intake LWC, AI-assisted extraction, and generic PDF output |
 | **[Real-Time Translation Pack](Real-Time%20Translation%20Pack/README.md)** | Virtual Customer chat LWC that sends live inbound messages into a Messaging session — demo Real-Time Conversation Translation or route through an Agentforce Service Agent with auto-escalation to a human |
 | **[Knowledge Article Drafter Pack](Knowledge%20Article%20Drafter%20Pack/README.md)** | Case record-page LWC that uses Einstein to draft a formatted Knowledge article from a Case and its account history, then saves it as a reviewable `Knowledge__kav` draft |
+| **[Vision Assist Pack](Vision%20Assist%20Pack/README.md)** | Case / Messaging Session record-page LWC that watches a conversation for a customer-uploaded screenshot, analyzes the error with a vision model, and shows the rep a diagnosis plus Knowledge-grounded troubleshooting steps |
 
 See each pack's README for contents, prerequisites, and post-deploy steps.
 

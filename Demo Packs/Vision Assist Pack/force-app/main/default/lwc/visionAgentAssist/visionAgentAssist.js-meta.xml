@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>65.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Vision Assist</masterLabel>
+    <description>Watches a conversation for a customer-uploaded screenshot, analyzes the error with a vision model, and shows the rep grounded troubleshooting steps.</description>
+    <targets>
+        <target>lightning__RecordPage</target>
+        <target>lightning__AppPage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordPage,lightning__AppPage">
+            <property
+                name="autoAnalyze"
+                type="Boolean"
+                label="Auto-analyze new screenshots"
+                description="Automatically analyze a screenshot as soon as it is detected in the conversation. If off, the rep clicks Analyze."
+                default="false"
+            />
+            <property
+                name="pollIntervalSeconds"
+                type="Integer"
+                label="Scan interval (seconds)"
+                description="How often to check the conversation for a new screenshot. Minimum 3 seconds."
+                default="6"
+                min="3"
+                max="120"
+            />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

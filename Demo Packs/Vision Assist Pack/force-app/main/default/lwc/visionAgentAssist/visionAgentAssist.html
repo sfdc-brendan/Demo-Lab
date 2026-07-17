@@ -1,0 +1,212 @@
+<template>
+    <lightning-card icon-name="utility:image" title="Vision Assist">
+        <lightning-button-icon
+            slot="actions"
+            icon-name="utility:refresh"
+            variant="border-filled"
+            alternative-text="Re-scan conversation"
+            title="Re-scan conversation for a new screenshot"
+            disabled={isScanning}
+            onclick={handleRescan}
+        ></lightning-button-icon>
+
+        <div class="slds-card__body slds-card__body_inner slds-is-relative va-body">
+            <template if:true={isAnalyzing}>
+                <lightning-spinner alternative-text="Analyzing" size="medium"></lightning-spinner>
+            </template>
+
+            <!-- Error -->
+            <template if:true={errorMessage}>
+                <div class="slds-box slds-box_x-small slds-theme_error slds-var-m-bottom_small va-error" role="alert">
+                    <lightning-icon icon-name="utility:error" size="x-small" variant="inverse" class="slds-var-m-right_x-small"></lightning-icon>
+                    <span>{errorMessage}</span>
+                </div>
+            </template>
+
+            <!-- Empty / waiting state -->
+            <template if:true={showEmptyState}>
+                <div class="slds-align_absolute-center slds-text-align_center va-empty">
+                    <div>
+                        <lightning-icon icon-name="utility:photo" size="large" class="va-empty-icon"></lightning-icon>
+                        <p class="slds-text-heading_small slds-var-m-top_small">Listening for a screenshot</p>
+                        <p class="slds-text-body_small slds-text-color_weak slds-var-m-top_xx-small">
+                            When the customer shares a photo of their error, it will appear here automatically.
+                        </p>
+                        <lightning-button
+                            class="slds-var-m-top_medium"
+                            label="Scan Now"
+                            icon-name="utility:search"
+                            onclick={handleRescan}
+                            disabled={isScanning}
+                        ></lightning-button>
+                    </div>
+                </div>
+            </template>
+
+            <!-- Screenshot detected: two-column at wide widths, stacked when narrow -->
+            <template if:true={hasScreenshot}>
+              <div class="va-layout">
+                <!-- Media column: screenshot(s) + context + analyze -->
+                <div class="va-col-media">
+                    <div class="slds-media slds-media_center slds-var-m-bottom_xx-small">
+                        <div class="slds-media__body">
+                            <span class="slds-text-title_caps slds-text-color_weak">Customer screenshot</span>
+                        </div>
+                        <template if:true={hasMultiple}>
+                            <div class="slds-media__figure slds-media__figure_reverse">
+                                <lightning-badge label={countLabel} class="va-badge-count"></lightning-badge>
+                            </div>
+                        </template>
+                    </div>
+
+                    <!-- Thumbnail gallery when several screenshots arrived -->
+                    <template if:true={hasMultiple}>
+                        <div class="va-thumbs slds-var-m-bottom_x-small" role="listbox" aria-label="Customer screenshots">
+                            <template for:each={thumbnails} for:item="t">
+                                <button
+                                    key={t.contentDocumentId}
+                                    type="button"
+                                    data-doc-id={t.contentDocumentId}
+                                    class={t.cssClass}
+                                    title={t.title}
+                                    aria-pressed={t.isSelected}
+                                    role="option"
+                                    aria-selected={t.isSelected}
+                                    onclick={handleSelectThumbnail}
+                                >
+                                    <img src={t.previewUrl} alt={t.title} class="va-thumb-strip-img" />
+                                    <template if:true={t.analyzed}>
+                                        <lightning-icon
+                                            icon-name="utility:check"
+                                            size="xx-small"
+                                            variant="inverse"
+                                            class="va-thumb-check"
+                                        ></lightning-icon>
+                                    </template>
+                                </button>
+                            </template>
+                        </div>
+                    </template>
+
+                    <div class="va-thumb slds-var-m-bottom_medium">
+                        <img src={selectedScreenshot.previewUrl} alt="Customer screenshot" class="va-thumb-img" />
+                    </div>
+
+                    <lightning-textarea
+                        name="description"
+                        label="Context from the customer (optional)"
+                        placeholder="e.g. keeps happening when they open the app"
+                        value={customerDescription}
+                        onchange={handleDescriptionChange}
+                        class="slds-var-m-bottom_medium"
+                    ></lightning-textarea>
+
+                    <lightning-button
+                        variant="brand"
+                        label={analyzeLabel}
+                        icon-name="utility:AI_replace"
+                        onclick={handleAnalyzeClick}
+                        disabled={analyzeDisabled}
+                        class="va-analyze-btn slds-var-m-bottom_large"
+                    ></lightning-button>
+                </div>
+
+                <!-- Results column -->
+                <div class="va-col-results">
+                    <template if:true={hasResult}>
+                        <div class="slds-box slds-box_x-small va-diagnosis slds-var-m-bottom_medium">
+                    <div class="slds-media slds-media_small">
+                        <div class="slds-media__figure">
+                            <lightning-icon icon-name="utility:preview" size="small" variant="inverse" class="va-diagnosis-icon"></lightning-icon>
+                        </div>
+                        <div class="slds-media__body">
+                            <p class="slds-text-title_caps slds-text-color_inverse-weak slds-var-m-bottom_xx-small">What the AI sees</p>
+                            <p class="slds-text-body_regular slds-text-color_inverse va-diagnosis-text">{result.diagnosis}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detected keywords (SLDS 2 pill listbox) -->
+                <template if:true={hasKeywords}>
+                    <div class="slds-var-m-bottom_medium">
+                        <span class="slds-text-title_caps slds-text-color_weak slds-show slds-var-m-bottom_x-small">Detected keywords</span>
+                        <ul
+                            class="slds-listbox slds-listbox_horizontal va-pills"
+                            role="listbox"
+                            aria-label="Detected keywords"
+                            aria-orientation="horizontal"
+                        >
+                            <template for:each={keywordPills} for:item="kw">
+                                <li key={kw.key} role="presentation" class="slds-listbox__item">
+                                    <span class="slds-pill" role="option" tabindex="0" aria-selected="true">
+                                        <span class="slds-pill__label" title={kw.label}>{kw.label}</span>
+                                    </span>
+                                </li>
+                            </template>
+                        </ul>
+                    </div>
+                </template>
+
+                <!-- Grounded troubleshooting steps -->
+                <template if:true={hasSteps}>
+                    <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center slds-var-m-bottom_x-small">
+                        <span class="slds-text-heading_small">Troubleshooting steps</span>
+                        <lightning-button-icon
+                            icon-name="utility:copy_to_clipboard"
+                            variant="border-filled"
+                            alternative-text="Copy steps"
+                            title="Copy steps"
+                            onclick={handleCopySteps}
+                        ></lightning-button-icon>
+                    </div>
+                    <ol class="va-steps slds-var-m-bottom_small">
+                        <template for:each={numberedSteps} for:item="step">
+                            <li key={step.key} class="va-step">
+                                <span class="va-step-num">{step.number}</span>
+                                <span class="va-step-text">{step.text}</span>
+                            </li>
+                        </template>
+                    </ol>
+                    <p class="slds-text-body_small slds-text-color_weak slds-var-m-bottom_medium">
+                        <lightning-icon icon-name="utility:knowledge_base" size="xx-small" class="slds-var-m-right_xx-small"></lightning-icon>
+                        Grounded in: {result.stepsSource}
+                    </p>
+                </template>
+
+                <!-- No grounded article -->
+                <template if:true={showNoStepsNotice}>
+                    <div class="slds-box slds-box_x-small slds-theme_warning slds-var-m-bottom_medium va-error" role="status">
+                        <lightning-icon icon-name="utility:warning" size="x-small" class="slds-var-m-right_x-small"></lightning-icon>
+                        <span>No matching Knowledge article was found. Verify the diagnosis and consider escalating to a specialist.</span>
+                    </div>
+                </template>
+
+                <!-- Source articles -->
+                <template if:true={hasArticles}>
+                    <span class="slds-text-title_caps slds-text-color_weak slds-show slds-var-m-bottom_x-small">Related articles</span>
+                    <ul class="va-articles">
+                        <template for:each={result.articles} for:item="article">
+                            <li key={article.articleNumber} class="slds-var-m-bottom_xx-small va-article">
+                                <template if:true={article.url}>
+                                    <a href={article.url} target="_blank">
+                                        <lightning-icon icon-name="utility:knowledge_base" size="xx-small" class="slds-var-m-right_xx-small"></lightning-icon>
+                                        {article.title}
+                                    </a>
+                                </template>
+                                <template if:false={article.url}>
+                                    <span>
+                                        <lightning-icon icon-name="utility:knowledge_base" size="xx-small" class="slds-var-m-right_xx-small"></lightning-icon>
+                                        {article.title}
+                                    </span>
+                                </template>
+                            </li>
+                        </template>
+                            </ul>
+                        </template>
+                    </template>
+                </div>
+              </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>
