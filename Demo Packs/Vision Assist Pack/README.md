@@ -79,6 +79,7 @@ Or use the installer script from the Demo Packs root:
 
 - **On-platform & Trust Layer.** The screenshot is a Salesforce File; the model call runs through `ConnectApi.EinsteinLLM`. No external service is required.
 - **Grounded, not hallucinated.** Vision tells the rep *what* is wrong; the *how-to* steps come only from Knowledge, with a relevance guard so a single shared word can't surface the wrong article.
+- **API version 67.0.** Unlike the other packs (65.0), this pack targets **Metadata API 67.0** because the flex vision `GenAiPromptTemplate` uses properties (`overridable`, `fileDroppingStrategy`, `isCitationEnabled`, `templateFormat`) that don't exist in the 65.0 schema. Deploy to an org on a recent release; if a target org rejects 67.0, deploy the classes/LWC separately and (re)create the prompt template in Prompt Builder.
 - **Prompt template model & identifier.** The template ships **Published** with an `activeVersionIdentifier`; if your org rejects the identifier on deploy, or the target model isn't available, open the template in Prompt Builder and re-save/activate against a vision-capable model.
 - **Fictional demo content.** Any company/product references in the prompt text are fictional and safe to edit for your own demo narrative.
 - **Demos and labs only** — not an official Salesforce product; review and test before any use.
