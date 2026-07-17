@@ -4,7 +4,6 @@
     <description>Agentforce Vision: analyzes a guest-uploaded image and returns a diagnosis plus Knowledge search keywords.</description>
     <developerName>AgentforceVision_ImageDiagnosis</developerName>
     <masterLabel>Agentforce Vision - Image Diagnosis</masterLabel>
-    <overridable>false</overridable>
     <templateVersions>
         <content>You are a senior technical support specialist for Vireon (Communications, Media, and High Tech). A customer sent a photo of a device or screen, plus an optional description. Analyze the attached image and determine what they&apos;re looking at and the most likely problem.
 
@@ -19,7 +18,6 @@ Respond EXACTLY in this format:
 DIAGNOSIS: &lt;one or two sentences: what you see and the single most likely problem&gt;
 KEYWORDS: &lt;3-6 comma-separated search terms for a support article&gt;
 </content>
-        <fileDroppingStrategy>{&quot;dropFilesBy&quot;:&quot;LAST_MODIFIED_DATE&quot;,&quot;dropFileStartingWith&quot;:&quot;OLDEST&quot;}</fileDroppingStrategy>
         <inputs>
             <apiName>ImageFile</apiName>
             <definition>SOBJECT://ContentDocument</definition>
@@ -34,10 +32,8 @@ KEYWORDS: &lt;3-6 comma-separated search terms for a support article&gt;
             <referenceName>Input:UserDescription</referenceName>
             <required>false</required>
         </inputs>
-        <isCitationEnabled>false</isCitationEnabled>
         <primaryModel>sfdc_ai__DefaultGPT55</primaryModel>
         <status>Published</status>
-        <templateFormat>FormulaExpression</templateFormat>
         <versionIdentifier>aRn37d6cNDfv30H3QPyPj4fTVYLS/GMVT6uOVmkTDzE=_5</versionIdentifier>
     </templateVersions>
     <type>einstein_gpt__flex</type>
