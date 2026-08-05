@@ -36,9 +36,10 @@ echo "  4) Intake Builder Pack (configurable intake builder + runtime + PDF)"
 echo "  5) Real-Time Translation Pack (Virtual Customer chat: live translation + Agentforce route with escalation)"
 echo "  6) Knowledge Article Drafter Pack (Case record-page LWC: AI-drafted Knowledge articles)"
 echo "  7) Vision Assist Pack (Case/Messaging Session LWC: analyzes a customer screenshot + grounded steps)"
-echo "  8) All packs"
+echo "  8) Log Debugger Pack (Case + Experience Cloud LWCs: Claude analyzes an uploaded log, grounded in Knowledge)"
+echo "  9) All packs"
 echo ""
-read -r -p "Enter 1, 2, 3, 4, 5, 6, 7, or 8: " choice
+read -r -p "Enter 1, 2, 3, 4, 5, 6, 7, 8, or 9: " choice
 
 deploy_pack1() {
   echo "Deploying Pack 1..."
@@ -121,6 +122,19 @@ deploy_vision_assist_pack() {
     --wait 15
 }
 
+deploy_log_debugger_pack() {
+  echo ""
+  echo "*** NOTE: Requires Einstein Generative AI (Anthropic Claude via the Models API) and Lightning   ***"
+  echo "*** Knowledge enabled. The five Knowledge__kav fields the pack needs ship with it.               ***"
+  echo "*** After deploy, run ./scripts/loadKnowledge.sh to load the troubleshooting library.            ***"
+  echo ""
+  echo "Deploying Log Debugger Pack..."
+  cd "$DEMO_PACKS_DIR/Log Debugger Pack"
+  sf project deploy start \
+    --source-dir force-app \
+    --wait 15
+}
+
 case "$choice" in
   1)
     deploy_pack1
@@ -144,6 +158,9 @@ case "$choice" in
     deploy_vision_assist_pack
     ;;
   8)
+    deploy_log_debugger_pack
+    ;;
+  9)
     deploy_pack1
     echo ""
     deploy_service_cloud
@@ -157,6 +174,8 @@ case "$choice" in
     deploy_knowledge_article_drafter
     echo ""
     deploy_vision_assist_pack
+    echo ""
+    deploy_log_debugger_pack
     ;;
   *)
     echo "Invalid choice. Exiting."

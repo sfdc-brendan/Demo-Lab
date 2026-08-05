@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <isExposed>false</isExposed>
+    <masterLabel>Log Debugger Styles</masterLabel>
+    <description
+  >Shared SLDS 2 style rules for the Case-page and Experience Cloud log debugger components.</description>
+</LightningComponentBundle>

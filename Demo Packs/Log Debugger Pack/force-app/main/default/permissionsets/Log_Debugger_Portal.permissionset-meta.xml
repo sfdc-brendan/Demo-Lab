@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Log Debugger (Self-Service)</label>
+    <!--
+      Case.Log_Analysis__c is deliberately absent. The portal component never
+      writes to a Case, so a customer has no reason to read or edit the field a
+      support rep writes their analysis into.
+    -->
+    <description
+  >Access to the Log Debugger for signed-in Experience Cloud customers: the Apex pipeline only, with no access to the Case field a rep writes to.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <classAccesses>
+        <apexClass>LogClaudeService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>LogKnowledgeSearch</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>LogAnalysis</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>LogDebuggerController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>LogDistiller</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <!--
+      Read on every Knowledge field the retrieval touches. LogKnowledgeSearch
+      queries WITH USER_MODE, and a field the running user cannot read comes back
+      as "No such column", not as a permissions error, so a gap here looks like a
+      broken query. External_ID__c matters most: every query is scoped on it, so
+      without it nothing works at all rather than degrading.
+    -->
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Knowledge__kav.External_ID__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Knowledge__kav.KCSArticle_Issue__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Knowledge__kav.KCSArticle_Cause__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Knowledge__kav.KCSArticle_Environment__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Knowledge__kav.KCSArticle_Resolution__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+</PermissionSet>
