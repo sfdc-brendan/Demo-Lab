@@ -6,6 +6,8 @@ This pack deploys the **Log Debugger** — a pair of LWCs that take a raw cluste
 
 The same pipeline serves two audiences. A support rep gets the full picture on the **Case record page**, including escalation guidance and a drafted customer reply, and can write the analysis back to the Case in one click. A signed-in customer gets the trimmed version on an **Experience Cloud site** — the same root cause and the same steps, with the internal-only material withheld.
 
+**Ready to demo:** the pack includes three realistic sample logs in `sample-logs/` covering driver out-of-memory, Delta concurrent-write, and catalog-permission failures. Upload any of them immediately after setup; no separate test data download is required.
+
 ---
 
 ## Contents
