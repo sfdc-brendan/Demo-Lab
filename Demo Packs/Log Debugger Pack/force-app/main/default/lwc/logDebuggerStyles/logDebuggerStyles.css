@@ -1,0 +1,133 @@
+/*
+ * SLDS 2 global styling hooks only, chosen semantically rather than by colour
+ * match, so the component follows the org theme into dark mode instead of
+ * pinning its own palette. Spacing uses the density-aware `spacing-var` scale
+ * because this component lives in a console sidebar where reps run compact.
+ *
+ * Fallbacks are each hook's documented SLDS 2 value, so an org still on SLDS 1
+ * renders the same thing the hook would have produced.
+ */
+
+/* --- uploaded file card --------------------------------------------------- */
+
+.log-filecard {
+  background: var(--slds-g-color-surface-container-2, #f3f3f3);
+  color: var(--slds-g-color-on-surface-2, #2e2e2e);
+}
+
+/* --- staged progress ------------------------------------------------------ */
+
+.log-stage {
+  color: var(--slds-g-color-on-surface-1, #5c5c5c);
+}
+
+.log-stage_active {
+  color: var(--slds-g-color-on-surface-2, #2e2e2e);
+}
+
+/*
+ * lightning-spinner fills its nearest positioned ancestor, so it needs a box of
+ * its own to sit inline with the stage label. The box matches the rendered size
+ * of the xx-small spinner exactly, which is what lets this work without
+ * overriding anything inside the base component.
+ */
+.log-stage__spinner {
+  position: relative;
+  width: var(--slds-g-sizing-5, 1rem);
+  height: var(--slds-g-sizing-5, 1rem);
+}
+
+/* --- code blocks ---------------------------------------------------------- */
+
+.log-code {
+  font-family: var(
+    --slds-g-font-family-monospace,
+    Consolas,
+    Menlo,
+    Monaco,
+    Courier,
+    monospace
+  );
+  font-size: var(--slds-g-font-scale-neg-1, 0.75rem);
+  line-height: var(--slds-g-font-lineheight-4, 1.5);
+  background: var(--slds-g-color-surface-container-2, #f3f3f3);
+  color: var(--slds-g-color-on-surface-2, #2e2e2e);
+  border: var(--slds-g-sizing-border-1, 1px) solid
+    var(--slds-g-color-border-1, #c9c9c9);
+  border-radius: var(--slds-g-radius-border-1, 0.25rem);
+  padding: var(--slds-g-spacing-var-2, 0.5rem);
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-x: auto;
+  flex: 1 1 auto;
+}
+
+/* A quoted failure line, flagged as the error evidence it is. */
+.log-code_evidence {
+  margin-bottom: var(--slds-g-spacing-1, 0.25rem);
+  border-left: var(--slds-g-sizing-border-3, 3px) solid
+    var(--slds-g-color-border-error-1, #b60554);
+}
+
+.log-code_digest {
+  margin-top: var(--slds-g-spacing-var-2, 0.5rem);
+  max-height: var(--slds-g-sizing-15, 20rem);
+  overflow-y: auto;
+}
+
+.log-command {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--slds-g-spacing-1, 0.25rem);
+  margin: var(--slds-g-spacing-1, 0.25rem) 0;
+}
+
+/* --- knowledge matches ---------------------------------------------------- */
+
+.log-article {
+  padding: var(--slds-g-spacing-var-2, 0.5rem) 0;
+  border-bottom: var(--slds-g-sizing-border-1, 1px) solid
+    var(--slds-g-color-border-1, #c9c9c9);
+}
+
+.log-article:last-child {
+  border-bottom: none;
+}
+
+/* --- analysis ------------------------------------------------------------- */
+
+.log-analysis {
+  border-left: var(--slds-g-sizing-border-3, 3px) solid
+    var(--slds-g-color-border-accent-1, #066afe);
+}
+
+.log-steps {
+  list-style: none;
+  margin: var(--slds-g-spacing-var-2, 0.5rem) 0 0;
+  padding: 0;
+}
+
+.log-step {
+  padding: var(--slds-g-spacing-var-3, 0.75rem) 0;
+  border-top: var(--slds-g-sizing-border-1, 1px) solid
+    var(--slds-g-color-border-1, #c9c9c9);
+}
+
+.log-step:first-child {
+  border-top: none;
+}
+
+.log-step__number {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--slds-g-sizing-6, 1.25rem);
+  height: var(--slds-g-sizing-6, 1.25rem);
+  border-radius: var(--slds-g-radius-border-circle, 100%);
+  font-size: var(--slds-g-font-scale-neg-2, 0.625rem);
+  font-weight: var(--slds-g-font-weight-7, 700);
+  background: var(--slds-g-color-accent-container-1, #066afe);
+  color: var(--slds-g-color-on-accent-1, #fff);
+}

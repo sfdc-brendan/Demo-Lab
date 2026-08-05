@@ -1,0 +1,2 @@
+# The repo root ignores *.log. These three are the demo payload, not build noise.
+!*.log

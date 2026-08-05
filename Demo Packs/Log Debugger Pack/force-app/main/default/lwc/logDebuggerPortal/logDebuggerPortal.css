@@ -1,0 +1,5 @@
+/*
+ * The log-* rules are shared with c/logDebugger, which renders the same triage,
+ * steps, and code blocks on the Case page.
+ */
+@import "c/logDebuggerStyles";

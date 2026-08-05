@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Log Debugger (Self-Service)</masterLabel>
+    <description
+  >Lets a signed-in customer upload a cluster or job log on an Experience Cloud site and get grounded troubleshooting steps back, without the internal escalation routing a support rep sees.</description>
+    <targets>
+        <target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightningCommunity__Default">
+            <property
+        name="heading"
+        type="String"
+        label="Heading"
+        default="Troubleshoot a log file"
+        description="Title shown at the top of the component."
+      />
+            <property
+        name="introduction"
+        type="String"
+        label="Introduction"
+        default="Upload the cluster or job log from the run that failed. We read it, work out what went wrong, and give you the steps to fix it, based on our published troubleshooting guides."
+        description="Text shown above the upload control."
+      />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

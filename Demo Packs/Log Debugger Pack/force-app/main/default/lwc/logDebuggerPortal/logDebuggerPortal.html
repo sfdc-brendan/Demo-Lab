@@ -1,0 +1,293 @@
+<template>
+  <!--
+    The icon lives in the title slot rather than the card's icon-name attribute:
+    lightning-card drops icon-name entirely once a title slot is supplied.
+  -->
+  <lightning-card>
+    <h2
+      slot="title"
+      class="slds-card__header-title slds-grid slds-grid_vertical-align-center"
+    >
+      <lightning-icon
+        icon-name="utility:bug"
+        size="small"
+        alternative-text=""
+        aria-hidden="true"
+        class="slds-var-m-right_x-small"
+      ></lightning-icon>
+      <span class="slds-text-heading_small">{heading}</span>
+    </h2>
+
+    <div class="slds-var-p-horizontal_medium slds-var-p-bottom_medium">
+      <!-- Upload -->
+      <template if:true={showUpload}>
+        <p class="slds-text-body_regular slds-var-m-bottom_small">
+          {introduction}
+        </p>
+        <!--
+          No record-id: the customer is not on a record here, and omitting it
+          keeps the uploaded log private to the authenticated user who sent it.
+        -->
+        <lightning-file-upload
+          label="Upload your log file"
+          name="portalLogUpload"
+          accept={acceptedFormats}
+          onuploadfinished={handleUploadFinished}
+        ></lightning-file-upload>
+        <p
+          class="slds-text-body_small slds-text-color_weak slds-var-m-top_x-small"
+        >
+          Accepts .log, .txt, .out, and .err up to 1 MB.
+        </p>
+      </template>
+
+      <!-- Uploaded file -->
+      <template if:true={showFileCard}>
+        <div
+          class="slds-box slds-box_x-small slds-var-m-bottom_small log-filecard"
+        >
+          <div class="slds-grid slds-grid_vertical-align-center slds-wrap">
+            <lightning-icon
+              icon-name="doctype:txt"
+              size="small"
+              alternative-text="Log file"
+            ></lightning-icon>
+            <div class="slds-col slds-var-m-left_x-small slds-grow">
+              <p class="slds-text-body_regular slds-text-title_bold">
+                {fileName}
+              </p>
+              <template if:true={digestSummary}>
+                <p class="slds-text-body_small slds-text-color_weak">
+                  {digestSummary}
+                </p>
+              </template>
+            </div>
+            <lightning-button
+              label="Analyze"
+              variant="brand"
+              disabled={analyzeDisabled}
+              onclick={handleAnalyze}
+              class="slds-var-m-left_x-small"
+            ></lightning-button>
+            <lightning-button
+              label="Start over"
+              variant="neutral"
+              disabled={isBusy}
+              onclick={handleStartOver}
+              class="slds-var-m-left_xx-small"
+            ></lightning-button>
+          </div>
+        </div>
+      </template>
+
+      <!--
+        Scoped notification rather than slds-notify_alert: this failure belongs to
+        the component, not the page, and the alert blueprint is a page-level bar.
+      -->
+      <template if:true={errorMessage}>
+        <div
+          class="slds-scoped-notification slds-media slds-media_center slds-theme_error slds-var-m-bottom_small"
+          role="alert"
+        >
+          <div class="slds-media__figure">
+            <lightning-icon
+              icon-name="utility:error"
+              variant="inverse"
+              size="small"
+              alternative-text="Error"
+            ></lightning-icon>
+          </div>
+          <div class="slds-media__body">
+            <p>{errorMessage}</p>
+          </div>
+        </div>
+      </template>
+
+      <!-- Staged progress -->
+      <template if:true={isBusy}>
+        <ul class="slds-var-m-bottom_small" aria-live="polite">
+          <template for:each={stages} for:item="stage">
+            <li key={stage.key} class={stage.itemClass}>
+              <div class="slds-grid slds-grid_vertical-align-center">
+                <template if:true={stage.running}>
+                  <div class="log-stage__spinner">
+                    <lightning-spinner
+                      size="xx-small"
+                      variant="brand"
+                      alternative-text="Working"
+                    ></lightning-spinner>
+                  </div>
+                </template>
+                <template if:false={stage.running}>
+                  <lightning-icon
+                    icon-name={stage.iconName}
+                    size="xx-small"
+                    alternative-text=""
+                  ></lightning-icon>
+                </template>
+                <span class="slds-var-m-left_small slds-text-body_regular"
+                  >{stage.label}</span
+                >
+              </div>
+            </li>
+          </template>
+        </ul>
+      </template>
+
+      <!-- Triage -->
+      <template if:true={showTriage}>
+        <div class="slds-box slds-box_xx-small slds-var-m-bottom_small">
+          <div class="slds-grid slds-wrap slds-grid_vertical-align-center">
+            <h3 class="slds-text-heading_x-small slds-grow">
+              {triageResult.signature}
+            </h3>
+            <lightning-badge
+              label={triageResult.component}
+              class="slds-var-m-left_xx-small"
+            ></lightning-badge>
+            <lightning-badge
+              label={triageResult.severity}
+              class={severityClass}
+            ></lightning-badge>
+          </div>
+          <p class="slds-text-body_regular slds-var-m-top_x-small">
+            {triageResult.summary}
+          </p>
+
+          <template if:true={triageResult.evidence.length}>
+            <p
+              class="slds-text-title_caps slds-text-color_weak slds-var-m-top_small slds-var-m-bottom_xx-small"
+            >
+              From your log
+            </p>
+            <template for:each={triageResult.evidence} for:item="line">
+              <pre key={line} class="log-code log-code_evidence">{line}</pre>
+            </template>
+          </template>
+
+          <lightning-button
+            label={digestToggleLabel}
+            variant="base"
+            onclick={handleToggleDigest}
+            class="slds-var-m-top_x-small"
+          ></lightning-button>
+          <template if:true={showDigest}>
+            <pre class="log-code log-code_digest">
+{triageResult.digest.preview}</pre
+            >
+          </template>
+        </div>
+      </template>
+
+      <!--
+        Read-only on the portal. A rep can untick an article and re-run to show
+        that the grounding is real; for a customer that is just a way to make the
+        answer worse, so the matches are shown but not editable.
+      -->
+      <template if:true={hasArticles}>
+        <p
+          class="slds-text-title_caps slds-text-color_weak slds-var-m-bottom_xx-small"
+        >
+          Guides we checked
+        </p>
+        <ul class="slds-var-m-bottom_small">
+          <template for:each={articles} for:item="article">
+            <li key={article.externalId} class="log-article">
+              <p class="slds-text-body_regular">{article.title}</p>
+              <span class="slds-assistive-text">{article.matchLabel}</span>
+              <lightning-progress-bar
+                value={article.matchPercent}
+                size="small"
+              ></lightning-progress-bar>
+            </li>
+          </template>
+        </ul>
+      </template>
+
+      <!-- Analysis -->
+      <template if:true={showAnalysis}>
+        <div class="slds-box slds-box_x-small log-analysis">
+          <div class="slds-grid slds-grid_vertical-align-center slds-wrap">
+            <h3 class="slds-text-heading_small slds-grow">What went wrong</h3>
+            <lightning-badge
+              label={confidenceLabel}
+              class={confidenceClass}
+            ></lightning-badge>
+          </div>
+          <p class="slds-text-body_regular slds-var-m-top_xx-small">
+            {analysis.rootCause}
+          </p>
+          <p
+            class="slds-text-body_small slds-text-color_weak slds-var-m-top_xx-small"
+          >
+            {analysis.confidenceReason}
+          </p>
+
+          <h3 class="slds-text-heading_small slds-var-m-top_medium">
+            What to try
+          </h3>
+          <ol class="log-steps">
+            <template for:each={decoratedSteps} for:item="step">
+              <li key={step.position} class="log-step">
+                <div class="slds-grid slds-grid_vertical-align-center">
+                  <span class="log-step__number">{step.position}</span>
+                  <span
+                    class="slds-text-title_bold slds-var-m-left_x-small slds-grow"
+                    >{step.action}</span
+                  >
+                </div>
+                <p class="slds-text-body_regular slds-var-m-top_xx-small">
+                  {step.detail}
+                </p>
+                <template if:true={step.hasCommand}>
+                  <div class="log-command">
+                    <pre class="log-code">{step.command}</pre>
+                    <lightning-button-icon
+                      icon-name="utility:copy_to_clipboard"
+                      variant="bare"
+                      alternative-text="Copy command"
+                      title="Copy command"
+                      data-copy={step.command}
+                      onclick={handleCopy}
+                    ></lightning-button-icon>
+                  </div>
+                </template>
+                <p class="slds-text-body_small slds-text-color_weak">
+                  Expected: {step.expected}
+                </p>
+              </li>
+            </template>
+          </ol>
+
+          <template if:true={copyNotice}>
+            <p
+              class="slds-text-body_small slds-text-color_weak slds-var-m-top_x-small"
+              aria-live="polite"
+            >
+              {copyNotice}
+            </p>
+          </template>
+
+          <template if:true={hasCitations}>
+            <h3 class="slds-text-heading_small slds-var-m-top_medium">
+              Based on
+            </h3>
+            <ul class="slds-list_dotted">
+              <template for:each={analysis.citedArticles} for:item="cited">
+                <li key={cited.externalId} class="slds-text-body_small">
+                  {cited.title}
+                </li>
+              </template>
+            </ul>
+          </template>
+
+          <p
+            class="slds-text-body_small slds-text-color_weak slds-var-m-top_medium"
+          >
+            Generated by {analysis.modelUsed} from your log and the guides above.
+          </p>
+        </div>
+      </template>
+    </div>
+  </lightning-card>
+</template>
