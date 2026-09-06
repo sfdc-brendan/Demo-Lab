@@ -1,0 +1,76 @@
+{
+  "dtoField": "slotsJSON",
+  "notes": "The payload of each state is what gets JSON.serialize'd into AppointmentSlotsCardData.slotsJSON. The 'default' state is what AppointmentSlotsCardDemo returns. Selection is local component state, not payload data — 'soonest' only flags the badge, it does not preselect.",
+  "states": [
+    {
+      "id": "default",
+      "label": "Windows available",
+      "description": "The main case: five open windows across three business days. Monday morning is missing because it is already booked — availability with a hole in it is what a real scheduling engine returns, and it shows the rep is picking from what is left rather than from a grid.",
+      "payload": {
+        "slots": [
+          {
+            "slotId": "2026-09-07_Afternoon",
+            "isoDate": "2026-09-07",
+            "window": "Afternoon",
+            "dayName": "Monday",
+            "dateLabel": "Sep 7",
+            "windowLabel": "1:00 PM - 5:00 PM",
+            "soonest": true
+          },
+          {
+            "slotId": "2026-09-08_Morning",
+            "isoDate": "2026-09-08",
+            "window": "Morning",
+            "dayName": "Tuesday",
+            "dateLabel": "Sep 8",
+            "windowLabel": "8:00 AM - 12:00 PM"
+          },
+          {
+            "slotId": "2026-09-08_Afternoon",
+            "isoDate": "2026-09-08",
+            "window": "Afternoon",
+            "dayName": "Tuesday",
+            "dateLabel": "Sep 8",
+            "windowLabel": "1:00 PM - 5:00 PM"
+          },
+          {
+            "slotId": "2026-09-09_Morning",
+            "isoDate": "2026-09-09",
+            "window": "Morning",
+            "dayName": "Wednesday",
+            "dateLabel": "Sep 9",
+            "windowLabel": "8:00 AM - 12:00 PM"
+          },
+          {
+            "slotId": "2026-09-09_Afternoon",
+            "isoDate": "2026-09-09",
+            "window": "Afternoon",
+            "dayName": "Wednesday",
+            "dateLabel": "Sep 9",
+            "windowLabel": "1:00 PM - 5:00 PM"
+          }
+        ],
+        "slotCount": 5
+      }
+    },
+    {
+      "id": "empty",
+      "label": "Fully booked",
+      "description": "Every window is taken. Worth designing deliberately — a rep who gets a red error box here thinks the system is down, when what they actually need is the next thing to say. The optional 'message' and 'hint' keys override the component's defaults, so a real service can name the next opening it found.",
+      "payload": {
+        "slots": [],
+        "slotCount": 0,
+        "message": "No technician visit windows open in the next three business days.",
+        "hint": "The next opening is Monday, Sep 14. Offer that, or take a callback number and reach out if a cancellation frees something up sooner."
+      }
+    },
+    {
+      "id": "error",
+      "label": "Error",
+      "description": "The sentinel shape. The service returns this instead of null so the card still mounts and can say what went wrong.",
+      "payload": {
+        "error": "Could not reach the scheduling service. Try again in a moment."
+      }
+    }
+  ]
+}

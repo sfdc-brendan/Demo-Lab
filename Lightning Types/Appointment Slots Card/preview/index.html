@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Appointment Slots Card preview</title>
+    <!-- frame.css stubs the platform. card.css is the component's real stylesheet. -->
+    <link rel="stylesheet" href="frame.css">
+    <link rel="stylesheet" href="card.css">
+</head>
+<body>
+
+<!-- Windows available ---------------------------------------------------- -->
+<div data-state="default" class="is-active">
+    <div class="lc-card sr-card">
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+
+            <div class="sr-head">
+                <span class="sr-head__title">Technician availability</span>
+            </div>
+            <p class="sr-sub">Next three business days at the service address.</p>
+
+            <!-- Monday afternoon is shown already selected: picking the window
+                 is the whole point of the card, so the default view should be
+                 mid-interaction rather than untouched. -->
+            <div class="sr-slots slds-m-top_small">
+                <button type="button" class="sr-slot sr-slot_selected">
+                    <span class="sr-slot__day">
+                        Monday
+                        <span class="sr-slot__date">Sep 7</span>
+                    </span>
+                    <span class="sr-slot__window">1:00 PM - 5:00 PM</span>
+                    <span class="sr-slot__badge">Soonest</span>
+                </button>
+                <button type="button" class="sr-slot">
+                    <span class="sr-slot__day">
+                        Tuesday
+                        <span class="sr-slot__date">Sep 8</span>
+                    </span>
+                    <span class="sr-slot__window">8:00 AM - 12:00 PM</span>
+                </button>
+                <button type="button" class="sr-slot">
+                    <span class="sr-slot__day">
+                        Tuesday
+                        <span class="sr-slot__date">Sep 8</span>
+                    </span>
+                    <span class="sr-slot__window">1:00 PM - 5:00 PM</span>
+                </button>
+                <button type="button" class="sr-slot">
+                    <span class="sr-slot__day">
+                        Wednesday
+                        <span class="sr-slot__date">Sep 9</span>
+                    </span>
+                    <span class="sr-slot__window">8:00 AM - 12:00 PM</span>
+                </button>
+                <button type="button" class="sr-slot">
+                    <span class="sr-slot__day">
+                        Wednesday
+                        <span class="sr-slot__date">Sep 9</span>
+                    </span>
+                    <span class="sr-slot__window">1:00 PM - 5:00 PM</span>
+                </button>
+            </div>
+
+            <div class="sr-actions slds-m-top_medium">
+                <button type="button" class="lc-button lc-button_brand" data-sticky-label="Appointment booked">Book Monday afternoon</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Fully booked --------------------------------------------------------- -->
+<div data-state="empty">
+    <div class="lc-card sr-card">
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+            <div class="sr-empty">
+                <div class="sr-empty__title">No technician visit windows open in the next three business days.</div>
+                <div class="sr-empty__hint">The next opening is Monday, Sep 14. Offer that, or take a callback number and reach out if a cancellation frees something up sooner.</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Error ---------------------------------------------------------------- -->
+<div data-state="error">
+    <div class="lc-card sr-card">
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+            <div class="sr-error">Could not reach the scheduling service. Try again in a moment.</div>
+        </div>
+    </div>
+</div>
+
+<script src="preview.js"></script>
+</body>
+</html>

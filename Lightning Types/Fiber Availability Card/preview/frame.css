@@ -1,0 +1,149 @@
+/**
+ * Preview-only chrome.
+ *
+ * card.css next to this file is a verbatim copy of the component's real
+ * stylesheet and must stay that way. Everything the platform would normally
+ * supply — lightning-card, lightning-button, and the handful of SLDS spacing
+ * utilities the template uses — is stubbed here instead, so the simulation can
+ * run as plain HTML without pulling in SLDS or the base components.
+ */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+}
+
+body {
+    font-family: 'Salesforce Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: #181818;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ---- lightning-card stand-in ------------------------------------------- */
+
+.lc-card {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+    padding-top: 0.75rem;
+    overflow: hidden;
+}
+
+/* ---- SLDS spacing utilities actually used by the template --------------- */
+
+.slds-p-horizontal_medium {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.slds-p-bottom_medium {
+    padding-bottom: 1rem;
+}
+
+.slds-m-top_medium {
+    margin-top: 1rem;
+}
+
+/* SLDS zeroes block margins, and the card's own stylesheet sets every gap it
+   wants. Without this the browser default on <p> adds spacing the org doesn't
+   have. */
+p {
+    margin: 0;
+}
+
+/* ---- lightning-button stand-in ------------------------------------------ */
+
+.lc-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2rem;
+    padding: 0 0.75rem;
+    border-radius: 0.25rem;
+    border: 1px solid #c9c9c9;
+    background: #fff;
+    color: #0176d3;
+    font-family: inherit;
+    font-size: 0.8125rem;
+    line-height: 1.2;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.lc-button:hover:not(:disabled) {
+    background: #f3f3f3;
+}
+
+.lc-button_brand {
+    background: #0176d3;
+    border-color: #0176d3;
+    color: #fff;
+}
+
+.lc-button_brand:hover:not(:disabled) {
+    background: #014486;
+    border-color: #014486;
+}
+
+.lc-button:disabled {
+    background: #f3f3f3;
+    border-color: #e5e5e5;
+    color: #939393;
+    cursor: default;
+}
+
+/* Momentary confirmation after a click, so the preview reacts without
+   pretending to have actually sent anything. */
+.lc-button_flash {
+    background: #ebfbef;
+    border-color: #2e844a;
+    color: #1c6b3f;
+}
+
+/* ---- lightning-icon stand-ins ------------------------------------------
+   Drawn in CSS rather than fetched, so the simulation stays offline. Shapes
+   only, at the size the real sprite would occupy. */
+
+.lc-icon {
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.lc-icon_utility {
+    width: 0.875rem;
+    height: 0.875rem;
+    border-radius: 0.125rem;
+    background: #706e6b;
+}
+
+.lc-icon_forward {
+    width: 0;
+    height: 0;
+    border-top: 0.3125rem solid transparent;
+    border-bottom: 0.3125rem solid transparent;
+    border-left: 0.4375rem solid #014486;
+}
+
+.lc-icon_inverse {
+    width: 0.625rem;
+    height: 0.625rem;
+    border-radius: 0.125rem;
+    background: #fff;
+}
+
+/* ---- state visibility ---------------------------------------------------- */
+
+[data-state] {
+    display: none;
+}
+
+[data-state].is-active {
+    display: block;
+}

@@ -1,0 +1,116 @@
+<template>
+    <lightning-card class="sr-card">
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+
+            <template if:true={hasError}>
+                <div class="sr-error">{errorMessage}</div>
+            </template>
+
+            <template if:true={noProfile}>
+                <div class="sr-empty">
+                    <div class="sr-empty__title">
+                        <span class="sr-empty__dot"></span>
+                        <span>No customer profile found for {searchedFor}</span>
+                    </div>
+                    <div class="sr-empty__hint">
+                        Ask for an account number or the email address on the account, then try again.
+                    </div>
+                </div>
+            </template>
+
+            <template if:true={profileFound}>
+
+                <div class="sr-head">
+                    <template if:true={hasPhoto}>
+                        <img src={photoUrl} alt={customerName} class="sr-avatar">
+                    </template>
+                    <template if:false={hasPhoto}>
+                        <span class="sr-avatar sr-avatar_initials">{initials}</span>
+                    </template>
+                    <div class="sr-head__body">
+                        <div class="sr-head__name">{customerName}</div>
+                        <div class="sr-head__meta">Acct {accountNumber} &middot; {tier}</div>
+                    </div>
+                </div>
+
+                <template if:true={alertActive}>
+                    <div class="sr-alert slds-m-top_medium">
+                        <span class="sr-alert__dot"></span>
+                        <span>{alertMessage}</span>
+                    </div>
+                </template>
+
+                <dl class="sr-grid slds-m-top_medium">
+                    <div class="sr-grid__item">
+                        <dt>Plan</dt>
+                        <dd>{plan}</dd>
+                    </div>
+                    <div class="sr-grid__item">
+                        <dt>Customer since</dt>
+                        <dd>{customerSince} <span class="sr-muted">({tenure})</span></dd>
+                    </div>
+                    <div class="sr-grid__item">
+                        <dt>Phone</dt>
+                        <dd>{phone}</dd>
+                    </div>
+                    <div class="sr-grid__item">
+                        <dt>Email</dt>
+                        <dd>{email}</dd>
+                    </div>
+                    <div class="sr-grid__item">
+                        <dt>Address</dt>
+                        <dd>{address}</dd>
+                    </div>
+                    <div class="sr-grid__item">
+                        <dt>Prefers</dt>
+                        <dd>{preferredChannel}</dd>
+                    </div>
+                </dl>
+
+                <template if:true={hasTags}>
+                    <div class="sr-tags slds-m-top_medium">
+                        <template for:each={tags} for:item="tag">
+                            <span key={tag.id} class="sr-tag">{tag.label}</span>
+                        </template>
+                    </div>
+                </template>
+
+                <div class="sr-metrics slds-m-top_medium">
+                    <div class="sr-metric">
+                        <span class="sr-metric__value">{healthScore}</span>
+                        <span class="sr-metric__label">Health</span>
+                    </div>
+                    <div class="sr-metric">
+                        <span class="sr-metric__value">{csat}</span>
+                        <span class="sr-metric__label">CSAT</span>
+                    </div>
+                    <div class="sr-metric">
+                        <span class={churnRiskClass}>{churnRisk}</span>
+                        <span class="sr-metric__label">Churn risk</span>
+                    </div>
+                </div>
+
+                <div class="sr-actions slds-m-top_medium">
+                    <lightning-button
+                        variant="brand"
+                        label={greetLabel}
+                        data-message={greetMessage}
+                        disabled={replySent}
+                        onclick={handleGreet}>
+                    </lightning-button>
+                    <lightning-button
+                        label="Recent cases"
+                        data-message={casesMessage}
+                        onclick={handlePost}>
+                    </lightning-button>
+                    <lightning-button
+                        label="Account history"
+                        data-message={historyMessage}
+                        onclick={handlePost}>
+                    </lightning-button>
+                </div>
+
+            </template>
+        </div>
+    </lightning-card>
+</template>

@@ -1,0 +1,123 @@
+<template>
+    <lightning-card class="sr-card">
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+
+            <template if:true={hasError}>
+                <div class="sr-error">{errorMessage}</div>
+            </template>
+
+            <template if:true={noGateway}>
+                <div class="sr-none">
+                    <div class="sr-none__title">No home gateway is registered on this account.</div>
+                    <div class="sr-none__hint">If the customer supplies their own router, this
+                        check can't reach it. Confirm the make and model with them before
+                        troubleshooting.</div>
+                </div>
+            </template>
+
+            <template if:true={gatewayFound}>
+
+                <div class="sr-head">
+                    <span class="sr-head__title">Gateway health</span>
+                    <span class="sr-stamp">{restartStamp}</span>
+                </div>
+
+                <div class="sr-device">
+                    <template if:true={imageUrl}>
+                        <img class="sr-device__thumb" src={imageUrl} alt={deviceName} />
+                    </template>
+                    <template if:false={imageUrl}>
+                        <span class="sr-device__glyph"></span>
+                    </template>
+                    <div class="sr-device__body">
+                        <div class="sr-device__name">{deviceName}</div>
+                        <div class="sr-device__serial">{serialNumber}</div>
+                    </div>
+                    <span class={healthClass}>{deviceHealth}</span>
+                </div>
+
+                <div class={verdictClass}>{verdict}</div>
+
+                <p class="sr-summary">{summary}</p>
+
+                <div class="sr-metrics slds-m-top_medium">
+                    <template for:each={metrics} for:item="m">
+                        <div key={m.id} class="sr-metric">
+                            <div class="sr-metric__row">
+                                <span class="sr-metric__label">{m.label}</span>
+                                <span class={m.valueClass}>{m.value}</span>
+                            </div>
+                            <div class="sr-bar">
+                                <span class={m.barClass} style={m.barStyle}></span>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+
+                <template if:true={hasRebootHistory}>
+                    <div class="sr-reboots slds-m-top_medium">
+                        <div class="sr-reboots__label">Restarted itself</div>
+                        <template for:each={rebootHistory} for:item="r">
+                            <div key={r.id} class="sr-reboot">
+                                <span class="sr-reboot__when">{r.when}</span>
+                                <span class="sr-reboot__reason">{r.reason}</span>
+                            </div>
+                        </template>
+                        <template if:true={rebootMore}>
+                            <div class="sr-reboots__more">{rebootMore}</div>
+                        </template>
+                    </div>
+                </template>
+
+                <template if:true={rebootWarning}>
+                    <div class="sr-flag slds-m-top_medium">
+                        <lightning-icon
+                            icon-name="utility:warning"
+                            size="xx-small"
+                            variant="warning">
+                        </lightning-icon>
+                        <span class="sr-flag__text">{rebootText}</span>
+                    </div>
+                </template>
+
+                <div class="sr-reco slds-m-top_medium">
+                    <div class="sr-reco__label">Recommended next step</div>
+                    <p class="sr-reco__text">{recommendation}</p>
+                </div>
+
+                <div class="sr-actions slds-m-top_medium">
+                    <template if:true={canRestart}>
+                        <lightning-button
+                            variant="brand"
+                            label={restartLabel}
+                            data-message={restartMessage}
+                            disabled={restartRequested}
+                            onclick={handleRestart}>
+                        </lightning-button>
+                    </template>
+                    <template if:true={showReplace}>
+                        <lightning-button
+                            label="Order replacement"
+                            data-message={replaceMessage}
+                            onclick={handlePost}>
+                        </lightning-button>
+                    </template>
+                    <template if:true={showRecheck}>
+                        <lightning-button
+                            label="Recheck gateway"
+                            data-message={recheckMessage}
+                            onclick={handlePost}>
+                        </lightning-button>
+                    </template>
+                    <lightning-button
+                        label={explainLabel}
+                        data-message={explainMessage}
+                        disabled={replySent}
+                        onclick={handleExplain}>
+                    </lightning-button>
+                </div>
+
+            </template>
+        </div>
+    </lightning-card>
+</template>

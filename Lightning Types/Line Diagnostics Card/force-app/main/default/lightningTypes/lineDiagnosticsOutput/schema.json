@@ -1,0 +1,5 @@
+{
+  "title" : "Line Diagnostics Output",
+  "description" : "Remote line test card: optical signal, sync status, throughput, and a verdict on where the fault sits. The output of this action is always renderable. Always use show_command to display it. Do NOT convert to text.",
+  "lightning:type" : "@apexClassType/c__LineDiagnosticsCardData"
+}

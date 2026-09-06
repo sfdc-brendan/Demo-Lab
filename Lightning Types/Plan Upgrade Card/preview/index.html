@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Plan Upgrade Card preview</title>
+    <!-- frame.css stubs the platform. card.css is the component's real stylesheet. -->
+    <link rel="stylesheet" href="frame.css">
+    <link rel="stylesheet" href="card.css">
+</head>
+<body>
+
+<!-- Upgrade available ---------------------------------------------------- -->
+<div data-state="default" class="is-active">
+    <div class="lc-card sr-card">
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+
+            <div class="sr-head">
+                <div class="sr-head__title">
+                    <span class="lc-icon"></span>
+                    <span>Plan upgrade</span>
+                </div>
+                <span class="sr-promo">Install fee waived</span>
+            </div>
+
+            <div class="sr-compare">
+
+                <div class="sr-plan">
+                    <div class="sr-plan__tag">Current</div>
+                    <div class="sr-plan__name">Fiber 500</div>
+                    <div class="sr-plan__price">$79.99<span class="sr-plan__per">/mo</span></div>
+                    <ul class="sr-plan__features">
+                        <li>500 Mbps download / 100 Mbps upload</li>
+                        <li>Whole-home WiFi included</li>
+                        <li>Standard support</li>
+                    </ul>
+                </div>
+
+                <div class="sr-plan sr-plan_recommended">
+                    <div class="sr-plan__tag sr-plan__tag_rec">Recommended</div>
+                    <div class="sr-plan__name">Fiber 1 Gig</div>
+                    <div class="sr-plan__price">$99.99<span class="sr-plan__per">/mo</span></div>
+                    <ul class="sr-plan__features">
+                        <li>1 Gbps download / 500 Mbps upload</li>
+                        <li>Whole-home WiFi 6E mesh</li>
+                        <li>Priority 24/7 support</li>
+                        <li>Free professional install</li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="sr-delta">
+                <span class="sr-delta__value">+$20.00</span>
+                <span class="sr-delta__label">per month &middot; Faster upload speeds and priority support, with the install fee waived.</span>
+            </div>
+
+            <div class="sr-actions slds-m-top_medium">
+                <button type="button" class="lc-button lc-button_brand" data-sticky-label="Upgrade requested">Upgrade plan</button>
+                <button type="button" class="lc-button" data-flash-label="Copied to reply">Explain the difference</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Already on the top plan ----------------------------------------------- -->
+<div data-state="empty">
+    <div class="lc-card sr-card">
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+
+            <div class="sr-head">
+                <div class="sr-head__title">
+                    <span class="lc-icon"></span>
+                    <span>Plan upgrade</span>
+                </div>
+            </div>
+
+            <div class="sr-toptier">Fiber 2 Gig is the fastest residential plan available at this address.</div>
+
+            <div class="sr-compare">
+
+                <div class="sr-plan">
+                    <div class="sr-plan__tag">Current</div>
+                    <div class="sr-plan__name">Fiber 2 Gig</div>
+                    <div class="sr-plan__price">$129.99<span class="sr-plan__per">/mo</span></div>
+                    <ul class="sr-plan__features">
+                        <li>2 Gbps download / 1 Gbps upload</li>
+                        <li>Whole-home WiFi 6E mesh</li>
+                        <li>Priority 24/7 support</li>
+                        <li>Static IP included</li>
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Error ---------------------------------------------------------------- -->
+<div data-state="error">
+    <div class="lc-card sr-card">
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+            <div class="sr-error">Could not reach the plan catalog. Try again in a moment.</div>
+        </div>
+    </div>
+</div>
+
+<script src="preview.js"></script>
+</body>
+</html>

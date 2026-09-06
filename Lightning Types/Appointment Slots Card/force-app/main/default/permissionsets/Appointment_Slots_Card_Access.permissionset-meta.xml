@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Appointment Slots Card Access</label>
+    <description>Apex access for the appointment slots Lightning Type card. Assign to whoever the agent runs as: the bot user for an Einstein Service Agent, or the end users for an Employee Agent.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+
+    <classAccesses>
+        <apexClass>AppointmentSlotsCardData</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>AppointmentSlotsCardDemo</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+</PermissionSet>

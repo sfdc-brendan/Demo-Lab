@@ -1,0 +1,47 @@
+{
+  "id": "router-reset",
+  "title": "Router Health & Reset",
+  "blurb": "Gateway diagnostics — latency, jitter, packet loss, channel congestion — with the remote restart attached.",
+  "description": "The diagnosis and the fix in the same card. Seven live readings on the customer's home gateway — status, WAN session, latency, jitter, packet loss, Wi-Fi channel congestion, connected devices — each color-coded against spec with a fill bar, then the unit's own self-restart log showing it rebooting in the small hours every other day, then a plain-language recommendation. Because the remedy sits under the evidence, the rep sends the restart from the card that just justified it instead of reading numbers aloud and going looking for the action. The restart is one-shot and confirms itself; a replacement offer rides alongside it, because a restart is triage when the hardware is the problem.",
+  "pattern": "device-health-action",
+  "patternLabel": "Device health + action",
+  "channels": ["lightningDesktopGenAi"],
+  "industries": ["Communications", "Utilities", "Energy", "Media", "Manufacturing"],
+  "tags": ["diagnostics", "device health", "metrics", "remote action", "troubleshooting", "write-back"],
+  "previewMode": "simulated",
+  "previewNarrative": "The line into the home is clean, but the gateway is losing packets on a congested Wi-Fi channel and has been restarting itself for weeks. A network-side restart should clear it today.",
+  "screenshot": null,
+  "featured": false,
+
+  "lwc": "routerResetCard",
+  "lightningType": "routerResetOutput",
+  "dtoClass": "RouterResetCardData",
+  "dtoField": "routerJSON",
+  "actionClass": "RouterResetCardDemo",
+  "actionLabel": "Get Router Health (Demo)",
+  "displayableOutput": "routerHealth",
+  "narrativeOutput": "narrative",
+  "permissionSet": "Router_Reset_Card_Access",
+
+  "sourceDirs": ["Lightning Types/Router Reset Card"],
+
+  "prerequisites": [],
+  "deployedIndicators": [
+    { "type": "LightningComponentBundle", "developerName": "routerResetCard" }
+  ],
+
+  "instructionSnippet": "CRITICAL: After the \"Get Router Health\" action completes, you MUST present the routerHealth output to the user. ALWAYS show the structured action output. Do NOT rewrite, restate, or summarize it as plain text — the interactive UI is contained in the routerHealth output and must be displayed as-is. Keep your text reply to 1-2 sentences of coaching color.",
+
+  "codeFiles": [
+    "force-app/main/default/classes/RouterResetCardData.cls",
+    "force-app/main/default/classes/RouterResetCardDemo.cls",
+    "force-app/main/default/lightningTypes/routerResetOutput/schema.json",
+    "force-app/main/default/lightningTypes/routerResetOutput/lightningDesktopGenAi/renderer.json",
+    "force-app/main/default/lwc/routerResetCard/routerResetCard.html",
+    "force-app/main/default/lwc/routerResetCard/routerResetCard.js",
+    "force-app/main/default/lwc/routerResetCard/routerResetCard.css",
+    "force-app/main/default/lwc/routerResetCard/routerResetCard.js-meta.xml",
+    "force-app/main/default/permissionsets/Router_Reset_Card_Access.permissionset-meta.xml",
+    "states.json"
+  ]
+}

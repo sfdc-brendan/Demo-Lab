@@ -1,0 +1,5 @@
+{
+  "title" : "Plan Upgrade Output",
+  "description" : "Plan upgrade comparison card: current plan, recommended plan, speeds, monthly price, and the price difference. The output of this action is always renderable. Always use show_command to display it. Do NOT convert to text.",
+  "lightning:type" : "@apexClassType/c__PlanUpgradeCardData"
+}

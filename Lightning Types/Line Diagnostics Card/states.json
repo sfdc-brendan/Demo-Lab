@@ -1,0 +1,61 @@
+{
+  "dtoField": "diagnosticsJSON",
+  "notes": "The payload of each state is what gets JSON.serialize'd into LineDiagnosticsCardData.diagnosticsJSON. The 'default' state is what LineDiagnosticsCardDemo returns. Each metric carries a 'state' of ok, warn, or fault (which colours the value and the bar) and a 'bar' fill from 0-100, which is a visual scale rather than a unit.",
+  "states": [
+    {
+      "id": "default",
+      "label": "Fault found",
+      "description": "The main case: a mix of failed, marginal, and healthy readings, with a verdict that says which side of the demarcation point the problem is on. Exercises all three metric styles at once, which is why it is the default.",
+      "payload": {
+        "testedAt": "Today, 2:58 PM",
+        "verdict": "Fault is upstream of the home",
+        "verdictState": "fault",
+        "summary": "The premises network is healthy. No optical signal is reaching the ONT, which places the fault in the fiber plant rather than in the home.",
+        "recommendation": "No customer action required. This address is covered by outage INC-48213. Do not ask the customer to reset equipment — it will restore on its own.",
+        "metrics": [
+          { "label": "Optical Rx power", "value": "No signal", "state": "fault", "bar": 0 },
+          { "label": "ONT sync status", "value": "Down", "state": "fault", "bar": 0 },
+          { "label": "Gateway uptime", "value": "3 hr 7 min", "state": "warn", "bar": 35 },
+          { "label": "Devices on home WiFi", "value": "6 connected", "state": "ok", "bar": 100 },
+          { "label": "Last recorded throughput", "value": "934 Mbps", "state": "ok", "bar": 94 }
+        ]
+      }
+    },
+    {
+      "id": "all-clear",
+      "label": "Line healthy",
+      "description": "Every reading in spec. A genuinely different rendering — green verdict, five full bars — and a different conversation: the line is fine, so the problem is somewhere the line test can't see, and the recommendation has to point the rep there instead of at the network.",
+      "payload": {
+        "testedAt": "Today, 3:06 PM",
+        "verdict": "Line is healthy",
+        "verdictState": "ok",
+        "summary": "Optical signal, sync, and throughput are all within normal range for this service tier.",
+        "recommendation": "No line fault detected. If the customer still reports slow speeds, check in-home WiFi placement or the mesh extender before booking a technician.",
+        "metrics": [
+          { "label": "Optical Rx power", "value": "-18.2 dBm", "state": "ok", "bar": 82 },
+          { "label": "ONT sync status", "value": "Up", "state": "ok", "bar": 100 },
+          { "label": "Gateway uptime", "value": "41 days", "state": "ok", "bar": 100 },
+          { "label": "Devices on home WiFi", "value": "6 connected", "state": "ok", "bar": 100 },
+          { "label": "Last recorded throughput", "value": "941 Mbps", "state": "ok", "bar": 95 }
+        ]
+      }
+    },
+    {
+      "id": "empty",
+      "label": "No readings",
+      "description": "The test ran but nothing came back, which is not the same thing as the test failing. Worth designing deliberately — an unprovisioned or unpowered ONT is common enough that the rep will see this often, and the card has to say so without implying the line passed.",
+      "payload": {
+        "testRan": false,
+        "reason": "The remote test could not reach the gateway at this address, so there are no readings to report. The ONT may be unpowered, or the service may not be provisioned yet."
+      }
+    },
+    {
+      "id": "error",
+      "label": "Error",
+      "description": "The sentinel shape. The service returns this instead of null so the card still mounts and can say what went wrong.",
+      "payload": {
+        "error": "Could not reach the line test service. Try again in a moment."
+      }
+    }
+  ]
+}

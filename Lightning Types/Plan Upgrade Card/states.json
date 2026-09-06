@@ -1,0 +1,68 @@
+{
+  "dtoField": "upgradeJSON",
+  "notes": "The payload of each state is what gets JSON.serialize'd into PlanUpgradeCardData.upgradeJSON. The 'default' state is what PlanUpgradeCardDemo returns.",
+  "states": [
+    {
+      "id": "default",
+      "label": "Upgrade available",
+      "description": "The main case: the customer's current plan next to the recommended faster one, with the monthly difference called out.",
+      "payload": {
+        "current": {
+          "name": "Fiber 500",
+          "downloadMbps": 500,
+          "uploadMbps": 100,
+          "monthlyPrice": 79.99,
+          "features": [
+            "500 Mbps download / 100 Mbps upload",
+            "Whole-home WiFi included",
+            "Standard support"
+          ]
+        },
+        "recommended": {
+          "name": "Fiber 1 Gig",
+          "downloadMbps": 1000,
+          "uploadMbps": 500,
+          "monthlyPrice": 99.99,
+          "promo": "Free professional install (a $99 value)",
+          "features": [
+            "1 Gbps download / 500 Mbps upload",
+            "Whole-home WiFi 6E mesh",
+            "Priority 24/7 support",
+            "Free professional install"
+          ]
+        },
+        "monthlyIncrease": 20.0,
+        "reason": "Faster upload speeds and priority support, with the install fee waived."
+      }
+    },
+    {
+      "id": "empty",
+      "label": "Already on the top plan",
+      "description": "Nothing to upsell. The card still shows what the customer has and says plainly that it is the fastest plan available, so the rep can close the topic instead of hunting for an offer that doesn't exist. Omitting 'recommended' is what hides the second column, the delta, and both buttons.",
+      "payload": {
+        "current": {
+          "name": "Fiber 2 Gig",
+          "downloadMbps": 2000,
+          "uploadMbps": 1000,
+          "monthlyPrice": 129.99,
+          "features": [
+            "2 Gbps download / 1 Gbps upload",
+            "Whole-home WiFi 6E mesh",
+            "Priority 24/7 support",
+            "Static IP included"
+          ]
+        },
+        "topTier": true,
+        "note": "Fiber 2 Gig is the fastest residential plan available at this address."
+      }
+    },
+    {
+      "id": "error",
+      "label": "Error",
+      "description": "The sentinel shape. The service returns this instead of null so the card still mounts and can say what went wrong.",
+      "payload": {
+        "error": "Could not reach the plan catalog. Try again in a moment."
+      }
+    }
+  ]
+}

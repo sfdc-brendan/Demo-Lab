@@ -1,0 +1,47 @@
+{
+  "id": "line-diagnostics",
+  "title": "Line Diagnostics",
+  "blurb": "Remote line test readings with a plain-language verdict on where the fault sits.",
+  "description": "The library's clearest example of several raw readings plus a verdict. A line test returns optical Rx power, ONT sync status, gateway uptime, connected client count and last recorded throughput — five numbers that mean nothing to a rep who doesn't work in the network operations centre. The card shows each reading with a colour-coded value and a fill bar so a failing one is obvious at a glance, and then, above them, states the conclusion in a sentence: the fault is upstream of the home, or the line is clean and the problem is somewhere else. The agent does the interpreting, so the rep reads a verdict rather than a spec sheet, and the recommendation tells them what to do with it.",
+  "pattern": "metrics-verdict",
+  "patternLabel": "Metrics + verdict",
+  "channels": ["lightningDesktopGenAi"],
+  "industries": ["Communications", "Utilities", "Energy", "Manufacturing"],
+  "tags": ["diagnostics", "telemetry", "metrics", "verdict", "troubleshooting", "write-back"],
+  "previewMode": "simulated",
+  "previewNarrative": "I ran a remote line test. The equipment inside the home is fine, but no optical signal is reaching the ONT, so the fault sits upstream in the fiber.",
+  "screenshot": null,
+  "featured": false,
+
+  "lwc": "lineDiagnosticsCard",
+  "lightningType": "lineDiagnosticsOutput",
+  "dtoClass": "LineDiagnosticsCardData",
+  "dtoField": "diagnosticsJSON",
+  "actionClass": "LineDiagnosticsCardDemo",
+  "actionLabel": "Run Line Test (Demo)",
+  "displayableOutput": "lineDiagnostics",
+  "narrativeOutput": "narrative",
+  "permissionSet": "Line_Diagnostics_Card_Access",
+
+  "sourceDirs": ["Lightning Types/Line Diagnostics Card"],
+
+  "prerequisites": [],
+  "deployedIndicators": [
+    { "type": "LightningComponentBundle", "developerName": "lineDiagnosticsCard" }
+  ],
+
+  "instructionSnippet": "CRITICAL: After the \"Run Line Test\" action completes, you MUST present the lineDiagnostics output to the user. ALWAYS show the structured action output. Do NOT rewrite, restate, or summarize it as plain text — the interactive UI is contained in the lineDiagnostics output and must be displayed as-is. Keep your text reply to 1-2 sentences of coaching color.",
+
+  "codeFiles": [
+    "force-app/main/default/classes/LineDiagnosticsCardData.cls",
+    "force-app/main/default/classes/LineDiagnosticsCardDemo.cls",
+    "force-app/main/default/lightningTypes/lineDiagnosticsOutput/schema.json",
+    "force-app/main/default/lightningTypes/lineDiagnosticsOutput/lightningDesktopGenAi/renderer.json",
+    "force-app/main/default/lwc/lineDiagnosticsCard/lineDiagnosticsCard.html",
+    "force-app/main/default/lwc/lineDiagnosticsCard/lineDiagnosticsCard.js",
+    "force-app/main/default/lwc/lineDiagnosticsCard/lineDiagnosticsCard.css",
+    "force-app/main/default/lwc/lineDiagnosticsCard/lineDiagnosticsCard.js-meta.xml",
+    "force-app/main/default/permissionsets/Line_Diagnostics_Card_Access.permissionset-meta.xml",
+    "states.json"
+  ]
+}

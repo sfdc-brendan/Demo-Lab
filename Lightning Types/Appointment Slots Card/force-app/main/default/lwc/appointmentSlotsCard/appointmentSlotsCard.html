@@ -1,0 +1,55 @@
+<template>
+    <lightning-card class="sr-card">
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+
+            <template if:true={hasError}>
+                <div class="sr-error">{errorMessage}</div>
+            </template>
+
+            <template if:true={noSlots}>
+                <div class="sr-empty">
+                    <div class="sr-empty__title">{emptyMessage}</div>
+                    <div class="sr-empty__hint">{emptyHint}</div>
+                </div>
+            </template>
+
+            <template if:true={hasSlots}>
+
+                <div class="sr-head">
+                    <span class="sr-head__title">Technician availability</span>
+                </div>
+                <p class="sr-sub">Next three business days at the service address.</p>
+
+                <div class="sr-slots slds-m-top_small">
+                    <template for:each={slotRows} for:item="slot">
+                        <button
+                            key={slot.slotId}
+                            type="button"
+                            class={slot.className}
+                            data-slot-id={slot.slotId}
+                            onclick={handleSelect}>
+                            <span class="sr-slot__day">
+                                {slot.dayName}
+                                <span class="sr-slot__date">{slot.dateLabel}</span>
+                            </span>
+                            <span class="sr-slot__window">{slot.windowLabel}</span>
+                            <template if:true={slot.soonest}>
+                                <span class="sr-slot__badge">Soonest</span>
+                            </template>
+                        </button>
+                    </template>
+                </div>
+
+                <div class="sr-actions slds-m-top_medium">
+                    <lightning-button
+                        variant="brand"
+                        label={confirmLabel}
+                        disabled={confirmDisabled}
+                        onclick={handleBook}>
+                    </lightning-button>
+                </div>
+
+            </template>
+        </div>
+    </lightning-card>
+</template>

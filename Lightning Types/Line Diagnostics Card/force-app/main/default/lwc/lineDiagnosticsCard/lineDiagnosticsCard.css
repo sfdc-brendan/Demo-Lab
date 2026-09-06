@@ -1,0 +1,170 @@
+.sr-card {
+    border-radius: 0.5rem;
+}
+
+.sr-error {
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.25rem;
+    background: #fef1ee;
+    color: #8e030f;
+    font-size: 0.8125rem;
+}
+
+/* The "no readings" case is neither good news nor a failure, so it reads
+   neutral — a green panel here would imply the line passed. */
+.sr-none {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.25rem;
+    background: #f3f3f3;
+    color: #444;
+    font-size: 0.8125rem;
+    line-height: 1.45;
+}
+
+.sr-none__dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    border: 2px solid #939393;
+    background: #fff;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    margin-top: 0.3125rem;
+}
+
+.sr-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.sr-head__title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #181818;
+}
+
+.sr-stamp {
+    font-size: 0.6875rem;
+    color: #5c5c5c;
+}
+
+.sr-verdict {
+    margin-top: 0.625rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+}
+
+.sr-verdict_fault {
+    background: #fef1ee;
+    color: #8e030f;
+}
+
+.sr-verdict_ok {
+    background: #ebfbef;
+    color: #1c6b3f;
+}
+
+.sr-summary {
+    margin-top: 0.5rem;
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    color: #444;
+}
+
+.sr-metrics {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+}
+
+.sr-metric__row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.sr-metric__label {
+    font-size: 0.75rem;
+    color: #5c5c5c;
+}
+
+.sr-metric__value {
+    font-size: 0.8125rem;
+    font-weight: 600;
+}
+
+.sr-metric__value_ok {
+    color: #1c6b3f;
+}
+
+.sr-metric__value_warn {
+    color: #8c4b02;
+}
+
+.sr-metric__value_fault {
+    color: #8e030f;
+}
+
+.sr-bar {
+    margin-top: 0.1875rem;
+    height: 0.25rem;
+    border-radius: 999px;
+    background: #ececee;
+    overflow: hidden;
+}
+
+.sr-bar__fill {
+    display: block;
+    height: 100%;
+    border-radius: 999px;
+}
+
+.sr-bar__fill_ok {
+    background: #2e844a;
+}
+
+.sr-bar__fill_warn {
+    background: #dd7a01;
+}
+
+/* A zero-width fill would read as "no data" rather than "failed", so keep a
+   visible sliver of red on a fault. */
+.sr-bar__fill_fault {
+    background: #ea001e;
+    min-width: 0.25rem;
+}
+
+.sr-reco {
+    padding: 0.625rem 0.75rem;
+    border-radius: 0.375rem;
+    background: #f3f0ff;
+    border-left: 3px solid #5867e8;
+}
+
+.sr-reco__label {
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #5c5c5c;
+}
+
+.sr-reco__text {
+    margin-top: 0.125rem;
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    color: #181818;
+}
+
+.sr-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}

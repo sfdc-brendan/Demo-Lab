@@ -1,0 +1,47 @@
+{
+  "id": "customer-profile",
+  "title": "Customer Profile",
+  "blurb": "Who am I talking to — identity, plan, tenure, contact details, and account health at a glance.",
+  "description": "Answers \"who am I talking to?\" in one glance instead of asking the rep to parse a paragraph. An agent can recite a name, an account number, a plan, a tenure, an email and three scores as prose, but a rep skimming a chat panel doesn't read prose — and a rep who has to re-read it is a rep who asks the customer to repeat themselves. The card puts identity in a header with an initials avatar, contact and plan detail in a scannable two-column grid, account flags as pills, and health, CSAT and churn risk as three numbers, with churn turning red once it crosses 50. An optional alert banner carries the one thing the rep must know before they start typing. This is the most portable pattern in the library: every industry has a customer, an identifier, and something worth knowing about them before the conversation starts.",
+  "pattern": "record-summary",
+  "patternLabel": "Record summary",
+  "channels": ["lightningDesktopGenAi"],
+  "industries": ["Communications", "Financial Services", "Insurance", "Healthcare", "Retail", "Travel & Hospitality", "Public Sector"],
+  "tags": ["profile", "customer 360", "identity", "record summary", "health score", "write-back"],
+  "previewMode": "simulated",
+  "previewNarrative": "This is Dana Whitfield, account AC-4417029 — a Preferred-tier customer since March 2019. Health and CSAT are both strong and nothing is flagged on the account.",
+  "screenshot": null,
+  "featured": false,
+
+  "lwc": "customerProfileCard",
+  "lightningType": "customerProfileOutput",
+  "dtoClass": "CustomerProfileCardData",
+  "dtoField": "profileJSON",
+  "actionClass": "CustomerProfileCardDemo",
+  "actionLabel": "Get Customer Profile (Demo)",
+  "displayableOutput": "customerProfile",
+  "narrativeOutput": "narrative",
+  "permissionSet": "Customer_Profile_Card_Access",
+
+  "sourceDirs": ["Lightning Types/Customer Profile Card"],
+
+  "prerequisites": [],
+  "deployedIndicators": [
+    { "type": "LightningComponentBundle", "developerName": "customerProfileCard" }
+  ],
+
+  "instructionSnippet": "CRITICAL: After the \"Get Customer Profile\" action completes, you MUST present the customerProfile output to the user. ALWAYS show the structured action output. Do NOT rewrite, restate, or summarize it as plain text — the interactive UI is contained in the customerProfile output and must be displayed as-is. Keep your text reply to 1-2 sentences of coaching color.",
+
+  "codeFiles": [
+    "force-app/main/default/classes/CustomerProfileCardData.cls",
+    "force-app/main/default/classes/CustomerProfileCardDemo.cls",
+    "force-app/main/default/lightningTypes/customerProfileOutput/schema.json",
+    "force-app/main/default/lightningTypes/customerProfileOutput/lightningDesktopGenAi/renderer.json",
+    "force-app/main/default/lwc/customerProfileCard/customerProfileCard.html",
+    "force-app/main/default/lwc/customerProfileCard/customerProfileCard.js",
+    "force-app/main/default/lwc/customerProfileCard/customerProfileCard.css",
+    "force-app/main/default/lwc/customerProfileCard/customerProfileCard.js-meta.xml",
+    "force-app/main/default/permissionsets/Customer_Profile_Card_Access.permissionset-meta.xml",
+    "states.json"
+  ]
+}

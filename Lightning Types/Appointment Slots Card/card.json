@@ -1,0 +1,47 @@
+{
+  "id": "appointment-slots",
+  "title": "Appointment Slots",
+  "blurb": "Pickable technician visit windows with the soonest slot flagged and a one-tap confirm.",
+  "description": "Turns a list of appointment times into something the customer can choose from instead of a paragraph they have to read back to you: one row per open window across the next three business days, day and date on the left, the arrival window on the right, and a badge on the soonest slot. Picking a row highlights it and rewrites the confirm button to name the choice, so the rep and the customer are looking at the same commitment before anything is booked. Confirming dispatches the chosen date and window back into the conversation for a booking action to pick up — the card itself writes nothing.",
+  "pattern": "item-selector",
+  "patternLabel": "Selectable options",
+  "channels": ["lightningDesktopGenAi"],
+  "industries": ["Communications", "Utilities", "Energy"],
+  "tags": ["scheduling", "appointment", "field service", "selection", "slots", "write-back"],
+  "previewMode": "simulated",
+  "previewNarrative": "Here are the technician visit windows open at this address over the next three business days. Monday afternoon is the soonest one.",
+  "screenshot": null,
+  "featured": true,
+
+  "lwc": "appointmentSlotsCard",
+  "lightningType": "appointmentSlotsOutput",
+  "dtoClass": "AppointmentSlotsCardData",
+  "dtoField": "slotsJSON",
+  "actionClass": "AppointmentSlotsCardDemo",
+  "actionLabel": "Get Appointment Slots (Demo)",
+  "displayableOutput": "appointmentSlots",
+  "narrativeOutput": "narrative",
+  "permissionSet": "Appointment_Slots_Card_Access",
+
+  "sourceDirs": ["Lightning Types/Appointment Slots Card"],
+
+  "prerequisites": [],
+  "deployedIndicators": [
+    { "type": "LightningComponentBundle", "developerName": "appointmentSlotsCard" }
+  ],
+
+  "instructionSnippet": "CRITICAL: After the \"Get Appointment Slots\" action completes, you MUST present the appointmentSlots output to the user. ALWAYS show the structured action output. Do NOT rewrite, restate, or summarize it as plain text — the interactive UI is contained in the appointmentSlots output and must be displayed as-is. Keep your text reply to 1-2 sentences of coaching color.",
+
+  "codeFiles": [
+    "force-app/main/default/classes/AppointmentSlotsCardData.cls",
+    "force-app/main/default/classes/AppointmentSlotsCardDemo.cls",
+    "force-app/main/default/lightningTypes/appointmentSlotsOutput/schema.json",
+    "force-app/main/default/lightningTypes/appointmentSlotsOutput/lightningDesktopGenAi/renderer.json",
+    "force-app/main/default/lwc/appointmentSlotsCard/appointmentSlotsCard.html",
+    "force-app/main/default/lwc/appointmentSlotsCard/appointmentSlotsCard.js",
+    "force-app/main/default/lwc/appointmentSlotsCard/appointmentSlotsCard.css",
+    "force-app/main/default/lwc/appointmentSlotsCard/appointmentSlotsCard.js-meta.xml",
+    "force-app/main/default/permissionsets/Appointment_Slots_Card_Access.permissionset-meta.xml",
+    "states.json"
+  ]
+}

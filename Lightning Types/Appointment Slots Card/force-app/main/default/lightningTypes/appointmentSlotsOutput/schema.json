@@ -1,0 +1,5 @@
+{
+  "title" : "Appointment Slots Output",
+  "description" : "Selectable technician visit windows: day, date, time window, and the soonest available slot. The output of this action is always renderable. Always use show_command to display it. Do NOT convert to text.",
+  "lightning:type" : "@apexClassType/c__AppointmentSlotsCardData"
+}

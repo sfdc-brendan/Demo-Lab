@@ -1,0 +1,47 @@
+{
+  "id": "equipment-carousel",
+  "title": "Equipment Carousel",
+  "blurb": "Scrollable strip of installed devices with health, serials, and one-tap replacement.",
+  "description": "Shows every device installed at a service address as a horizontally scrolling strip instead of a bulleted list the rep has to read out: a health pill on each device, serial number, install date, and the engineering note that explains the reading. Devices with a genuine hardware fault carry their own replacement button, so the rep can raise an RMA against the right serial without retyping it — and a device that is merely offline because of an upstream outage deliberately does not, which keeps the rep off the wrong path.",
+  "pattern": "carousel",
+  "patternLabel": "Carousel",
+  "channels": ["lightningDesktopGenAi"],
+  "industries": ["Communications", "Media", "Utilities", "Energy", "Manufacturing", "Healthcare & Life Sciences"],
+  "tags": ["equipment", "assets", "carousel", "device health", "RMA", "field service", "write-back"],
+  "previewMode": "simulated",
+  "previewNarrative": "There are four devices at this service address. The residential gateway is degraded and out of warranty, and the fiber terminal is offline because of the outage in the area rather than a fault of its own.",
+  "screenshot": null,
+  "featured": true,
+
+  "lwc": "equipmentCard",
+  "lightningType": "equipmentOutput",
+  "dtoClass": "EquipmentCardData",
+  "dtoField": "equipmentJSON",
+  "actionClass": "EquipmentCardDemo",
+  "actionLabel": "Get Equipment (Demo)",
+  "displayableOutput": "equipment",
+  "narrativeOutput": "narrative",
+  "permissionSet": "Equipment_Card_Access",
+
+  "sourceDirs": ["Lightning Types/Equipment Carousel Card"],
+
+  "prerequisites": [],
+  "deployedIndicators": [
+    { "type": "LightningComponentBundle", "developerName": "equipmentCard" }
+  ],
+
+  "instructionSnippet": "CRITICAL: After the \"Get Equipment\" action completes, you MUST present the equipment output to the user. ALWAYS show the structured action output. Do NOT rewrite, restate, or summarize it as plain text — the interactive UI is contained in the equipment output and must be displayed as-is. Keep your text reply to 1-2 sentences of coaching color.",
+
+  "codeFiles": [
+    "force-app/main/default/classes/EquipmentCardData.cls",
+    "force-app/main/default/classes/EquipmentCardDemo.cls",
+    "force-app/main/default/lightningTypes/equipmentOutput/schema.json",
+    "force-app/main/default/lightningTypes/equipmentOutput/lightningDesktopGenAi/renderer.json",
+    "force-app/main/default/lwc/equipmentCard/equipmentCard.html",
+    "force-app/main/default/lwc/equipmentCard/equipmentCard.js",
+    "force-app/main/default/lwc/equipmentCard/equipmentCard.css",
+    "force-app/main/default/lwc/equipmentCard/equipmentCard.js-meta.xml",
+    "force-app/main/default/permissionsets/Equipment_Card_Access.permissionset-meta.xml",
+    "states.json"
+  ]
+}

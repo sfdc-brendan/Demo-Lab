@@ -1,0 +1,70 @@
+{
+  "dtoField": "profileJSON",
+  "notes": "The payload of each state is what gets JSON.serialize'd into CustomerProfileCardData.profileJSON. The 'default' state is what CustomerProfileCardDemo returns. An optional 'photoUrl' key swaps the initials avatar for a real image; the sample states leave it out so the preview needs no network image.",
+  "states": [
+    {
+      "id": "default",
+      "label": "Known customer",
+      "description": "The main case: the agent resolved the customer and the whole profile is in front of the rep before they type a word.",
+      "payload": {
+        "profileFound": true,
+        "customerName": "Dana Whitfield",
+        "accountNumber": "AC-4417029",
+        "tier": "Preferred",
+        "plan": "Premier Plan (Annual)",
+        "customerSince": "March 2019",
+        "tenure": "6 yrs",
+        "phone": "(415) 555-0139",
+        "email": "d.whitfield@example.com",
+        "address": "1420 Alder Street, Riverton, CA 94120",
+        "preferredChannel": "SMS",
+        "tags": ["Autopay", "Paperless", "Multi-product"],
+        "healthScore": 82,
+        "csat": 91,
+        "churnRisk": 18,
+        "alertActive": false
+      }
+    },
+    {
+      "id": "at-risk",
+      "label": "At-risk customer",
+      "description": "The same card under a different reading. Churn risk at or above 50 turns that metric red, and 'alertActive' raises a banner above the detail grid, so the rep sees the one thing they must not miss before they start talking.",
+      "payload": {
+        "profileFound": true,
+        "customerName": "Marcus Delaney",
+        "accountNumber": "AC-2290514",
+        "tier": "Standard",
+        "plan": "Essential Plan (Monthly)",
+        "customerSince": "August 2024",
+        "tenure": "13 mos",
+        "phone": "(415) 555-0182",
+        "email": "m.delaney@example.com",
+        "address": "88 Kestrel Court, Riverton, CA 94121",
+        "preferredChannel": "Email",
+        "tags": ["Autopay off", "3 cases in 30 days", "Renews in 12 days"],
+        "healthScore": 41,
+        "csat": 62,
+        "churnRisk": 74,
+        "alertActive": true,
+        "alertMessage": "Renews in 12 days with two reopened cases this month."
+      }
+    },
+    {
+      "id": "empty",
+      "label": "No profile found",
+      "description": "The identifier the agent had matched nothing. Worth designing deliberately: the card echoes back what it searched for and tells the rep which identifier to ask for next, which is more useful than an apology.",
+      "payload": {
+        "profileFound": false,
+        "searchedFor": "+1 415 555 0182"
+      }
+    },
+    {
+      "id": "error",
+      "label": "Error",
+      "description": "The sentinel shape. The service returns this instead of null so the card still mounts and can say what went wrong.",
+      "payload": {
+        "error": "Could not reach the customer profile service. Try again in a moment."
+      }
+    }
+  ]
+}

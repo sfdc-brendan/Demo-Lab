@@ -1,0 +1,66 @@
+{
+  "dtoField": "fiberJSON",
+  "notes": "The payload of each state is what gets JSON.serialize'd into FiberAvailabilityCardData.fiberJSON. The 'default' state is what FiberAvailabilityCardDemo returns. 'serviceable' is the binary answer, but the two answers are two different cards: only the serviceable one carries the speed jump, the promo and the reply buttons.",
+  "states": [
+    {
+      "id": "default",
+      "label": "Serviceable",
+      "description": "The main case: the build has reached this address. Shows when it completed, how many neighbors are already connected, the top speed now available, and the jump from the customer's current plan to the recommended tier. This is the only state with call-to-action buttons, because it is the only state where there is something to sell.",
+      "payload": {
+        "serviceable": true,
+        "statusLabel": "Live in this neighborhood",
+        "headline": "Gigabit Fiber is live on Market St",
+        "neighborhood": "Rincon Hill & South Beach",
+        "city": "San Francisco",
+        "postalCode": "94105",
+        "summary": "The Gigabit Fiber build through Rincon Hill & South Beach completed on August 13, 2026. This address is fully serviceable, the fiber drop is already at the property, and 63% of the homes on the route are connected.",
+        "buildCompleted": "August 13, 2026",
+        "facts": [
+          { "label": "Build status", "value": "Completed August 13, 2026" },
+          { "label": "Homes passed on this route", "value": "1,840" },
+          { "label": "Neighbors already connected", "value": "1,163 (63%)" },
+          { "label": "Fiber drop at the property", "value": "Already installed" },
+          { "label": "Top speed now available", "value": "2 Gbps symmetric" }
+        ],
+        "currentDownloadMbps": 500,
+        "recommendedPlan": "Fiber 1 Gig",
+        "recommendedDownloadMbps": 1000,
+        "speedMultiplier": "2x",
+        "headroom": "2 Gbps",
+        "promo": "Free white-glove install (a $99 value)",
+        "promoEnds": "September 30",
+        "recommendation": "Confirm the address is serviceable, then offer Fiber 1 Gig with the $99 install waived. Quote that plan's speed, not the route maximum. Send the availability to the customer so they have it in writing."
+      }
+    },
+    {
+      "id": "not-serviceable",
+      "label": "Not serviceable",
+      "description": "A confident no: the build hasn't reached this address. Not an empty state — it is the same card with the answer inverted, so it earns its own design. The status pill goes neutral, the speed jump and promo disappear because quoting either would be a lie, the action buttons are gone because there is nothing to offer, and the recommendation turns into the waitlist ask. Design this one properly: a rep who pitches fiber into a street with no fiber books an install that gets cancelled on survey.",
+      "payload": {
+        "serviceable": false,
+        "statusLabel": "Not yet available",
+        "headline": "Gigabit Fiber has not reached this address yet",
+        "city": "Petaluma",
+        "postalCode": "94952",
+        "summary": "This service address is outside the current Gigabit Fiber build footprint. Do not present the fiber upgrade offer — the address cannot be provisioned and the install would be cancelled on survey.",
+        "recommendation": "Offer to add the customer to the build notification list so they hear when the route is scheduled."
+      }
+    },
+    {
+      "id": "empty",
+      "label": "No data for this address",
+      "description": "Neither yes nor no: the address didn't match anything in the footprint data, so the card has no answer to give. Distinct from 'not serviceable' on purpose — telling a customer the build will never reach them when you simply don't know is the expensive mistake. Signalled by the absence of a headline.",
+      "payload": {
+        "message": "No fiber build data on file for this service address yet."
+      }
+    },
+    {
+      "id": "error",
+      "label": "Error",
+      "description": "The sentinel shape. The service returns this instead of null so the card still mounts and can say what went wrong.",
+      "payload": {
+        "error": "Could not reach the serviceability service. Try again in a moment."
+      }
+    }
+  ]
+}

@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Fiber Availability Card preview</title>
+    <!-- frame.css stubs the platform. card.css is the component's real stylesheet. -->
+    <link rel="stylesheet" href="frame.css">
+    <link rel="stylesheet" href="card.css">
+</head>
+<body>
+
+<!-- Serviceable --------------------------------------------------------- -->
+<div data-state="default" class="is-active">
+    <div class="lc-card sr-card">
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+
+            <div class="sr-head">
+                <div class="sr-head__title">
+                    <span class="lc-icon lc-icon_utility"></span>
+                    <span>Fiber availability</span>
+                </div>
+                <span class="sr-status sr-status_live">Live in this neighborhood</span>
+            </div>
+
+            <div class="sr-headline">Gigabit Fiber is live on Market St</div>
+            <div class="sr-location">Rincon Hill &amp; South Beach · San Francisco · 94105</div>
+
+            <p class="sr-summary">The Gigabit Fiber build through Rincon Hill &amp; South Beach completed on August 13, 2026. This address is fully serviceable, the fiber drop is already at the property, and 63% of the homes on the route are connected.</p>
+
+            <div class="sr-jump">
+                <div class="sr-jump__side">
+                    <span class="sr-jump__tag">Today</span>
+                    <span class="sr-jump__value">500 Mbps</span>
+                </div>
+                <span class="lc-icon lc-icon_forward sr-jump__arrow"></span>
+                <div class="sr-jump__side sr-jump__side_to">
+                    <span class="sr-jump__tag">Fiber 1 Gig</span>
+                    <span class="sr-jump__value">1 Gbps</span>
+                </div>
+                <span class="sr-jump__badge">2x faster</span>
+            </div>
+
+            <div class="sr-facts slds-m-top_medium">
+                <div class="sr-fact">
+                    <span class="sr-fact__label">Build status</span>
+                    <span class="sr-fact__value">Completed August 13, 2026</span>
+                </div>
+                <div class="sr-fact">
+                    <span class="sr-fact__label">Homes passed on this route</span>
+                    <span class="sr-fact__value">1,840</span>
+                </div>
+                <div class="sr-fact">
+                    <span class="sr-fact__label">Neighbors already connected</span>
+                    <span class="sr-fact__value">1,163 (63%)</span>
+                </div>
+                <div class="sr-fact">
+                    <span class="sr-fact__label">Fiber drop at the property</span>
+                    <span class="sr-fact__value">Already installed</span>
+                </div>
+                <div class="sr-fact">
+                    <span class="sr-fact__label">Top speed now available</span>
+                    <span class="sr-fact__value">2 Gbps symmetric</span>
+                </div>
+            </div>
+
+            <div class="sr-promo slds-m-top_medium">
+                <span class="lc-icon lc-icon_inverse"></span>
+                <span class="sr-promo__text">Free white-glove install (a $99 value) — ends September 30</span>
+            </div>
+
+            <div class="sr-reco slds-m-top_medium">
+                <div class="sr-reco__label">Recommended next step</div>
+                <p class="sr-reco__text">Confirm the address is serviceable, then offer Fiber 1 Gig with the $99 install waived. Quote that plan's speed, not the route maximum. Send the availability to the customer so they have it in writing.</p>
+            </div>
+
+            <div class="sr-actions slds-m-top_medium">
+                <button type="button" class="lc-button lc-button_brand" data-sticky-label="Copied to reply">Explain to customer</button>
+                <button type="button" class="lc-button" data-flash-label="Sent to chat">Compare plans</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Not serviceable ----------------------------------------------------- -->
+<div data-state="not-serviceable">
+    <div class="lc-card sr-card">
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+
+            <div class="sr-head">
+                <div class="sr-head__title">
+                    <span class="lc-icon lc-icon_utility"></span>
+                    <span>Fiber availability</span>
+                </div>
+                <span class="sr-status sr-status_none">Not yet available</span>
+            </div>
+
+            <div class="sr-headline">Gigabit Fiber has not reached this address yet</div>
+            <div class="sr-location">Petaluma · 94952</div>
+
+            <p class="sr-summary">This service address is outside the current Gigabit Fiber build footprint. Do not present the fiber upgrade offer — the address cannot be provisioned and the install would be cancelled on survey.</p>
+
+            <div class="sr-reco slds-m-top_medium">
+                <div class="sr-reco__label">Recommended next step</div>
+                <p class="sr-reco__text">Offer to add the customer to the build notification list so they hear when the route is scheduled.</p>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- No data for this address -------------------------------------------- -->
+<div data-state="empty">
+    <div class="lc-card sr-card">
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+            <div class="sr-unknown">
+                <span class="sr-unknown__dot"></span>
+                <span>No fiber build data on file for this service address yet.</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Error ---------------------------------------------------------------- -->
+<div data-state="error">
+    <div class="lc-card sr-card">
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+            <div class="sr-error">Could not reach the serviceability service. Try again in a moment.</div>
+        </div>
+    </div>
+</div>
+
+<script src="preview.js"></script>
+</body>
+</html>

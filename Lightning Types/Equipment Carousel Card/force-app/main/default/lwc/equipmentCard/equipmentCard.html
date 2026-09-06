@@ -1,0 +1,89 @@
+<template>
+    <lightning-card class="sr-card">
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+
+            <template if:true={hasError}>
+                <div class="sr-error">{errorMessage}</div>
+            </template>
+
+            <template if:true={isEmpty}>
+                <div class="sr-empty">
+                    <span class="sr-empty__dot"></span>
+                    <span>No equipment is registered at this service address.</span>
+                </div>
+            </template>
+
+            <template if:true={hasDevices}>
+
+                <div class="sr-head">
+                    <span class="sr-head__title">Installed equipment</span>
+                    <span class="sr-position">{deviceCountLabel}</span>
+                </div>
+
+                <!-- Native horizontal overflow with scroll snapping, so the
+                     carousel works by touch, trackpad, and keyboard without any
+                     JS of its own. tabindex makes the strip focusable so arrow
+                     keys can scroll it. -->
+                <div class="sr-strip" role="list" tabindex="0" aria-label="Installed equipment">
+                    <template for:each={devices} for:item="device">
+                        <article key={device.id} class="sr-tile" role="listitem">
+
+                            <div class="sr-stage">
+                                <div class="sr-stage__ph" aria-hidden="true">
+                                    <span class="sr-stage__initials">{device.initials}</span>
+                                </div>
+                                <span class={device.healthClass}>{device.health}</span>
+                            </div>
+
+                            <div class="sr-device">
+                                <div class="sr-device__name">{device.name}</div>
+                                <div class="sr-device__type">{device.deviceType}</div>
+                            </div>
+
+                            <dl class="sr-grid slds-m-top_small">
+                                <div class="sr-grid__item">
+                                    <dt>Serial</dt>
+                                    <dd class="sr-mono">{device.serialNumber}</dd>
+                                </div>
+                                <div class="sr-grid__item">
+                                    <dt>Installed</dt>
+                                    <dd>{device.installedOn}</dd>
+                                </div>
+                            </dl>
+
+                            <template if:true={device.hasNote}>
+                                <p class="sr-note slds-m-top_small">{device.note}</p>
+                            </template>
+
+                            <template if:true={device.rmaEligible}>
+                                <div class="sr-tile__action slds-m-top_small">
+                                    <lightning-button
+                                        variant="brand"
+                                        label="Request replacement"
+                                        data-message={device.rmaMessage}
+                                        onclick={handlePost}>
+                                    </lightning-button>
+                                </div>
+                            </template>
+
+                        </article>
+                    </template>
+                </div>
+
+                <template if:true={hasMultiple}>
+                    <p class="sr-hint">Scroll for more devices</p>
+                </template>
+
+                <div class="sr-actions slds-m-top_medium">
+                    <lightning-button
+                        label={explainLabel}
+                        data-message={explainMessage}
+                        disabled={replySent}
+                        onclick={handleExplain}>
+                    </lightning-button>
+                </div>
+
+            </template>
+        </div>
+    </lightning-card>
+</template>

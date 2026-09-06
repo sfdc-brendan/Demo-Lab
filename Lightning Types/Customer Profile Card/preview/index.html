@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Customer Profile Card preview</title>
+    <!-- frame.css stubs the platform. card.css is the component's real stylesheet. -->
+    <link rel="stylesheet" href="frame.css">
+    <link rel="stylesheet" href="card.css">
+</head>
+<body>
+
+<!-- Known customer ------------------------------------------------------- -->
+<div data-state="default" class="is-active">
+    <div class="lc-card sr-card">
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+
+            <div class="sr-head">
+                <span class="sr-avatar sr-avatar_initials">DW</span>
+                <div class="sr-head__body">
+                    <div class="sr-head__name">Dana Whitfield</div>
+                    <div class="sr-head__meta">Acct AC-4417029 &middot; Preferred</div>
+                </div>
+            </div>
+
+            <dl class="sr-grid slds-m-top_medium">
+                <div class="sr-grid__item">
+                    <dt>Plan</dt>
+                    <dd>Premier Plan (Annual)</dd>
+                </div>
+                <div class="sr-grid__item">
+                    <dt>Customer since</dt>
+                    <dd>March 2019 <span class="sr-muted">(6 yrs)</span></dd>
+                </div>
+                <div class="sr-grid__item">
+                    <dt>Phone</dt>
+                    <dd>(415) 555-0139</dd>
+                </div>
+                <div class="sr-grid__item">
+                    <dt>Email</dt>
+                    <dd>d.whitfield@example.com</dd>
+                </div>
+                <div class="sr-grid__item">
+                    <dt>Address</dt>
+                    <dd>1420 Alder Street, Riverton, CA 94120</dd>
+                </div>
+                <div class="sr-grid__item">
+                    <dt>Prefers</dt>
+                    <dd>SMS</dd>
+                </div>
+            </dl>
+
+            <div class="sr-tags slds-m-top_medium">
+                <span class="sr-tag">Autopay</span>
+                <span class="sr-tag">Paperless</span>
+                <span class="sr-tag">Multi-product</span>
+            </div>
+
+            <div class="sr-metrics slds-m-top_medium">
+                <div class="sr-metric">
+                    <span class="sr-metric__value">82</span>
+                    <span class="sr-metric__label">Health</span>
+                </div>
+                <div class="sr-metric">
+                    <span class="sr-metric__value">91</span>
+                    <span class="sr-metric__label">CSAT</span>
+                </div>
+                <div class="sr-metric">
+                    <span class="sr-metric__value">18</span>
+                    <span class="sr-metric__label">Churn risk</span>
+                </div>
+            </div>
+
+            <div class="sr-actions slds-m-top_medium">
+                <button type="button" class="lc-button lc-button_brand" data-sticky-label="Copied to reply">Greet customer</button>
+                <button type="button" class="lc-button" data-flash-label="Sent to chat">Recent cases</button>
+                <button type="button" class="lc-button" data-flash-label="Sent to chat">Account history</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- At-risk customer ----------------------------------------------------- -->
+<div data-state="at-risk">
+    <div class="lc-card sr-card">
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+
+            <div class="sr-head">
+                <span class="sr-avatar sr-avatar_initials">MD</span>
+                <div class="sr-head__body">
+                    <div class="sr-head__name">Marcus Delaney</div>
+                    <div class="sr-head__meta">Acct AC-2290514 &middot; Standard</div>
+                </div>
+            </div>
+
+            <div class="sr-alert slds-m-top_medium">
+                <span class="sr-alert__dot"></span>
+                <span>Renews in 12 days with two reopened cases this month.</span>
+            </div>
+
+            <dl class="sr-grid slds-m-top_medium">
+                <div class="sr-grid__item">
+                    <dt>Plan</dt>
+                    <dd>Essential Plan (Monthly)</dd>
+                </div>
+                <div class="sr-grid__item">
+                    <dt>Customer since</dt>
+                    <dd>August 2024 <span class="sr-muted">(13 mos)</span></dd>
+                </div>
+                <div class="sr-grid__item">
+                    <dt>Phone</dt>
+                    <dd>(415) 555-0182</dd>
+                </div>
+                <div class="sr-grid__item">
+                    <dt>Email</dt>
+                    <dd>m.delaney@example.com</dd>
+                </div>
+                <div class="sr-grid__item">
+                    <dt>Address</dt>
+                    <dd>88 Kestrel Court, Riverton, CA 94121</dd>
+                </div>
+                <div class="sr-grid__item">
+                    <dt>Prefers</dt>
+                    <dd>Email</dd>
+                </div>
+            </dl>
+
+            <div class="sr-tags slds-m-top_medium">
+                <span class="sr-tag">Autopay off</span>
+                <span class="sr-tag">3 cases in 30 days</span>
+                <span class="sr-tag">Renews in 12 days</span>
+            </div>
+
+            <div class="sr-metrics slds-m-top_medium">
+                <div class="sr-metric">
+                    <span class="sr-metric__value">41</span>
+                    <span class="sr-metric__label">Health</span>
+                </div>
+                <div class="sr-metric">
+                    <span class="sr-metric__value">62</span>
+                    <span class="sr-metric__label">CSAT</span>
+                </div>
+                <div class="sr-metric">
+                    <span class="sr-metric__value sr-metric__value_warn">74</span>
+                    <span class="sr-metric__label">Churn risk</span>
+                </div>
+            </div>
+
+            <div class="sr-actions slds-m-top_medium">
+                <button type="button" class="lc-button lc-button_brand" data-sticky-label="Copied to reply">Greet customer</button>
+                <button type="button" class="lc-button" data-flash-label="Sent to chat">Recent cases</button>
+                <button type="button" class="lc-button" data-flash-label="Sent to chat">Account history</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- No profile found ----------------------------------------------------- -->
+<div data-state="empty">
+    <div class="lc-card sr-card">
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+            <div class="sr-empty">
+                <div class="sr-empty__title">
+                    <span class="sr-empty__dot"></span>
+                    <span>No customer profile found for +1 415 555 0182</span>
+                </div>
+                <div class="sr-empty__hint">
+                    Ask for an account number or the email address on the account, then try again.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Error ---------------------------------------------------------------- -->
+<div data-state="error">
+    <div class="lc-card sr-card">
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+            <div class="sr-error">Could not reach the customer profile service. Try again in a moment.</div>
+        </div>
+    </div>
+</div>
+
+<script src="preview.js"></script>
+</body>
+</html>

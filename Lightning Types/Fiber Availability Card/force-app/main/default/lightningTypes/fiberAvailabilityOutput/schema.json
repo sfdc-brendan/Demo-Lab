@@ -1,0 +1,5 @@
+{
+  "title" : "Fiber Availability Output",
+  "description" : "Fiber serviceability card: whether the build has reached the service address, top speed now available, and the recommended next step. The output of this action is always renderable. Always use show_command to display it. Do NOT convert to text.",
+  "lightning:type" : "@apexClassType/c__FiberAvailabilityCardData"
+}

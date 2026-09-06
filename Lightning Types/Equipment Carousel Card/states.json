@@ -1,0 +1,69 @@
+{
+  "dtoField": "equipmentJSON",
+  "notes": "The payload of each state is what gets JSON.serialize'd into EquipmentCardData.equipmentJSON. The 'default' state is what EquipmentCardDemo returns. Device health drives the status pill, and only a 'Degraded' device sets rmaEligible — an 'Offline' device is usually a symptom of an upstream outage, so offering to replace it would send the rep down the wrong path.",
+  "states": [
+    {
+      "id": "default",
+      "label": "Four installed devices",
+      "description": "The main case: a scrollable strip of the equipment at one service address, mixing healthy, degraded, and offline devices so every health treatment is visible at once. The degraded gateway is the only one offering a replacement.",
+      "payload": {
+        "devices": [
+          {
+            "name": "ONT-500 Fiber Terminal",
+            "deviceType": "Optical Network Terminal",
+            "serialNumber": "ONT500-4417-0231",
+            "installedOn": "Apr 2023",
+            "health": "Offline",
+            "note": "No optical signal. Consistent with the active fiber cut in the 94105 service area — not a device fault.",
+            "rmaEligible": false
+          },
+          {
+            "name": "Gateway AX6",
+            "deviceType": "Residential Gateway",
+            "serialNumber": "GWAX6-4417-8890",
+            "installedOn": "Aug 2022",
+            "health": "Degraded",
+            "note": "14 unplanned reboots in the last 30 days and elevated operating temperature. Out of warranty and eligible for replacement.",
+            "rmaEligible": true
+          },
+          {
+            "name": "Mesh Extender M2",
+            "deviceType": "Mesh Extender",
+            "serialNumber": "MESHM2-4417-1174",
+            "installedOn": "Oct 2025",
+            "health": "Healthy",
+            "note": "Backhaul stable. Covering the upstairs bedrooms.",
+            "rmaEligible": false
+          },
+          {
+            "name": "StreamBox 4K",
+            "deviceType": "Set-Top Box",
+            "serialNumber": "SB4K-4417-6602",
+            "installedOn": "Feb 2025",
+            "health": "Healthy",
+            "note": "Firmware current. No reported playback faults.",
+            "rmaEligible": false
+          }
+        ],
+        "deviceCount": 4
+      }
+    },
+    {
+      "id": "empty",
+      "label": "No equipment on file",
+      "description": "Nothing is registered against the account — a self-install, a brand-new order, or equipment recorded somewhere the query cannot see. Worth designing deliberately: it is a common answer, and it must not look like a failure, because there is nothing for the rep to fix.",
+      "payload": {
+        "devices": [],
+        "deviceCount": 0
+      }
+    },
+    {
+      "id": "error",
+      "label": "Error",
+      "description": "The sentinel shape. The service returns this instead of null so the card still mounts and can say what went wrong.",
+      "payload": {
+        "error": "Could not reach the equipment inventory service. Try again in a moment."
+      }
+    }
+  ]
+}

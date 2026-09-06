@@ -1,0 +1,92 @@
+{
+  "dtoField": "routerJSON",
+  "notes": "The payload of each state is what gets JSON.serialize'd into RouterResetCardData.routerJSON. The 'default' state is what RouterResetCardDemo returns. Each metric is { label, value, state, bar } where state is ok, warn, or fault and bar is a 0-100 fill — a visual scale, not a unit, so a good reading is always a full bar. device.health drives the pill and accepts Healthy, Degraded, or Offline.",
+  "states": [
+    {
+      "id": "default",
+      "label": "Degraded gateway",
+      "description": "The main case: the line is clean but the gateway is losing packets on a congested channel, and it has been restarting itself for weeks. The diagnosis and the remedy are in the same card.",
+      "payload": {
+        "gatewayFound": true,
+        "device": {
+          "name": "Residential Gateway AX6",
+          "serial": "GWAX6-4417-8890",
+          "health": "Degraded"
+        },
+        "verdict": "Degraded — a restart should clear this",
+        "verdictState": "warn",
+        "summary": "The fiber line into the home is clean and the gateway is holding a WAN session, but it is dropping 6.4% of packets and its Wi-Fi radio is sharing channel 6 with eleven neighboring networks. That combination is what the customer is experiencing as buffering and dropped calls.",
+        "recommendation": "Send a network-side restart. It re-provisions the WAN session and moves the Wi-Fi radio to a clear channel, which a customer power-cycle cannot do. The unit has also restarted itself 14 times in 30 days and is out of warranty, so plan on replacing it as the permanent fix.",
+        "lastRestarted": "Today, 4:12 AM",
+        "canRestart": true,
+        "replacementRecommended": true,
+        "outOfWarranty": true,
+        "rebootCount": 14,
+        "metrics": [
+          { "label": "Gateway status", "value": "Online", "state": "ok", "bar": 100 },
+          { "label": "WAN session", "value": "Established", "state": "ok", "bar": 100 },
+          { "label": "Latency to internet", "value": "188 ms", "state": "warn", "bar": 34 },
+          { "label": "Jitter", "value": "42 ms", "state": "warn", "bar": 28 },
+          { "label": "Packet loss", "value": "6.4%", "state": "fault", "bar": 10 },
+          { "label": "Wi-Fi channel congestion", "value": "Channel 6 — 11 networks", "state": "fault", "bar": 8 },
+          { "label": "Devices on home Wi-Fi", "value": "6 connected, 2 dropping", "state": "warn", "bar": 55 }
+        ],
+        "rebootHistory": [
+          { "when": "Today, 4:12 AM", "reason": "Watchdog timeout" },
+          { "when": "Yesterday, 3:47 AM", "reason": "Watchdog timeout" },
+          { "when": "Mar 3, 4:05 AM", "reason": "Thermal shutdown" },
+          { "when": "Mar 1, 2:19 AM", "reason": "Watchdog timeout" },
+          { "when": "Feb 27, 3:52 AM", "reason": "Thermal shutdown" }
+        ]
+      }
+    },
+    {
+      "id": "healthy",
+      "label": "Healthy gateway",
+      "description": "Every reading in spec, so the card argues against the restart instead of offering it. A genuinely different rendering: no warning flag, no reboot history, and the action row drops to a follow-up. Worth showing, because a card that only ever looks alarming teaches the rep to distrust it.",
+      "payload": {
+        "gatewayFound": true,
+        "device": {
+          "name": "Residential Gateway AX6",
+          "serial": "GWAX6-4417-8890",
+          "health": "Healthy"
+        },
+        "verdict": "Everything in spec",
+        "verdictState": "ok",
+        "summary": "The line into the home is clean, the gateway is holding a stable WAN session at 14 ms, and its Wi-Fi radio has channel 44 largely to itself. No packet loss in the last 24 hours.",
+        "recommendation": "No restart needed — it would take the customer offline for 90 seconds and change nothing. If they are still reporting slowness, the bottleneck is inside the home rather than on the gateway.",
+        "lastRestarted": "Feb 14, 9:20 PM",
+        "canRestart": false,
+        "replacementRecommended": false,
+        "outOfWarranty": false,
+        "rebootCount": 0,
+        "metrics": [
+          { "label": "Gateway status", "value": "Online", "state": "ok", "bar": 100 },
+          { "label": "WAN session", "value": "Established", "state": "ok", "bar": 100 },
+          { "label": "Latency to internet", "value": "14 ms", "state": "ok", "bar": 94 },
+          { "label": "Jitter", "value": "3 ms", "state": "ok", "bar": 96 },
+          { "label": "Packet loss", "value": "0.0%", "state": "ok", "bar": 100 },
+          { "label": "Wi-Fi channel congestion", "value": "Channel 44 — 2 networks", "state": "ok", "bar": 92 },
+          { "label": "Devices on home Wi-Fi", "value": "6 connected", "state": "ok", "bar": 100 }
+        ],
+        "rebootHistory": []
+      }
+    },
+    {
+      "id": "empty",
+      "label": "No gateway on the account",
+      "description": "Nothing to diagnose, because the customer runs their own router. Worth designing deliberately — it is a common answer, and the useful thing to say is why the check cannot see anything rather than that it found nothing.",
+      "payload": {
+        "gatewayFound": false
+      }
+    },
+    {
+      "id": "error",
+      "label": "Error",
+      "description": "The sentinel shape. The service returns this instead of null so the card still mounts and can say what went wrong.",
+      "payload": {
+        "error": "Could not reach the gateway diagnostics service. Try again in a moment."
+      }
+    }
+  ]
+}

@@ -1,0 +1,149 @@
+.sr-card {
+    border-radius: 0.5rem;
+}
+
+.sr-error {
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.25rem;
+    background: #fef1ee;
+    color: #8e030f;
+    font-size: 0.8125rem;
+}
+
+.sr-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.sr-head__title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+}
+
+.sr-promo {
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.75rem;
+    background: #ebfbef;
+    color: #1c6b3f;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.sr-toptier {
+    margin-top: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.25rem;
+    background: #ebfbef;
+    color: #1c6b3f;
+    font-size: 0.8125rem;
+    font-weight: 600;
+}
+
+/* Two columns where the panel allows it, stacking when it's narrow. */
+.sr-compare {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+}
+
+.sr-plan {
+    padding: 0.625rem 0.75rem;
+    border: 1px solid #e5e5e5;
+    border-radius: 0.375rem;
+    background: #fafafa;
+}
+
+.sr-plan_recommended {
+    border-color: #014486;
+    background: #f3f7fc;
+}
+
+.sr-plan__tag {
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #706e6b;
+}
+
+.sr-plan__tag_rec {
+    color: #014486;
+}
+
+.sr-plan__name {
+    margin-top: 0.125rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+}
+
+.sr-plan__price {
+    margin-top: 0.25rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.sr-plan__per {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: #706e6b;
+}
+
+.sr-plan__features {
+    margin: 0.5rem 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.sr-plan__features li {
+    position: relative;
+    padding-left: 0.75rem;
+    margin-bottom: 0.1875rem;
+    font-size: 0.75rem;
+    line-height: 1.35;
+    color: #3e3e3c;
+}
+
+.sr-plan__features li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.4375rem;
+    width: 0.25rem;
+    height: 0.25rem;
+    border-radius: 50%;
+    background: #a8a8a8;
+}
+
+.sr-delta {
+    display: flex;
+    align-items: baseline;
+    gap: 0.375rem;
+    margin-top: 0.75rem;
+    padding-top: 0.625rem;
+    border-top: 1px solid #e5e5e5;
+    flex-wrap: wrap;
+}
+
+.sr-delta__value {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: #014486;
+}
+
+.sr-delta__label {
+    font-size: 0.75rem;
+    color: #706e6b;
+}
+
+.sr-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}

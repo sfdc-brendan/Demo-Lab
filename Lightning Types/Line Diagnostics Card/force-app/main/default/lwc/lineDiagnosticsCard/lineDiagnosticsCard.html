@@ -1,0 +1,69 @@
+<template>
+    <lightning-card class="sr-card">
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+
+            <template if:true={hasError}>
+                <div class="sr-error">{errorMessage}</div>
+            </template>
+
+            <template if:true={noData}>
+                <div class="sr-none">
+                    <span class="sr-none__dot"></span>
+                    <span>{noDataMessage}</span>
+                </div>
+            </template>
+
+            <template if:true={hasData}>
+
+                <div class="sr-head">
+                    <span class="sr-head__title">Remote line test</span>
+                    <span class="sr-stamp">{testedAt}</span>
+                </div>
+
+                <div class={verdictClass}>{verdict}</div>
+
+                <p class="sr-summary">{summary}</p>
+
+                <div class="sr-metrics slds-m-top_medium">
+                    <template for:each={metrics} for:item="m">
+                        <div key={m.id} class="sr-metric">
+                            <div class="sr-metric__row">
+                                <span class="sr-metric__label">{m.label}</span>
+                                <span class={m.valueClass}>{m.value}</span>
+                            </div>
+                            <div class="sr-bar">
+                                <span class={m.barClass} style={m.barStyle}></span>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+
+                <div class="sr-reco slds-m-top_medium">
+                    <div class="sr-reco__label">Recommended next step</div>
+                    <p class="sr-reco__text">{recommendation}</p>
+                </div>
+
+                <div class="sr-actions slds-m-top_medium">
+                    <lightning-button
+                        variant="brand"
+                        label={explainLabel}
+                        data-message={explainMessage}
+                        disabled={replySent}
+                        onclick={handleExplain}>
+                    </lightning-button>
+                    <lightning-button
+                        label="Re-run test"
+                        data-message={retestMessage}
+                        onclick={handlePost}>
+                    </lightning-button>
+                    <lightning-button
+                        label="Schedule tech"
+                        data-message={appointmentMessage}
+                        onclick={handlePost}>
+                    </lightning-button>
+                </div>
+
+            </template>
+        </div>
+    </lightning-card>
+</template>

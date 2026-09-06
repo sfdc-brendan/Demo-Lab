@@ -1,0 +1,47 @@
+{
+  "id": "plan-upgrade",
+  "title": "Plan Upgrade",
+  "blurb": "Side-by-side plan comparison with the price difference called out and a one-click upgrade.",
+  "description": "Puts the customer's current plan next to the recommended one in two columns, marks the recommended tier so it visually wins, and states the monthly difference as a single number. An agent reading two plans aloud asks the customer to hold four figures in their head and do the subtraction themselves; the card does the subtraction for them and shows the trade-off at a glance, which is why a comparison converts where a paragraph doesn't. When there is nothing faster to sell, the card says so instead of manufacturing an offer. The upgrade button asks the agent to run the upgrade action rather than writing anything itself, so the commitment stays in the transcript.",
+  "pattern": "comparison",
+  "patternLabel": "Side-by-side comparison",
+  "channels": ["lightningDesktopGenAi"],
+  "industries": ["Communications", "Media", "Insurance", "Energy", "Financial Services"],
+  "tags": ["upsell", "comparison", "pricing", "plans", "recommendation", "agent-action"],
+  "previewMode": "simulated",
+  "previewNarrative": "This customer is on Fiber 500 today. Fiber 1 Gig doubles the download speed and takes upload from 100 to 500 Mbps for $20 more a month, with the install fee waived.",
+  "screenshot": null,
+  "featured": true,
+
+  "lwc": "planUpgradeCard",
+  "lightningType": "planUpgradeOutput",
+  "dtoClass": "PlanUpgradeCardData",
+  "dtoField": "upgradeJSON",
+  "actionClass": "PlanUpgradeCardDemo",
+  "actionLabel": "Get Plan Options (Demo)",
+  "displayableOutput": "planUpgrade",
+  "narrativeOutput": "narrative",
+  "permissionSet": "Plan_Upgrade_Card_Access",
+
+  "sourceDirs": ["Lightning Types/Plan Upgrade Card"],
+
+  "prerequisites": [],
+  "deployedIndicators": [
+    { "type": "LightningComponentBundle", "developerName": "planUpgradeCard" }
+  ],
+
+  "instructionSnippet": "CRITICAL: After the \"Get Plan Options\" action completes, you MUST present the planUpgrade output to the user. ALWAYS show the structured action output. Do NOT rewrite, restate, or summarize it as plain text — the interactive UI is contained in the planUpgrade output and must be displayed as-is. Keep your text reply to 1-2 sentences of coaching color.",
+
+  "codeFiles": [
+    "force-app/main/default/classes/PlanUpgradeCardData.cls",
+    "force-app/main/default/classes/PlanUpgradeCardDemo.cls",
+    "force-app/main/default/lightningTypes/planUpgradeOutput/schema.json",
+    "force-app/main/default/lightningTypes/planUpgradeOutput/lightningDesktopGenAi/renderer.json",
+    "force-app/main/default/lwc/planUpgradeCard/planUpgradeCard.html",
+    "force-app/main/default/lwc/planUpgradeCard/planUpgradeCard.js",
+    "force-app/main/default/lwc/planUpgradeCard/planUpgradeCard.css",
+    "force-app/main/default/lwc/planUpgradeCard/planUpgradeCard.js-meta.xml",
+    "force-app/main/default/permissionsets/Plan_Upgrade_Card_Access.permissionset-meta.xml",
+    "states.json"
+  ]
+}

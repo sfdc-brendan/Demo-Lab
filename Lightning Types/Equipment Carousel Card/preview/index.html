@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Equipment Carousel Card preview</title>
+    <!-- frame.css stubs the platform. card.css is the component's real stylesheet. -->
+    <link rel="stylesheet" href="frame.css">
+    <link rel="stylesheet" href="card.css">
+</head>
+<body>
+
+<!-- Four installed devices ----------------------------------------------- -->
+<div data-state="default" class="is-active">
+    <div class="lc-card sr-card">
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+
+            <div class="sr-head">
+                <span class="sr-head__title">Installed equipment</span>
+                <span class="sr-position">4 devices</span>
+            </div>
+
+            <div class="sr-strip" role="list" tabindex="0" aria-label="Installed equipment">
+
+                <article class="sr-tile" role="listitem">
+                    <div class="sr-stage">
+                        <div class="sr-stage__ph" aria-hidden="true">
+                            <span class="sr-stage__initials">ONT</span>
+                        </div>
+                        <span class="sr-health sr-health_offline">Offline</span>
+                    </div>
+                    <div class="sr-device">
+                        <div class="sr-device__name">ONT-500 Fiber Terminal</div>
+                        <div class="sr-device__type">Optical Network Terminal</div>
+                    </div>
+                    <dl class="sr-grid slds-m-top_small">
+                        <div class="sr-grid__item">
+                            <dt>Serial</dt>
+                            <dd class="sr-mono">ONT500-4417-0231</dd>
+                        </div>
+                        <div class="sr-grid__item">
+                            <dt>Installed</dt>
+                            <dd>Apr 2023</dd>
+                        </div>
+                    </dl>
+                    <p class="sr-note slds-m-top_small">No optical signal. Consistent with the active fiber cut in the 94105 service area — not a device fault.</p>
+                </article>
+
+                <article class="sr-tile" role="listitem">
+                    <div class="sr-stage">
+                        <div class="sr-stage__ph" aria-hidden="true">
+                            <span class="sr-stage__initials">RG</span>
+                        </div>
+                        <span class="sr-health sr-health_degraded">Degraded</span>
+                    </div>
+                    <div class="sr-device">
+                        <div class="sr-device__name">Gateway AX6</div>
+                        <div class="sr-device__type">Residential Gateway</div>
+                    </div>
+                    <dl class="sr-grid slds-m-top_small">
+                        <div class="sr-grid__item">
+                            <dt>Serial</dt>
+                            <dd class="sr-mono">GWAX6-4417-8890</dd>
+                        </div>
+                        <div class="sr-grid__item">
+                            <dt>Installed</dt>
+                            <dd>Aug 2022</dd>
+                        </div>
+                    </dl>
+                    <p class="sr-note slds-m-top_small">14 unplanned reboots in the last 30 days and elevated operating temperature. Out of warranty and eligible for replacement.</p>
+                    <div class="sr-tile__action slds-m-top_small">
+                        <button type="button" class="lc-button lc-button_brand" data-flash-label="Sent to chat">Request replacement</button>
+                    </div>
+                </article>
+
+                <article class="sr-tile" role="listitem">
+                    <div class="sr-stage">
+                        <div class="sr-stage__ph" aria-hidden="true">
+                            <span class="sr-stage__initials">ME</span>
+                        </div>
+                        <span class="sr-health sr-health_healthy">Healthy</span>
+                    </div>
+                    <div class="sr-device">
+                        <div class="sr-device__name">Mesh Extender M2</div>
+                        <div class="sr-device__type">Mesh Extender</div>
+                    </div>
+                    <dl class="sr-grid slds-m-top_small">
+                        <div class="sr-grid__item">
+                            <dt>Serial</dt>
+                            <dd class="sr-mono">MESHM2-4417-1174</dd>
+                        </div>
+                        <div class="sr-grid__item">
+                            <dt>Installed</dt>
+                            <dd>Oct 2025</dd>
+                        </div>
+                    </dl>
+                    <p class="sr-note slds-m-top_small">Backhaul stable. Covering the upstairs bedrooms.</p>
+                </article>
+
+                <article class="sr-tile" role="listitem">
+                    <div class="sr-stage">
+                        <div class="sr-stage__ph" aria-hidden="true">
+                            <span class="sr-stage__initials">STB</span>
+                        </div>
+                        <span class="sr-health sr-health_healthy">Healthy</span>
+                    </div>
+                    <div class="sr-device">
+                        <div class="sr-device__name">StreamBox 4K</div>
+                        <div class="sr-device__type">Set-Top Box</div>
+                    </div>
+                    <dl class="sr-grid slds-m-top_small">
+                        <div class="sr-grid__item">
+                            <dt>Serial</dt>
+                            <dd class="sr-mono">SB4K-4417-6602</dd>
+                        </div>
+                        <div class="sr-grid__item">
+                            <dt>Installed</dt>
+                            <dd>Feb 2025</dd>
+                        </div>
+                    </dl>
+                    <p class="sr-note slds-m-top_small">Firmware current. No reported playback faults.</p>
+                </article>
+
+            </div>
+
+            <p class="sr-hint">Scroll for more devices</p>
+
+            <div class="sr-actions slds-m-top_medium">
+                <button type="button" class="lc-button" data-sticky-label="Copied to reply">Explain to customer</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- No equipment on file -------------------------------------------------- -->
+<div data-state="empty">
+    <div class="lc-card sr-card">
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+            <div class="sr-empty">
+                <span class="sr-empty__dot"></span>
+                <span>No equipment is registered at this service address.</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Error ---------------------------------------------------------------- -->
+<div data-state="error">
+    <div class="lc-card sr-card">
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+            <div class="sr-error">Could not reach the equipment inventory service. Try again in a moment.</div>
+        </div>
+    </div>
+</div>
+
+<script src="preview.js"></script>
+</body>
+</html>

@@ -4,6 +4,21 @@ Self-contained Custom Lightning Type cards for Agentforce conversations. Each fo
 
 These are surfaced in the **Custom Lightning Types** area of the SE Workshop app, which reads `card.json` from every folder here.
 
+## What's in here
+
+| Card | Pattern | What it renders |
+| --- | --- | --- |
+| [Appointment Slots](Appointment%20Slots%20Card) | Selectable options | Visit windows over the next three business days, one selectable |
+| [Customer Profile](Customer%20Profile%20Card) | Record summary | Who the rep is talking to, with health, CSAT and churn-risk scores |
+| [Equipment Carousel](Equipment%20Carousel%20Card) | Carousel | A scrollable strip of customer devices with per-device health |
+| [Fiber Availability](Fiber%20Availability%20Card) | Eligibility check | Whether an address is serviceable, and at what speed |
+| [Line Diagnostics](Line%20Diagnostics%20Card) | Metrics + verdict | Raw line readings plus a plain-language verdict on the fault |
+| [Outage Status](Outage%20Status%20Card) | Status + timeline | A live incident with a repair timeline and restoration ETA |
+| [Plan Upgrade](Plan%20Upgrade%20Card) | Side-by-side comparison | Current versus recommended plan, with the monthly delta |
+| [Router Health & Reset](Router%20Reset%20Card) | Device health + action | Gateway telemetry, reboot history, and a remote restart |
+
+Every card is de-branded and industry-neutral: adapt the copy and the data source, keep the wiring.
+
 ## The rule that makes this library work
 
 Every card ships in **demo mode**: the invocable action returns a fixed sample payload with no SOQL, no custom objects, and no configuration. Someone can deploy a card, wire it to an agent, and see it render before writing a line of their own code. Wiring it to real data is documented per card, not required to get value.

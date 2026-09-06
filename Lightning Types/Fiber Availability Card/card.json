@@ -1,0 +1,47 @@
+{
+  "id": "fiber-availability",
+  "title": "Fiber Availability",
+  "blurb": "Serviceability check for an address: build status, top speed available, and the upgrade worth offering.",
+  "description": "Answers one question the rep has to settle before any upgrade conversation can start: has the fiber build actually reached this address? Instead of a paragraph, the card gives a status pill, when the build completed, how many neighbors on the route are already connected, and the speed jump from the customer's plan today to the tier being recommended — plus the install promotion and a plain-language explanation the rep can hand to the customer in one click. The not-serviceable answer is a first-class rendering rather than an empty state, so a rep can never mistake 'no' for 'no data' and pitch an install that gets cancelled on survey.",
+  "pattern": "eligibility-check",
+  "patternLabel": "Eligibility check",
+  "channels": ["lightningDesktopGenAi"],
+  "industries": ["Communications", "Utilities", "Real Estate", "Public Sector"],
+  "tags": ["eligibility", "serviceability", "availability", "upgrade", "offer", "write-back"],
+  "previewMode": "simulated",
+  "previewNarrative": "Gigabit Fiber is live at this service address. The build through Rincon Hill & South Beach finished on August 13, 2026, and the fiber drop is already at the property.",
+  "screenshot": null,
+  "featured": false,
+
+  "lwc": "fiberAvailabilityCard",
+  "lightningType": "fiberAvailabilityOutput",
+  "dtoClass": "FiberAvailabilityCardData",
+  "dtoField": "fiberJSON",
+  "actionClass": "FiberAvailabilityCardDemo",
+  "actionLabel": "Check Fiber Availability (Demo)",
+  "displayableOutput": "fiberAvailability",
+  "narrativeOutput": "narrative",
+  "permissionSet": "Fiber_Availability_Card_Access",
+
+  "sourceDirs": ["Lightning Types/Fiber Availability Card"],
+
+  "prerequisites": [],
+  "deployedIndicators": [
+    { "type": "LightningComponentBundle", "developerName": "fiberAvailabilityCard" }
+  ],
+
+  "instructionSnippet": "CRITICAL: After the \"Check Fiber Availability\" action completes, you MUST present the fiberAvailability output to the user. ALWAYS show the structured action output. Do NOT rewrite, restate, or summarize it as plain text — the interactive UI is contained in the fiberAvailability output and must be displayed as-is. Keep your text reply to 1-2 sentences of coaching color.",
+
+  "codeFiles": [
+    "force-app/main/default/classes/FiberAvailabilityCardData.cls",
+    "force-app/main/default/classes/FiberAvailabilityCardDemo.cls",
+    "force-app/main/default/lightningTypes/fiberAvailabilityOutput/schema.json",
+    "force-app/main/default/lightningTypes/fiberAvailabilityOutput/lightningDesktopGenAi/renderer.json",
+    "force-app/main/default/lwc/fiberAvailabilityCard/fiberAvailabilityCard.html",
+    "force-app/main/default/lwc/fiberAvailabilityCard/fiberAvailabilityCard.js",
+    "force-app/main/default/lwc/fiberAvailabilityCard/fiberAvailabilityCard.css",
+    "force-app/main/default/lwc/fiberAvailabilityCard/fiberAvailabilityCard.js-meta.xml",
+    "force-app/main/default/permissionsets/Fiber_Availability_Card_Access.permissionset-meta.xml",
+    "states.json"
+  ]
+}

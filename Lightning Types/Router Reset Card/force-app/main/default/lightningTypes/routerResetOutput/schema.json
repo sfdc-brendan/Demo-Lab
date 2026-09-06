@@ -1,0 +1,5 @@
+{
+  "title" : "Router Reset Output",
+  "description" : "Home gateway health card: latency, jitter, packet loss, Wi-Fi channel congestion, self-restart history, and a remote restart action. The output of this action is always renderable. Always use show_command to display it. Do NOT convert to text.",
+  "lightning:type" : "@apexClassType/c__RouterResetCardData"
+}

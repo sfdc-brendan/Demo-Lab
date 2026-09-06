@@ -1,0 +1,76 @@
+<template>
+    <lightning-card class="sr-card">
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+
+            <template if:true={hasError}>
+                <div class="sr-error">{errorMessage}</div>
+            </template>
+
+            <template if:true={hasPlans}>
+
+                <div class="sr-head">
+                    <div class="sr-head__title">
+                        <lightning-icon icon-name="utility:upload" size="x-small"></lightning-icon>
+                        <span>Plan upgrade</span>
+                    </div>
+                    <template if:true={hasPromo}>
+                        <span class="sr-promo">Install fee waived</span>
+                    </template>
+                </div>
+
+                <template if:true={isTopTier}>
+                    <div class="sr-toptier">{data.note}</div>
+                </template>
+
+                <div class="sr-compare">
+
+                    <div class="sr-plan">
+                        <div class="sr-plan__tag">Current</div>
+                        <div class="sr-plan__name">{current.name}</div>
+                        <div class="sr-plan__price">{currentPrice}<span class="sr-plan__per">/mo</span></div>
+                        <ul class="sr-plan__features">
+                            <template for:each={currentFeatures} for:item="f">
+                                <li key={f.id}>{f.label}</li>
+                            </template>
+                        </ul>
+                    </div>
+
+                    <template if:true={canUpgrade}>
+                        <div class="sr-plan sr-plan_recommended">
+                            <div class="sr-plan__tag sr-plan__tag_rec">Recommended</div>
+                            <div class="sr-plan__name">{recommended.name}</div>
+                            <div class="sr-plan__price">{recommendedPrice}<span class="sr-plan__per">/mo</span></div>
+                            <ul class="sr-plan__features">
+                                <template for:each={recommendedFeatures} for:item="f">
+                                    <li key={f.id}>{f.label}</li>
+                                </template>
+                            </ul>
+                        </div>
+                    </template>
+
+                </div>
+
+                <template if:true={canUpgrade}>
+                    <div class="sr-delta">
+                        <span class="sr-delta__value">+{monthlyIncrease}</span>
+                        <span class="sr-delta__label">per month &middot; {data.reason}</span>
+                    </div>
+
+                    <div class="sr-actions slds-m-top_medium">
+                        <lightning-button
+                            variant="brand"
+                            label={upgradeLabel}
+                            disabled={upgradeRequested}
+                            onclick={handleUpgrade}>
+                        </lightning-button>
+                        <lightning-button
+                            label="Explain the difference"
+                            onclick={handleExplain}>
+                        </lightning-button>
+                    </div>
+                </template>
+
+            </template>
+        </div>
+    </lightning-card>
+</template>
