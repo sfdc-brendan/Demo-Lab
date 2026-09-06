@@ -1,0 +1,46 @@
+{
+  "dtoField": "outageJSON",
+  "notes": "The payload of each state is what gets JSON.serialize'd into OutageStatusCardData.outageJSON. The 'default' state is what OutageStatusCardDemo returns.",
+  "states": [
+    {
+      "id": "default",
+      "label": "Active outage",
+      "description": "The main case: a confirmed outage with a repair timeline and a restoration ETA.",
+      "payload": {
+        "outageFound": true,
+        "ticketNumber": "INC-48213",
+        "status": "Crew on site",
+        "cause": "Fiber cut from third-party excavation",
+        "area": "Maple Grove / North Ridge",
+        "crewStatus": "Splice crew on site",
+        "etaTime": "3:45 PM",
+        "etaCountdown": "about 90 minutes from now",
+        "startedAt": "1:12 PM",
+        "elapsed": "2h 15m ago",
+        "affectedCustomers": 1284,
+        "steps": [
+          { "label": "Outage detected", "state": "done" },
+          { "label": "Crew dispatched", "state": "done" },
+          { "label": "Splice repair in progress", "state": "current" },
+          { "label": "Service restored", "state": "pending" }
+        ]
+      }
+    },
+    {
+      "id": "empty",
+      "label": "No outage",
+      "description": "Nothing wrong at this address. Worth designing deliberately — it is the answer the agent gives most often.",
+      "payload": {
+        "outageFound": false
+      }
+    },
+    {
+      "id": "error",
+      "label": "Error",
+      "description": "The sentinel shape. The service returns this instead of null so the card still mounts and can say what went wrong.",
+      "payload": {
+        "error": "Could not reach the network status service. Try again in a moment."
+      }
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "id": "outage-status",
+  "title": "Outage Status",
+  "blurb": "Live incident card with a repair timeline, restoration ETA, and follow-up actions.",
+  "description": "Shows a confirmed network outage as a status card instead of a paragraph of text: a pulsing live indicator, the estimated restoration time, a vertical progress rail through the repair stages, cause and crew detail, and how many customers are affected. Three buttons let the rep hand a plain-language explanation to the customer or push a follow-up question back into the conversation.",
+  "pattern": "status-timeline",
+  "patternLabel": "Status + timeline",
+  "channels": ["lightningDesktopGenAi"],
+  "industries": ["Communications", "Utilities", "Energy"],
+  "tags": ["incident", "timeline", "status", "ETA", "service", "write-back"],
+  "previewMode": "simulated",
+  "previewNarrative": "There is an active network outage affecting this address. Crews are on site and service is expected back around 3:45 PM.",
+  "screenshot": null,
+  "featured": true,
+
+  "lwc": "outageStatusCard",
+  "lightningType": "outageStatusOutput",
+  "dtoClass": "OutageStatusCardData",
+  "dtoField": "outageJSON",
+  "actionClass": "OutageStatusCardDemo",
+  "actionLabel": "Get Outage Status (Demo)",
+  "displayableOutput": "outageStatus",
+  "narrativeOutput": "narrative",
+  "permissionSet": "Outage_Status_Card_Access",
+
+  "sourceDirs": ["Lightning Types/Outage Status Card"],
+
+  "prerequisites": [],
+  "deployedIndicators": [
+    { "type": "LightningComponentBundle", "developerName": "outageStatusCard" }
+  ],
+
+  "instructionSnippet": "CRITICAL: After the \"Get Outage Status\" action completes, you MUST present the outageStatus output to the user. ALWAYS show the structured action output. Do NOT rewrite, restate, or summarize it as plain text — the interactive UI is contained in the outageStatus output and must be displayed as-is. Keep your text reply to 1-2 sentences of coaching color.",
+
+  "codeFiles": [
+    "force-app/main/default/classes/OutageStatusCardData.cls",
+    "force-app/main/default/classes/OutageStatusCardDemo.cls",
+    "force-app/main/default/lightningTypes/outageStatusOutput/schema.json",
+    "force-app/main/default/lightningTypes/outageStatusOutput/lightningDesktopGenAi/renderer.json",
+    "force-app/main/default/lwc/outageStatusCard/outageStatusCard.html",
+    "force-app/main/default/lwc/outageStatusCard/outageStatusCard.js",
+    "force-app/main/default/lwc/outageStatusCard/outageStatusCard.css",
+    "force-app/main/default/lwc/outageStatusCard/outageStatusCard.js-meta.xml",
+    "force-app/main/default/permissionsets/Outage_Status_Card_Access.permissionset-meta.xml",
+    "states.json"
+  ]
+}

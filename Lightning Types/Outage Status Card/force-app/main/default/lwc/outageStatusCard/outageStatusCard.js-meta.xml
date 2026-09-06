@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>63.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Outage Status Card</masterLabel>
+    <description>Renders a network outage status card in an Agentforce conversation.</description>
+    <targets>
+        <target>lightning__AgentforceOutput</target>
+        <target>lightning__AgentforceInput</target>
+    </targets>
+</LightningComponentBundle>

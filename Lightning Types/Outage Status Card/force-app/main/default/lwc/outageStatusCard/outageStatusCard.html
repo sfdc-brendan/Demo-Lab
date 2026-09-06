@@ -1,0 +1,93 @@
+<template>
+    <lightning-card class="sr-card">
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+
+            <template if:true={hasError}>
+                <div class="sr-error">{errorMessage}</div>
+            </template>
+
+            <template if:true={noOutage}>
+                <div class="sr-clear">
+                    <span class="sr-clear__dot"></span>
+                    <span>No active network outage at this service address.</span>
+                </div>
+            </template>
+
+            <template if:true={outageFound}>
+
+                <div class="sr-head">
+                    <div class="sr-head__title">
+                        <span class="sr-pulse"></span>
+                        <span>Network outage</span>
+                    </div>
+                    <span class="sr-ticket">{ticketNumber}</span>
+                </div>
+
+                <div class="sr-eta">
+                    <div class="sr-eta__label">Estimated restoration</div>
+                    <div class="sr-eta__value">{etaTime}</div>
+                    <div class="sr-eta__sub">{etaCountdown}</div>
+                </div>
+
+                <div class="sr-steps slds-m-top_medium">
+                    <template for:each={steps} for:item="step">
+                        <div key={step.id} class="sr-step">
+                            <div class="sr-step__rail">
+                                <span class={step.markerClass}></span>
+                                <template if:true={step.showConnector}>
+                                    <span class={step.connectorClass}></span>
+                                </template>
+                            </div>
+                            <div class={step.labelClass}>{step.label}</div>
+                        </div>
+                    </template>
+                </div>
+
+                <dl class="sr-grid slds-m-top_medium">
+                    <div class="sr-grid__item">
+                        <dt>Cause</dt>
+                        <dd>{cause}</dd>
+                    </div>
+                    <div class="sr-grid__item">
+                        <dt>Area</dt>
+                        <dd>{area}</dd>
+                    </div>
+                    <div class="sr-grid__item">
+                        <dt>Crew</dt>
+                        <dd>{crewStatus}</dd>
+                    </div>
+                    <div class="sr-grid__item">
+                        <dt>Started</dt>
+                        <dd>{startedAt} <span class="sr-muted">({elapsed})</span></dd>
+                    </div>
+                </dl>
+
+                <div class="sr-impact slds-m-top_medium">
+                    <span class="sr-impact__value">{affectedCustomers}</span>
+                    <span class="sr-impact__label">customers affected in this area</span>
+                </div>
+
+                <div class="sr-actions slds-m-top_medium">
+                    <lightning-button
+                        variant="brand"
+                        label={explainLabel}
+                        data-message={explainMessage}
+                        disabled={replySent}
+                        onclick={handleExplain}>
+                    </lightning-button>
+                    <lightning-button
+                        label="Check equipment"
+                        data-message={equipmentMessage}
+                        onclick={handlePost}>
+                    </lightning-button>
+                    <lightning-button
+                        label="Schedule tech"
+                        data-message={appointmentMessage}
+                        onclick={handlePost}>
+                    </lightning-button>
+                </div>
+
+            </template>
+        </div>
+    </lightning-card>
+</template>

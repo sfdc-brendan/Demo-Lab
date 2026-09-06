@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Outage Status Card preview</title>
+    <!-- frame.css stubs the platform. card.css is the component's real stylesheet. -->
+    <link rel="stylesheet" href="frame.css">
+    <link rel="stylesheet" href="card.css">
+</head>
+<body>
+
+<!-- Active outage ------------------------------------------------------- -->
+<div data-state="default" class="is-active">
+    <div class="lc-card sr-card">
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+
+            <div class="sr-head">
+                <div class="sr-head__title">
+                    <span class="sr-pulse"></span>
+                    <span>Network outage</span>
+                </div>
+                <span class="sr-ticket">INC-48213</span>
+            </div>
+
+            <div class="sr-eta">
+                <div class="sr-eta__label">Estimated restoration</div>
+                <div class="sr-eta__value">3:45 PM</div>
+                <div class="sr-eta__sub">about 90 minutes from now</div>
+            </div>
+
+            <div class="sr-steps slds-m-top_medium">
+                <div class="sr-step">
+                    <div class="sr-step__rail">
+                        <span class="sr-step__marker sr-step__marker_done"></span>
+                        <span class="sr-step__line sr-step__line_done"></span>
+                    </div>
+                    <div class="sr-step__label sr-step__label_done">Outage detected</div>
+                </div>
+                <div class="sr-step">
+                    <div class="sr-step__rail">
+                        <span class="sr-step__marker sr-step__marker_done"></span>
+                        <span class="sr-step__line sr-step__line_done"></span>
+                    </div>
+                    <div class="sr-step__label sr-step__label_done">Crew dispatched</div>
+                </div>
+                <div class="sr-step">
+                    <div class="sr-step__rail">
+                        <span class="sr-step__marker sr-step__marker_current"></span>
+                        <span class="sr-step__line"></span>
+                    </div>
+                    <div class="sr-step__label sr-step__label_current">Splice repair in progress</div>
+                </div>
+                <div class="sr-step">
+                    <div class="sr-step__rail">
+                        <span class="sr-step__marker sr-step__marker_pending"></span>
+                    </div>
+                    <div class="sr-step__label sr-step__label_pending">Service restored</div>
+                </div>
+            </div>
+
+            <dl class="sr-grid slds-m-top_medium">
+                <div class="sr-grid__item">
+                    <dt>Cause</dt>
+                    <dd>Fiber cut from third-party excavation</dd>
+                </div>
+                <div class="sr-grid__item">
+                    <dt>Area</dt>
+                    <dd>Maple Grove / North Ridge</dd>
+                </div>
+                <div class="sr-grid__item">
+                    <dt>Crew</dt>
+                    <dd>Splice crew on site</dd>
+                </div>
+                <div class="sr-grid__item">
+                    <dt>Started</dt>
+                    <dd>1:12 PM <span class="sr-muted">(2h 15m ago)</span></dd>
+                </div>
+            </dl>
+
+            <div class="sr-impact slds-m-top_medium">
+                <span class="sr-impact__value">1,284</span>
+                <span class="sr-impact__label">customers affected in this area</span>
+            </div>
+
+            <div class="sr-actions slds-m-top_medium">
+                <button type="button" class="lc-button lc-button_brand" data-sticky-label="Copied to reply">Explain to customer</button>
+                <button type="button" class="lc-button" data-flash-label="Sent to chat">Check equipment</button>
+                <button type="button" class="lc-button" data-flash-label="Sent to chat">Schedule tech</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- No outage ------------------------------------------------------------ -->
+<div data-state="empty">
+    <div class="lc-card sr-card">
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+            <div class="sr-clear">
+                <span class="sr-clear__dot"></span>
+                <span>No active network outage at this service address.</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Error ---------------------------------------------------------------- -->
+<div data-state="error">
+    <div class="lc-card sr-card">
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+            <div class="sr-error">Could not reach the network status service. Try again in a moment.</div>
+        </div>
+    </div>
+</div>
+
+<script src="preview.js"></script>
+</body>
+</html>
