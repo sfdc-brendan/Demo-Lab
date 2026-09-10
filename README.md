@@ -6,6 +6,20 @@ A collection of ready-to-deploy Salesforce metadata and code for service, agent,
 
 ---
 
+## Agent skills moved
+
+All Cursor / Claude Code / Windsurf **skill packs** now live in [Unofficial-Skills](https://github.com/sfdc-brendan/Unofficial-Skills), grouped by product:
+
+- [Agentforce](https://github.com/sfdc-brendan/Unofficial-Skills/tree/main/agentforce) — Agent API, Vision, Contact Center
+- [Custom Lightning Types](https://github.com/sfdc-brendan/Unofficial-Skills/tree/main/custom-lightning-types)
+- [Service Cloud](https://github.com/sfdc-brendan/Unofficial-Skills/tree/main/service-cloud) — core + Field Service
+- [Platform](https://github.com/sfdc-brendan/Unofficial-Skills/tree/main/platform) — role subagents
+- [UI](https://github.com/sfdc-brendan/Unofficial-Skills/tree/main/ui) — LWC UI/UX
+
+Old one-line installers in this repo still work; they forward to the new location. This repo keeps demo **metadata** (LWCs, Apex, Flows, Lightning Types).
+
+---
+
 ## What's in the Repo
 
 ### [Agentforce](./Agentforce/)
