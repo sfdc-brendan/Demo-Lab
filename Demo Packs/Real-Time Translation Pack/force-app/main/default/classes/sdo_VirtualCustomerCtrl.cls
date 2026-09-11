@@ -35,9 +35,75 @@ public with sharing class sdo_VirtualCustomerCtrl {
     @AuraEnabled(cacheable=true)
     public static List<Route> getRoutes() {
         List<Route> routes = new List<Route>();
-        routes.add(new Route('Human Agent (Real-Time Translation)', DEFAULT_ES_DEVELOPER_NAME, DEFAULT_CHANNEL_DEV_NAME, false));
-        routes.add(new Route('Agentforce Service Agent', 'SDO_Messaging_API', 'Messaging_for_In_App_Web', true));
+        for (Virtual_Customer_Route__mdt r : [
+            SELECT Route_Label__c, ES_Developer_Name__c, Channel_Dev_Name__c, Is_Agentforce__c
+            FROM Virtual_Customer_Route__mdt
+            WHERE Is_Active__c = true
+            ORDER BY Sort_Order__c NULLS LAST, Route_Label__c
+        ]) {
+            if (String.isBlank(r.ES_Developer_Name__c)) {
+                continue;
+            }
+            routes.add(new Route(
+                r.Route_Label__c,
+                r.ES_Developer_Name__c,
+                r.Channel_Dev_Name__c,
+                r.Is_Agentforce__c == true
+            ));
+        }
+        // No Virtual_Customer_Route__mdt records configured: fall back to the
+        // built-in defaults so the component works out of the box. Admins can
+        // override per org by adding records in Setup → Custom Metadata Types —
+        // no Apex change required.
+        if (routes.isEmpty()) {
+            routes.addAll(defaultRoutes());
+        }
         return routes;
+    }
+
+    private static List<Route> defaultRoutes() {
+        return new List<Route>{
+            new Route('Human Agent (Real-Time Translation)', DEFAULT_ES_DEVELOPER_NAME, DEFAULT_CHANNEL_DEV_NAME, false),
+            new Route('Agentforce Service Agent', 'SDO_Messaging_API', 'Messaging_for_In_App_Web', true)
+        };
+    }
+
+    /**
+     * Preflight check the LWC calls before "Start": confirms the route's MIAW
+     * deployment is reachable and published. Returns a human-readable status
+     * instead of throwing, so the component can surface exactly what to fix.
+     */
+    @AuraEnabled
+    public static String checkSetup(String esDeveloperName) {
+        String esName = String.isBlank(esDeveloperName) ? DEFAULT_ES_DEVELOPER_NAME : esDeveloperName;
+        Map<String, Object> body = new Map<String, Object>{
+            'orgId' => UserInfo.getOrganizationId(),
+            'esDeveloperName' => esName,
+            'capabilitiesVersion' => '1',
+            'platform' => 'Web'
+        };
+        HttpResponse res;
+        try {
+            res = doCallout('POST', API_BASE + '/authorization/unauthenticated/access-token', null, JSON.serialize(body));
+        } catch (Exception e) {
+            return 'Callout blocked: ' + e.getMessage() +
+                ' — add a Remote Site Setting / Trusted URL for your org\'s *.my.salesforce-scrt.com host.';
+        }
+        Integer code = res.getStatusCode();
+        if (code >= 200 && code < 300) {
+            return 'OK — deployment "' + esName + '" is published and reachable. You\'re ready to start a conversation.';
+        }
+        String detail = res.getBody();
+        try {
+            Map<String, Object> parsed = (Map<String, Object>) JSON.deserializeUntyped(res.getBody());
+            if (parsed.containsKey('message')) {
+                detail = (String) parsed.get('message');
+            }
+        } catch (Exception ignored) {
+            // keep raw body
+        }
+        return 'Not ready (' + code + '): ' + detail +
+            ' — check that deployment "' + esName + '" exists and is Published (Setup → Embedded Service Deployments).';
     }
 
     @AuraEnabled

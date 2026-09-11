@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Is_Agentforce__c</fullName>
+    <label>Is Agentforce</label>
+    <description>When checked, the route shows the escalation toggle and the customer asks for a human after the third turn (the agent's transfer action handles the handoff).</description>
+    <type>Checkbox</type>
+    <defaultValue>false</defaultValue>
+</CustomField>

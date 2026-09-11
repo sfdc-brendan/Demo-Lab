@@ -2,6 +2,7 @@ import { LightningElement, track } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getScenarios from '@salesforce/apex/sdo_VirtualCustomerCtrl.getScenarios';
 import getRoutes from '@salesforce/apex/sdo_VirtualCustomerCtrl.getRoutes';
+import checkSetup from '@salesforce/apex/sdo_VirtualCustomerCtrl.checkSetup';
 import startConversation from '@salesforce/apex/sdo_VirtualCustomerCtrl.startConversation';
 import sendMessage from '@salesforce/apex/sdo_VirtualCustomerCtrl.sendMessage';
 import locateSession from '@salesforce/apex/sdo_VirtualCustomerCtrl.locateSession';
@@ -137,6 +138,10 @@ export default class Sdo_virtualCustomer extends LightningElement {
         return this.busy || this.started || !this.scenario || !this.route;
     }
 
+    get checkDisabled() {
+        return this.busy || this.started || !this.route;
+    }
+
     get sendNextDisabled() {
         return this.busy || !this.started || !this.canSendNext;
     }
@@ -184,6 +189,19 @@ export default class Sdo_virtualCustomer extends LightningElement {
 
     handleEscalateToggle(e) {
         this.escalateToHuman = e.target.checked;
+    }
+
+    async handleCheckSetup() {
+        if (!this.route) return;
+        this.busy = true;
+        this.status = `Checking setup for "${this.route.label}"…`;
+        try {
+            this.status = await checkSetup({ esDeveloperName: this.route.esDeveloperName });
+        } catch (e) {
+            this.status = this.errMsg(e);
+        } finally {
+            this.busy = false;
+        }
     }
 
     handleAutoToggle(e) {

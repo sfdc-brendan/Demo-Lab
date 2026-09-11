@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Virtual Customer Route</label>
+    <pluralLabel>Virtual Customer Routes</pluralLabel>
+    <visibility>Public</visibility>
+    <description>Conversation routes for the Virtual Customer component. Each record maps to a MIAW API (Custom Client) deployment and the messaging channel its sessions land on. Edit these in Setup to point the component at your org's deployments — no code change required.</description>
+</CustomObject>

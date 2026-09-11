@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ES_Developer_Name__c</fullName>
+    <label>ES Developer Name</label>
+    <description>Developer name of the MIAW API (Custom Client) Embedded Service deployment to send inbound messages through. Must be Published.</description>
+    <type>Text</type>
+    <length>255</length>
+    <required>false</required>
+    <unique>false</unique>
+</CustomField>

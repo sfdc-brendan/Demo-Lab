@@ -124,18 +124,32 @@ private class sdo_VirtualCustomerCtrl_Test {
     }
 
     @isTest
-    static void routes_includeHumanAndAgentforce() {
+    static void routes_areReturnedFromMetadata() {
+        // Routes come from Virtual_Customer_Route__mdt records shipped with the
+        // pack; the controller falls back to a default if none are configured.
         List<sdo_VirtualCustomerCtrl.Route> routes = sdo_VirtualCustomerCtrl.getRoutes();
-        System.assertEquals(2, routes.size(), 'Two curated routes are expected');
-        Boolean hasAgentforce = false;
+        System.assert(!routes.isEmpty(), 'At least one route should be returned');
         for (sdo_VirtualCustomerCtrl.Route r : routes) {
             System.assert(String.isNotBlank(r.esDeveloperName), 'Each route needs a deployment name');
-            System.assert(String.isNotBlank(r.channelDevName), 'Each route needs a channel name');
-            if (r.agentforce == true) {
-                hasAgentforce = true;
-            }
         }
-        System.assert(hasAgentforce, 'An Agentforce route should be available');
+    }
+
+    @isTest
+    static void checkSetup_returnsStatusString() {
+        Test.setMock(HttpCalloutMock.class, new MiawMock());
+        Test.startTest();
+        String status = sdo_VirtualCustomerCtrl.checkSetup('SDO_Messaging_API');
+        Test.stopTest();
+        System.assert(status != null && status.startsWith('OK'), 'A 2xx access-token response should report OK; got: ' + status);
+    }
+
+    @isTest
+    static void checkSetup_reportsNotReadyOnError() {
+        Test.setMock(HttpCalloutMock.class, new MiawErrorMock());
+        Test.startTest();
+        String status = sdo_VirtualCustomerCtrl.checkSetup('Bad_Deployment');
+        Test.stopTest();
+        System.assert(status != null && status.contains('Not ready'), 'A non-2xx response should report Not ready; got: ' + status);
     }
 
     @isTest
