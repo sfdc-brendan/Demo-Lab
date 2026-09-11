@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Analysis_Type__c</fullName>
+    <description>Whether the evaluation ran in real time at close or as a historical re-analysis.</description>
+    <label>Analysis Type</label>
+    <required>false</required>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Real-time</fullName>
+                <default>true</default>
+                <label>Real-time</label>
+            </value>
+            <value>
+                <fullName>Historical</fullName>
+                <default>false</default>
+                <label>Historical</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

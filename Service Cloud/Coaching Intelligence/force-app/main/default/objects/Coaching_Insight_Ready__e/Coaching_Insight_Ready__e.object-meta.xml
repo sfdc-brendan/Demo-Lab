@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Published when a Coaching Insight analysis completes, so UI components can update in real time.</description>
+    <eventType>StandardVolume</eventType>
+    <label>Coaching Insight Ready</label>
+    <pluralLabel>Coaching Insight Ready Events</pluralLabel>
+    <publishBehavior>PublishAfterCommit</publishBehavior>
+</CustomObject>

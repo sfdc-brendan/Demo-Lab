@@ -1,0 +1,79 @@
+<template>
+    <lightning-card title="Coaching Intelligence" icon-name="utility:agent_session">
+        <template if:true={justUpdated}>
+            <span slot="actions" class="slds-badge slds-theme_success">Updated live</span>
+        </template>
+
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+            <!-- Empty state -->
+            <template if:true={noData}>
+                <div class="slds-illustration slds-illustration_small slds-p-vertical_medium slds-text-align_center">
+                    <p class="slds-text-color_weak">
+                        No coaching insight yet. Analysis runs automatically when the interaction closes.
+                    </p>
+                </div>
+            </template>
+
+            <!-- Failure state -->
+            <template if:true={isFailed}>
+                <div class="slds-box slds-theme_warning slds-m-top_small">
+                    <p>The most recent analysis could not be completed. It will retry on the next update.</p>
+                </div>
+            </template>
+
+            <!-- Success state -->
+            <template if:true={hasInsight}>
+                <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center slds-m-bottom_small">
+                    <div class="slds-text-align_center">
+                        <div class={scoreClass}>{performanceRating}</div>
+                        <div class="slds-text-body_small slds-text-color_weak">/ 10 Performance</div>
+                    </div>
+                    <div class="slds-text-align_center">
+                        <span class={sentimentClass}>{sentimentRating}</span>
+                        <div class="slds-text-body_small slds-text-color_weak slds-m-top_xxx-small">Sentiment</div>
+                    </div>
+                </div>
+
+                <!-- Category breakdown -->
+                <template if:true={categories.length}>
+                    <ul class="slds-has-dividers_bottom-space slds-m-bottom_small">
+                        <template for:each={categories} for:item="cat">
+                            <li key={cat.key} class="slds-item slds-p-vertical_xx-small">
+                                <span class="slds-text-title_caps slds-text-color_weak">{cat.label}</span>
+                                <p class="slds-text-body_regular">{cat.text}</p>
+                            </li>
+                        </template>
+                    </ul>
+                </template>
+
+                <!-- Sentiment narrative -->
+                <template if:true={sentimentNarrative}>
+                    <div class="slds-m-bottom_small">
+                        <span class="slds-text-title_caps slds-text-color_weak">Why this sentiment</span>
+                        <p class="slds-text-body_regular">{sentimentNarrative}</p>
+                    </div>
+                </template>
+
+                <!-- Full evaluation (includes overall summary) -->
+                <template if:true={evaluation}>
+                    <div class="slds-m-bottom_small">
+                        <span class="slds-text-title_caps slds-text-color_weak">Coaching Evaluation</span>
+                        <lightning-formatted-text value={evaluation} class="evaluation-text"></lightning-formatted-text>
+                    </div>
+                </template>
+
+                <!-- Governance footer -->
+                <div class="slds-border_top slds-p-top_x-small slds-text-body_small slds-text-color_weak">
+                    <lightning-icon icon-name="utility:einstein" size="xx-small"
+                        class="slds-m-right_xx-small"></lightning-icon>
+                    <span>{analysisType}</span>
+                    <template if:true={model}>&nbsp;&middot;&nbsp;<span>{model}</span></template>
+                    <template if:true={agentName}>&nbsp;&middot;&nbsp;<span>{agentName}</span></template>
+                    &nbsp;&middot;&nbsp;
+                    <lightning-formatted-date-time value={createdDate} year="numeric" month="short"
+                        day="2-digit" hour="2-digit" minute="2-digit"></lightning-formatted-date-time>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>

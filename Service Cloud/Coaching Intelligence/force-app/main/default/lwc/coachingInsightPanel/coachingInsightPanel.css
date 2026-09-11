@@ -1,0 +1,49 @@
+.rating-score {
+    font-weight: 700;
+    line-height: 1;
+}
+
+.score-excellent {
+    color: #2e844a;
+}
+
+.score-good {
+    color: #3a8c5c;
+}
+
+.score-fair {
+    color: #a16207;
+}
+
+.score-poor {
+    color: #ba0517;
+}
+
+.sentiment-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-weight: 700;
+    font-size: 0.875rem;
+}
+
+.sentiment-positive {
+    background-color: #d7f0db;
+    color: #2e844a;
+}
+
+.sentiment-neutral {
+    background-color: #ecebea;
+    color: #514f4d;
+}
+
+.sentiment-negative {
+    background-color: #fddde3;
+    color: #ba0517;
+}
+
+.evaluation-text {
+    display: block;
+    white-space: pre-line;
+    margin-top: 0.25rem;
+}

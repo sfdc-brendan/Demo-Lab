@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Unified persistence for AI agent coaching and sentiment evaluations across Voice, Chat, and Case channels (Coaching Intelligence v2).</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <label>Coaching Insight</label>
+    <nameField>
+        <displayFormat>CI-{00000000}</displayFormat>
+        <label>Coaching Insight Number</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Coaching Insights</pluralLabel>
+    <sharingModel>ReadWrite</sharingModel>
+    <visibility>Public</visibility>
+</CustomObject>

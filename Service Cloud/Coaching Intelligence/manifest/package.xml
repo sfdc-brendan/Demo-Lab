@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Core package (channel-agnostic). Installs in any org. -->
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>Coaching_Insight__c</members>
+        <members>Coaching_Insight_Ready__e</members>
+        <name>CustomObject</name>
+    </types>
+    <types>
+        <members>CoachingResult</members>
+        <members>CoachingResultTest</members>
+        <members>CoachingIngestService</members>
+        <members>CoachingIngestServiceTest</members>
+        <members>CoachingInsightController</members>
+        <members>CoachingInsightControllerTest</members>
+        <members>CaseTranscriptProvider</members>
+        <members>CaseTranscriptProviderTest</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>Coaching_Case_v2</members>
+        <name>GenAiPromptTemplate</name>
+    </types>
+    <types>
+        <members>Coaching_Case_v2</members>
+        <name>Flow</name>
+    </types>
+    <types>
+        <members>coachingInsightPanel</members>
+        <name>LightningComponentBundle</name>
+    </types>
+    <types>
+        <members>Coaching_Insight__c</members>
+        <name>CustomTab</name>
+    </types>
+    <types>
+        <members>Coaching_Insight_Ready</members>
+        <name>CustomNotificationType</name>
+    </types>
+    <types>
+        <members>Coaching_Intelligence_Access</members>
+        <name>PermissionSet</name>
+    </types>
+    <version>67.0</version>
+</Package>
